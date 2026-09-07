@@ -15,8 +15,8 @@ freedesktop.org MIME applications specification.
 
 ## Build and install
 
-Requires [just](https://github.com/casey/just), Rust 1.88 or newer, GTK 4.12 or newer and
-libadwaita 1.5 or newer with their development packages.
+Requires [just](https://github.com/casey/just), Rust 1.88 or newer, GTK 4.12 or newer,
+libadwaita 1.5 or newer and gettext, with their development packages.
 
 ```sh
 just build
@@ -36,7 +36,11 @@ just run
 just check
 ```
 
-This runs rustfmt, Clippy, the test suite and the desktop and AppStream validators.
+This runs rustfmt, Clippy, tests, metadata validators and translation checks.
+
+## Translations
+
+English, Ukrainian and Russian. Run `just pot` after changing user-visible strings.
 
 ## License
 

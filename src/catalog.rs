@@ -1,4 +1,5 @@
 use crate::entry::media_group;
+use gettextrs::{gettext, ngettext};
 use gtk::prelude::*;
 use gtk::{gio, glib};
 use std::collections::{BTreeMap, BTreeSet, HashSet};
@@ -159,12 +160,23 @@ impl Assignment {
     /// What to tell the user after a bulk assignment.
     pub(crate) fn report(&self, app: &str) -> String {
         match (self.set, &self.error) {
-            (0, None) => format!("{app} already opened every type it supports"),
-            (set, None) => format!("{app} now opens {set} more file types"),
-            (set, Some(error)) => format!(
-                "{app} now opens {set} more file types, {} could not be set: {error}",
-                self.failed
-            ),
+            (0, None) => {
+                gettext("{app} already opened every type it supports").replace("{app}", app)
+            }
+            (set, None) => ngettext(
+                "{app} now opens one more file type",
+                "{app} now opens {count} more file types",
+                set as u32,
+            )
+            .replace("{app}", app)
+            .replace("{count}", &set.to_string()),
+            (set, Some(error)) => gettext(
+                "{app} now opens {count} more file types, {failed} could not be set: {error}",
+            )
+            .replace("{app}", app)
+            .replace("{count}", &set.to_string())
+            .replace("{failed}", &self.failed.to_string())
+            .replace("{error}", &error.to_string()),
         }
     }
 }

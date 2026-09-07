@@ -1,4 +1,5 @@
 use crate::catalog::AppEntry;
+use crate::i18n::N_;
 use gtk::gio;
 use gtk::prelude::*;
 use std::collections::{BTreeSet, HashSet};
@@ -35,37 +36,37 @@ impl DefaultCategory {
 
 pub(crate) const DEFAULT_CATEGORIES: [DefaultCategory; 6] = [
     DefaultCategory {
-        title: "Web Browser",
+        title: N_("Web Browser"),
         icon: "web-browser-symbolic",
         anchor: "x-scheme-handler/https",
         kind: DefaultKind::Browser,
     },
     DefaultCategory {
-        title: "Mail",
+        title: N_("Mail"),
         icon: "mail-unread-symbolic",
         anchor: "x-scheme-handler/mailto",
         kind: DefaultKind::Mail,
     },
     DefaultCategory {
-        title: "Calendar",
+        title: N_("Calendar"),
         icon: "x-office-calendar-symbolic",
         anchor: "text/calendar",
         kind: DefaultKind::Calendar,
     },
     DefaultCategory {
-        title: "Images",
+        title: N_("Images"),
         icon: "image-x-generic-symbolic",
         anchor: "image/png",
         kind: DefaultKind::Media("image"),
     },
     DefaultCategory {
-        title: "Audio",
+        title: N_("Audio"),
         icon: "audio-x-generic-symbolic",
         anchor: "audio/mpeg",
         kind: DefaultKind::Media("audio"),
     },
     DefaultCategory {
-        title: "Video",
+        title: N_("Video"),
         icon: "video-x-generic-symbolic",
         anchor: "video/mp4",
         kind: DefaultKind::Media("video"),

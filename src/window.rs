@@ -7,6 +7,7 @@ use crate::dialogs::{
 use crate::entry::{MimeEntry, ViewState};
 use crate::rows::{build_row, fill_sidebar, header_factory, property_expression, string_sorter};
 use adw::prelude::*;
+use gettextrs::gettext;
 use gtk::{gio, glib};
 use std::cell::RefCell;
 use std::collections::HashSet;
@@ -84,7 +85,10 @@ pub(crate) fn build_window(app: &adw::Application) {
             let mime = entry.mime();
             gio::AppInfo::reset_type_associations(&mime);
             refresh(&store, entry, &overrides);
-            toast(&toasts, &format!("Reset {mime} to the system default"));
+            toast(
+                &toasts,
+                &gettext("Reset {mime} to the system default").replace("{mime}", &mime),
+            );
         }
     ));
 
@@ -124,7 +128,7 @@ pub(crate) fn build_window(app: &adw::Application) {
 
     let empty = adw::StatusPage::builder()
         .icon_name("system-search-symbolic")
-        .title("No Matches")
+        .title(gettext("No matches"))
         .build();
 
     let defaults = gtk::ListBox::builder()
@@ -141,7 +145,9 @@ pub(crate) fn build_window(app: &adw::Application) {
         .build();
     defaults_page.append(
         &gtk::Label::builder()
-            .label("Choose the applications used for common file types and links.")
+            .label(gettext(
+                "Choose the applications used for common file types and links.",
+            ))
             .wrap(true)
             .xalign(0.0)
             .css_classes(["dim-label"])
@@ -163,7 +169,7 @@ pub(crate) fn build_window(app: &adw::Application) {
     stack.add_named(&empty, Some("empty"));
 
     let search_entry = gtk::SearchEntry::builder()
-        .placeholder_text("Search file types and descriptions")
+        .placeholder_text(gettext("Search file types and descriptions"))
         .hexpand(true)
         .build();
     search_entry.connect_search_changed(glib::clone!(
@@ -180,9 +186,9 @@ pub(crate) fn build_window(app: &adw::Application) {
 
     let search_button = gtk::ToggleButton::builder()
         .icon_name("system-search-symbolic")
-        .tooltip_text("Search")
+        .tooltip_text(gettext("Search"))
         .build();
-    search_button.update_property(&[gtk::accessible::Property::Label("Search")]);
+    search_button.update_property(&[gtk::accessible::Property::Label(&gettext("Search"))]);
     search_button
         .bind_property("active", &search_bar, "search-mode-enabled")
         .bidirectional()
@@ -190,22 +196,22 @@ pub(crate) fn build_window(app: &adw::Application) {
         .build();
 
     let menu = gio::Menu::new();
-    menu.append(Some("_About Mimebind"), Some("app.about"));
+    menu.append(Some(&gettext("_About Mimebind")), Some("app.about"));
     let menu_button = gtk::MenuButton::builder()
         .icon_name("open-menu-symbolic")
-        .tooltip_text("Main Menu")
+        .tooltip_text(gettext("Main Menu"))
         .primary(true)
         .menu_model(&menu)
         .build();
-    menu_button.update_property(&[gtk::accessible::Property::Label("Main Menu")]);
+    menu_button.update_property(&[gtk::accessible::Property::Label(&gettext("Main Menu"))]);
 
     let use_all_button = gtk::Button::builder()
-        .label("Use for All")
+        .label(gettext("Use for All"))
         .css_classes(["suggested-action"])
         .visible(false)
         .build();
     let reset_all_button = gtk::Button::builder()
-        .label("Reset All")
+        .label(gettext("Reset All"))
         .css_classes(["destructive-action"])
         .visible(false)
         .build();
@@ -221,7 +227,7 @@ pub(crate) fn build_window(app: &adw::Application) {
     content_toolbar.add_top_bar(&search_bar);
 
     let content_page = adw::NavigationPage::builder()
-        .title("All File Types")
+        .title(gettext("All File Types"))
         .tag("content")
         .child(&content_toolbar)
         .build();
@@ -240,8 +246,9 @@ pub(crate) fn build_window(app: &adw::Application) {
     });
     let selections: Rc<RefCell<Vec<Selection>>> = Rc::new(RefCell::new(Vec::new()));
 
-    let sidebar_mode = gtk::DropDown::from_strings(&["Applications", "Media Types"]);
-    sidebar_mode.set_tooltip_text(Some("List the sidebar by"));
+    let sidebar_mode =
+        gtk::DropDown::from_strings(&[&gettext("Applications"), &gettext("Media Types")]);
+    sidebar_mode.set_tooltip_text(Some(&gettext("List the sidebar by")));
 
     let sidebar_header = adw::HeaderBar::new();
     sidebar_header.set_title_widget(Some(&sidebar_mode));
@@ -258,7 +265,7 @@ pub(crate) fn build_window(app: &adw::Application) {
     sidebar_toolbar.add_top_bar(&sidebar_header);
 
     let sidebar_page = adw::NavigationPage::builder()
-        .title("Groups")
+        .title(gettext("Groups"))
         .tag("sidebar")
         .child(&sidebar_toolbar)
         .build();
@@ -298,7 +305,7 @@ pub(crate) fn build_window(app: &adw::Application) {
             .iter()
             .map(|category| {
                 let row = adw::ActionRow::builder()
-                    .title(category.title)
+                    .title(gettext(category.title))
                     .activatable(true)
                     .build();
                 row.add_prefix(&gtk::Image::from_icon_name(category.icon));
@@ -378,15 +385,17 @@ pub(crate) fn build_window(app: &adw::Application) {
             }
             if current == Selection::Modified {
                 empty.set_icon_name(Some("document-edit-symbolic"));
-                empty.set_title("Nothing Changed Yet");
-                empty.set_description(Some(&format!(
-                    "File types you assign to an application appear here, saved in {}.",
-                    associations_path()
-                )));
+                empty.set_title(&gettext("Nothing changed yet"));
+                empty.set_description(Some(
+                    &gettext(
+                        "File types you assign to an application appear here, saved in {path}.",
+                    )
+                    .replace("{path}", &associations_path()),
+                ));
             } else {
                 empty.set_icon_name(Some("system-search-symbolic"));
-                empty.set_title("No Matches");
-                empty.set_description(Some("No file type matches this search."));
+                empty.set_title(&gettext("No matches"));
+                empty.set_description(Some(&gettext("No file type matches this search.")));
             }
             stack.set_visible_child_name("empty");
         }
@@ -426,9 +435,9 @@ pub(crate) fn build_window(app: &adw::Application) {
         update_view,
         move |chosen: Selection| {
             content_page.set_title(&match &chosen {
-                Selection::Defaults => "Default Apps".to_string(),
-                Selection::All => "All File Types".to_string(),
-                Selection::Modified => "Modified".to_string(),
+                Selection::Defaults => gettext("Default Apps"),
+                Selection::All => gettext("All File Types"),
+                Selection::Modified => gettext("Modified"),
                 Selection::Media(group) => group.clone(),
                 Selection::App(id) => catalog
                     .iter()
@@ -619,10 +628,13 @@ pub(crate) fn build_window(app: &adw::Application) {
                 .version(env!("CARGO_PKG_VERSION"))
                 .developer_name("sachesi")
                 .license_type(gtk::License::Gpl30)
-                .comments(format!(
-                    "Choose which application opens which file type.\n\nChanges are saved in {}.",
-                    associations_path()
-                ))
+                .comments(
+                    gettext("Choose which application opens which file type.")
+                        + "\n\n"
+                        + &gettext("Changes are saved in {path}.")
+                            .replace("{path}", &associations_path()),
+                )
+                .translator_credits(gettext("translator-credits"))
                 .website("https://github.com/sachesi/mimebind")
                 .issue_url("https://github.com/sachesi/mimebind/issues")
                 .build()

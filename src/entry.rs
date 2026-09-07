@@ -1,3 +1,4 @@
+use gettextrs::gettext;
 use gtk::prelude::*;
 use gtk::{gio, glib};
 use std::cell::RefCell;
@@ -80,22 +81,22 @@ impl MimeEntry {
 pub(crate) fn media_group(mime: &str) -> String {
     let media = mime.split_once('/').map_or(mime, |(media, _)| media);
     match media {
-        "application" => "Applications and Documents".into(),
-        "audio" => "Audio".into(),
-        "font" => "Fonts".into(),
-        "image" => "Images".into(),
-        "inode" => "Folders and Devices".into(),
-        "message" => "Messages".into(),
-        "model" => "3D Models".into(),
-        "multipart" => "Multipart".into(),
-        "text" => "Text".into(),
-        "video" => "Video".into(),
-        "x-scheme-handler" => "Links and Protocols".into(),
+        "application" => gettext("Applications and Documents"),
+        "audio" => gettext("Audio"),
+        "font" => gettext("Fonts"),
+        "image" => gettext("Images"),
+        "inode" => gettext("Folders and Devices"),
+        "message" => gettext("Messages"),
+        "model" => gettext("3D Models"),
+        "multipart" => gettext("Multipart"),
+        "text" => gettext("Text"),
+        "video" => gettext("Video"),
+        "x-scheme-handler" => gettext("Links and Protocols"),
         other => {
             let mut characters = other.chars();
             match characters.next() {
                 Some(first) => first.to_uppercase().to_string() + characters.as_str(),
-                None => "Other".into(),
+                None => gettext("Other"),
             }
         }
     }

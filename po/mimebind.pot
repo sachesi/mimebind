@@ -1,0 +1,286 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the mimebind package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: mimebind 0.1.0\n"
+"Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
+"POT-Creation-Date: 2026-09-07 19:01+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: target/pot/catalog.rs:164
+msgid "{app} already opened every type it supports"
+msgstr ""
+
+#: target/pot/catalog.rs:167
+msgid "{app} now opens one more file type"
+msgid_plural "{app} now opens {count} more file types"
+msgstr[0] ""
+msgstr[1] ""
+
+#: target/pot/catalog.rs:174
+msgid ""
+"{app} now opens {count} more file types, {failed} could not be set: {error}"
+msgstr ""
+
+#: target/pot/category.rs:39
+msgid "Web Browser"
+msgstr ""
+
+#: target/pot/category.rs:45
+msgid "Mail"
+msgstr ""
+
+#: target/pot/category.rs:51
+msgid "Calendar"
+msgstr ""
+
+#: target/pot/category.rs:57 target/pot/entry.rs:87
+msgid "Images"
+msgstr ""
+
+#: target/pot/category.rs:63 target/pot/entry.rs:85
+msgid "Audio"
+msgstr ""
+
+#: target/pot/category.rs:69 target/pot/entry.rs:93
+msgid "Video"
+msgstr ""
+
+#: target/pot/dialogs.rs:36
+msgid "Use {app} for the {group} group?"
+msgstr ""
+
+#: target/pot/dialogs.rs:39
+msgid "Use {app} for all supported types?"
+msgstr ""
+
+#: target/pot/dialogs.rs:43
+msgid "{app} already opens the one file type it supports here."
+msgid_plural "{app} already opens all {total} file types it supports here."
+msgstr[0] ""
+msgstr[1] ""
+
+#: target/pot/dialogs.rs:50
+msgid ""
+"{app} supports {total} file types here and would take one from another "
+"application."
+msgid_plural ""
+"{app} supports {total} file types here and would take {changing} from "
+"another application."
+msgstr[0] ""
+msgstr[1] ""
+
+#: target/pot/dialogs.rs:62 target/pot/dialogs.rs:113 target/pot/dialogs.rs:181
+#: target/pot/dialogs.rs:287
+msgid "Cancel"
+msgstr ""
+
+#: target/pot/dialogs.rs:63
+msgid "Set Defaults"
+msgstr ""
+
+#: target/pot/dialogs.rs:103
+msgid "Reset all changes?"
+msgstr ""
+
+#: target/pot/dialogs.rs:106
+msgid "One file type goes back to the application the system chose."
+msgid_plural "{count} file types go back to the application the system chose."
+msgstr[0] ""
+msgstr[1] ""
+
+#: target/pot/dialogs.rs:114 target/pot/window.rs:214
+msgid "Reset All"
+msgstr ""
+
+#: target/pot/dialogs.rs:140
+msgid "Reset one file type"
+msgid_plural "Reset {count} file types"
+msgstr[0] ""
+msgstr[1] ""
+
+#: target/pot/dialogs.rs:161 target/pot/dialogs.rs:247 target/pot/rows.rs:220
+msgid "Not set"
+msgstr ""
+
+#: target/pot/dialogs.rs:176
+msgid "Default {category}"
+msgstr ""
+
+#: target/pot/dialogs.rs:178
+msgid ""
+"The selected application will handle every supported type in this category."
+msgstr ""
+
+#: target/pot/dialogs.rs:203
+msgid "No installed application declares support for these file types."
+msgstr ""
+
+#: target/pot/dialogs.rs:250
+msgid "{app} is now the default for {category}"
+msgstr ""
+
+#: target/pot/dialogs.rs:253
+msgid "{failed} {category} types could not be set: {error}"
+msgstr ""
+
+#: target/pot/dialogs.rs:290
+msgid "Reset to System Default"
+msgstr ""
+
+#: target/pot/dialogs.rs:300
+msgid "No installed application declares support for this type."
+msgstr ""
+
+#: target/pot/dialogs.rs:338
+msgid "{app} now opens {mime}"
+msgstr ""
+
+#: target/pot/dialogs.rs:344
+msgid "Could not set the default: {error}"
+msgstr ""
+
+#: target/pot/dialogs.rs:374 target/pot/window.rs:90
+msgid "Reset {mime} to the system default"
+msgstr ""
+
+#: target/pot/entry.rs:84
+msgid "Applications and Documents"
+msgstr ""
+
+#: target/pot/entry.rs:86
+msgid "Fonts"
+msgstr ""
+
+#: target/pot/entry.rs:88
+msgid "Folders and Devices"
+msgstr ""
+
+#: target/pot/entry.rs:89
+msgid "Messages"
+msgstr ""
+
+#: target/pot/entry.rs:90
+msgid "3D Models"
+msgstr ""
+
+#: target/pot/entry.rs:91
+msgid "Multipart"
+msgstr ""
+
+#: target/pot/entry.rs:92
+msgid "Text"
+msgstr ""
+
+#: target/pot/entry.rs:94
+msgid "Links and Protocols"
+msgstr ""
+
+#: target/pot/entry.rs:99
+msgid "Other"
+msgstr ""
+
+#: target/pot/rows.rs:37 target/pot/window.rs:438
+msgid "Default Apps"
+msgstr ""
+
+#: target/pot/rows.rs:43 target/pot/window.rs:230 target/pot/window.rs:439
+msgid "All File Types"
+msgstr ""
+
+#: target/pot/rows.rs:49 target/pot/window.rs:440
+msgid "Modified"
+msgstr ""
+
+#: target/pot/rows.rs:161
+msgid "Use for These"
+msgstr ""
+
+#: target/pot/rows.rs:168
+msgid "Use {app} for the one {group} file type"
+msgid_plural "Use {app} for all {count} {group} file types"
+msgstr[0] ""
+msgstr[1] ""
+
+#: target/pot/rows.rs:239
+msgid "Reset to system default"
+msgstr ""
+
+#: target/pot/window.rs:131 target/pot/window.rs:397
+msgid "No matches"
+msgstr ""
+
+#: target/pot/window.rs:149
+msgid "Choose the applications used for common file types and links."
+msgstr ""
+
+#: target/pot/window.rs:172
+msgid "Search file types and descriptions"
+msgstr ""
+
+#: target/pot/window.rs:189 target/pot/window.rs:191
+msgid "Search"
+msgstr ""
+
+#: target/pot/window.rs:199
+msgid "_About Mimebind"
+msgstr ""
+
+#: target/pot/window.rs:202 target/pot/window.rs:206
+msgid "Main Menu"
+msgstr ""
+
+#: target/pot/window.rs:209
+msgid "Use for All"
+msgstr ""
+
+#: target/pot/window.rs:250
+msgid "Applications"
+msgstr ""
+
+#: target/pot/window.rs:250
+msgid "Media Types"
+msgstr ""
+
+#: target/pot/window.rs:251
+msgid "List the sidebar by"
+msgstr ""
+
+#: target/pot/window.rs:268
+msgid "Groups"
+msgstr ""
+
+#: target/pot/window.rs:388
+msgid "Nothing changed yet"
+msgstr ""
+
+#: target/pot/window.rs:391
+msgid "File types you assign to an application appear here, saved in {path}."
+msgstr ""
+
+#: target/pot/window.rs:398
+msgid "No file type matches this search."
+msgstr ""
+
+#: target/pot/window.rs:632
+msgid "Choose which application opens which file type."
+msgstr ""
+
+#: target/pot/window.rs:634
+msgid "Changes are saved in {path}."
+msgstr ""
+
+#: target/pot/window.rs:637
+msgid "translator-credits"
+msgstr ""

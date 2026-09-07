@@ -3,6 +3,7 @@ use crate::category::{DefaultCategory, category_default, default_types};
 use crate::entry::MimeEntry;
 use crate::window::{refresh, reload, toast};
 use adw::prelude::*;
+use gettextrs::{gettext, ngettext};
 use gtk::{gio, glib};
 use std::cell::RefCell;
 use std::collections::HashSet;
@@ -31,26 +32,35 @@ pub(crate) fn confirm_assign(
         .filter(|mime| !already_default(app, mime))
         .count();
 
-    let scope = match &group {
-        Some(group) => format!("{group} file types"),
-        None => "file types".to_string(),
+    let heading = match &group {
+        Some(group) => gettext("Use {app} for the {group} group?")
+            .replace("{app}", &app.name)
+            .replace("{group}", group),
+        None => gettext("Use {app} for all supported types?").replace("{app}", &app.name),
+    };
+    let body = match changing {
+        0 => ngettext(
+            "{app} already opens the one file type it supports here.",
+            "{app} already opens all {total} file types it supports here.",
+            total as u32,
+        )
+        .replace("{app}", &app.name)
+        .replace("{total}", &total.to_string()),
+        _ => ngettext(
+            "{app} supports {total} file types here and would take one from another application.",
+            "{app} supports {total} file types here and would take {changing} from another application.",
+            changing as u32,
+        )
+        .replace("{app}", &app.name)
+        .replace("{total}", &total.to_string())
+        .replace("{changing}", &changing.to_string()),
     };
     let dialog = adw::AlertDialog::builder()
-        .heading(match &group {
-            Some(group) => format!("Use {} for {group}?", app.name),
-            None => format!("Use {} for All Supported Types?", app.name),
-        })
-        .body(match changing {
-            0 => format!("{} already opens all {total} of those {scope}.", app.name),
-            _ => format!(
-                "{} supports {total} {scope} and would take over {changing} of them \
-                 from another application.",
-                app.name
-            ),
-        })
+        .heading(heading)
+        .body(body)
         .build();
-    dialog.add_response("cancel", "Cancel");
-    dialog.add_response("apply", "Set Defaults");
+    dialog.add_response("cancel", &gettext("Cancel"));
+    dialog.add_response("apply", &gettext("Set Defaults"));
     dialog.set_response_appearance("apply", adw::ResponseAppearance::Suggested);
     dialog.set_default_response(Some("apply"));
     dialog.set_close_response("cancel");
@@ -90,13 +100,18 @@ pub(crate) fn confirm_reset_all(
 ) {
     let count = overrides.borrow().len();
     let dialog = adw::AlertDialog::builder()
-        .heading("Reset All Changes?")
-        .body(format!(
-            "{count} file types go back to the application the system chose."
-        ))
+        .heading(gettext("Reset all changes?"))
+        .body(
+            ngettext(
+                "One file type goes back to the application the system chose.",
+                "{count} file types go back to the application the system chose.",
+                count as u32,
+            )
+            .replace("{count}", &count.to_string()),
+        )
         .build();
-    dialog.add_response("cancel", "Cancel");
-    dialog.add_response("reset", "Reset All");
+    dialog.add_response("cancel", &gettext("Cancel"));
+    dialog.add_response("reset", &gettext("Reset All"));
     dialog.set_response_appearance("reset", adw::ResponseAppearance::Destructive);
     dialog.set_close_response("cancel");
 
@@ -119,7 +134,15 @@ pub(crate) fn confirm_reset_all(
                     gio::AppInfo::reset_type_associations(mime);
                 }
                 reload(&store, &catalog, &overrides);
-                toast(&toasts, &format!("Reset {count} file types"));
+                toast(
+                    &toasts,
+                    &ngettext(
+                        "Reset one file type",
+                        "Reset {count} file types",
+                        count as u32,
+                    )
+                    .replace("{count}", &count.to_string()),
+                );
             }
         ),
     );
@@ -135,7 +158,7 @@ pub(crate) fn refresh_default_rows(
     for (row, category) in rows {
         let current = category_default(catalog, overrides, *category)
             .map(|app| app.display_name().to_string())
-            .unwrap_or_else(|| "Not set".into());
+            .unwrap_or_else(|| gettext("Not set"));
         row.set_subtitle(&current);
     }
 }
@@ -150,10 +173,12 @@ pub(crate) fn open_default_chooser(
     category: DefaultCategory,
 ) {
     let dialog = adw::AlertDialog::builder()
-        .heading(format!("Default {}", category.title))
-        .body("The selected application will handle every supported type in this category.")
+        .heading(gettext("Default {category}").replace("{category}", &gettext(category.title)))
+        .body(gettext(
+            "The selected application will handle every supported type in this category.",
+        ))
         .build();
-    dialog.add_response("cancel", "Cancel");
+    dialog.add_response("cancel", &gettext("Cancel"));
     dialog.set_close_response("cancel");
 
     // Offer exactly what the row can then report back, so a choice never lands
@@ -174,7 +199,9 @@ pub(crate) fn open_default_chooser(
         candidates.push(position);
     }
     if candidates.is_empty() {
-        dialog.set_body("No installed application declares support for these file types.");
+        dialog.set_body(&gettext(
+            "No installed application declares support for these file types.",
+        ));
         dialog.present(Some(parent));
         return;
     }
@@ -217,14 +244,16 @@ pub(crate) fn open_default_chooser(
                 reload(&store, &catalog, &overrides);
                 let current = category_default(&catalog, &overrides.borrow(), category)
                     .map(|app| app.display_name().to_string())
-                    .unwrap_or_else(|| "Not set".into());
+                    .unwrap_or_else(|| gettext("Not set"));
                 source_row.set_subtitle(&current);
                 let message = match &outcome.error {
-                    None => format!("{} is now the default for {}", app.name, category.title),
-                    Some(error) => format!(
-                        "{} of the {} types could not be set: {error}",
-                        outcome.failed, category.title
-                    ),
+                    None => gettext("{app} is now the default for {category}")
+                        .replace("{app}", &app.name)
+                        .replace("{category}", &gettext(category.title)),
+                    Some(error) => gettext("{failed} {category} types could not be set: {error}")
+                        .replace("{failed}", &outcome.failed.to_string())
+                        .replace("{category}", &gettext(category.title))
+                        .replace("{error}", &error.to_string()),
                 };
                 toast(&toasts, &message);
                 dialog.close();
@@ -255,10 +284,10 @@ pub(crate) fn open_chooser(
         .heading(entry.description())
         .body(&mime)
         .build();
-    dialog.add_response("close", "Cancel");
+    dialog.add_response("close", &gettext("Cancel"));
     dialog.set_close_response("close");
     if entry.modified() {
-        dialog.add_response("reset", "Reset to System Default");
+        dialog.add_response("reset", &gettext("Reset to System Default"));
         dialog.set_response_appearance("reset", adw::ResponseAppearance::Destructive);
     }
 
@@ -267,7 +296,8 @@ pub(crate) fn open_chooser(
 
     if candidates.is_empty() {
         dialog.set_body(&format!(
-            "{mime}\n\nNo installed application declares support for this type."
+            "{mime}\n\n{}",
+            gettext("No installed application declares support for this type.")
         ));
     } else {
         let list = gtk::ListBox::builder()
@@ -303,10 +333,17 @@ pub(crate) fn open_chooser(
                 dialog,
                 move |_| {
                     match app.set_as_default_for_type(&mime) {
-                        Ok(()) => {
-                            toast(&toasts, &format!("{} now opens {mime}", app.display_name()))
-                        }
-                        Err(error) => toast(&toasts, &format!("Could not set default: {error}")),
+                        Ok(()) => toast(
+                            &toasts,
+                            &gettext("{app} now opens {mime}")
+                                .replace("{app}", &app.display_name())
+                                .replace("{mime}", &mime),
+                        ),
+                        Err(error) => toast(
+                            &toasts,
+                            &gettext("Could not set the default: {error}")
+                                .replace("{error}", &error.to_string()),
+                        ),
                     }
                     refresh(&store, &entry, &overrides);
                     dialog.close();
@@ -332,7 +369,10 @@ pub(crate) fn open_chooser(
         if response == "reset" {
             gio::AppInfo::reset_type_associations(&mime);
             refresh(&store, &entry, &overrides);
-            toast(&toasts, &format!("Reset {mime} to the system default"));
+            toast(
+                &toasts,
+                &gettext("Reset {mime} to the system default").replace("{mime}", &mime),
+            );
         }
     });
 

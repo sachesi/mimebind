@@ -1,7 +1,11 @@
 [Desktop Entry]
 Name=Mimebind
 GenericName=Default Applications
+GenericName[uk]=Типові програми
+GenericName[ru]=Приложения по умолчанию
 Comment=Choose which application opens which file type
+Comment[uk]=Виберіть, яка програма відкриває який тип файлів
+Comment[ru]=Выберите, какое приложение открывает какой тип файлов
 Exec=mimebind
 Icon=io.github.sachesi.mimebind
 Terminal=false
@@ -9,3 +13,5 @@ Type=Application
 Categories=GTK;Settings;DesktopSettings;
 StartupNotify=true
 Keywords=mime;default;association;open with;file type;handler;
+Keywords[uk]=mime;типова;типові;асоціація;відкрити за допомогою;тип файлу;обробник;
+Keywords[ru]=mime;умолчанию;ассоциация;открыть с помощью;тип файла;обработчик;

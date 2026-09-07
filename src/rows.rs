@@ -2,6 +2,7 @@ use crate::catalog::AppEntry;
 use crate::entry::{MimeEntry, ViewState};
 use crate::window::Selection;
 use adw::prelude::*;
+use gettextrs::{gettext, ngettext};
 use gtk::{gio, glib, pango};
 use std::cell::RefCell;
 use std::collections::BTreeMap;
@@ -33,19 +34,19 @@ pub(crate) fn fill_sidebar(
     let modified = entries.iter().filter(|entry| entry.modified()).count() as u32;
 
     groups.append(&sidebar_row(
-        "Default Apps",
+        &gettext("Default Apps"),
         None,
         "object-select-symbolic",
         None,
     ));
     groups.append(&sidebar_row(
-        "All File Types",
+        &gettext("All File Types"),
         None,
         "view-list-symbolic",
         Some(entries.len() as u32),
     ));
     groups.append(&sidebar_row(
-        "Modified",
+        &gettext("Modified"),
         None,
         "document-edit-symbolic",
         Some(modified),
@@ -157,16 +158,21 @@ pub(crate) fn header_factory(
             // The window owns the action, so the button does not need to capture
             // anything that is built after this factory.
             let button = gtk::Button::builder()
-                .label("Use for These")
+                .label(gettext("Use for These"))
                 .valign(gtk::Align::Center)
                 .css_classes(["flat"])
                 .action_name("win.assign-group")
                 .action_target(&group.to_variant())
-                .tooltip_text(format!(
-                    "Use {} for all {} {group} file types",
-                    app.name,
-                    header.n_items()
-                ))
+                .tooltip_text(
+                    ngettext(
+                        "Use {app} for the one {group} file type",
+                        "Use {app} for all {count} {group} file types",
+                        header.n_items(),
+                    )
+                    .replace("{app}", &app.name)
+                    .replace("{count}", &header.n_items().to_string())
+                    .replace("{group}", &group),
+                )
                 .build();
             row.append(&button);
         }
@@ -211,7 +217,7 @@ pub(crate) fn build_row(
     let name = default_app
         .as_ref()
         .map(|app| app.display_name().to_string())
-        .unwrap_or_else(|| "Not set".into());
+        .unwrap_or_else(|| gettext("Not set"));
     let name_label = ellipsized(&name, &["dim-label"]);
     name_label.set_max_width_chars(20);
     // No room for a second column of text on a narrow window; the icon carries it.
@@ -230,7 +236,7 @@ pub(crate) fn build_row(
         .css_classes(["flat"])
         .build();
     if entry.modified() {
-        revert.set_tooltip_text(Some("Reset to system default"));
+        revert.set_tooltip_text(Some(&gettext("Reset to system default")));
         revert.update_property(&[gtk::accessible::Property::Label("Reset to system default")]);
         revert.connect_clicked(glib::clone!(
             #[strong]

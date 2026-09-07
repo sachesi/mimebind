@@ -1,0 +1,221 @@
+# Ukrainian translation for mimebind.
+# Copyright (C) 2026 sachesi
+# This file is distributed under the same license as the mimebind package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mimebind 0.2.0\n"
+"Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
+"POT-Creation-Date: 2026-09-07 19:00+0300\n"
+"PO-Revision-Date: 2026-09-07 19:00+0300\n"
+"Last-Translator: sachesi <xsachesi@proton.me>\n"
+"Language-Team: Ukrainian\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+msgid "{app} already opened every type it supports"
+msgstr "{app} вже відкриває всі типи, які підтримує"
+
+msgid "{app} now opens one more file type"
+msgid_plural "{app} now opens {count} more file types"
+msgstr[0] "{app} тепер відкриває ще {count} тип файлу"
+msgstr[1] "{app} тепер відкриває ще {count} типи файлів"
+msgstr[2] "{app} тепер відкриває ще {count} типів файлів"
+
+msgid "{app} now opens {count} more file types, {failed} could not be set: {error}"
+msgstr "{app} тепер відкриває ще {count} типів файлів; {failed} не вдалося встановити: {error}"
+
+msgid "Web Browser"
+msgstr "Веб-браузер"
+
+msgid "Mail"
+msgstr "Пошта"
+
+msgid "Calendar"
+msgstr "Календар"
+
+msgid "Images"
+msgstr "Зображення"
+
+msgid "Audio"
+msgstr "Аудіо"
+
+msgid "Video"
+msgstr "Відео"
+
+msgid "Use {app} for the {group} group?"
+msgstr "Використати {app} для групи «{group}»?"
+
+msgid "Use {app} for all supported types?"
+msgstr "Використати {app} для всіх підтримуваних типів?"
+
+msgid "{app} already opens the one file type it supports here."
+msgid_plural "{app} already opens all {total} file types it supports here."
+msgstr[0] "{app} вже відкриває {total} тип файлу, який тут підтримує."
+msgstr[1] "{app} вже відкриває всі {total} типи файлів, які тут підтримує."
+msgstr[2] "{app} вже відкриває всі {total} типів файлів, які тут підтримує."
+
+msgid "{app} supports {total} file types here and would take one from another application."
+msgid_plural "{app} supports {total} file types here and would take {changing} from another application."
+msgstr[0] "{app} підтримує тут {total} типів файлів і перебере {changing} з них в іншої програми."
+msgstr[1] "{app} підтримує тут {total} типів файлів і перебере {changing} з них в інших програм."
+msgstr[2] "{app} підтримує тут {total} типів файлів і перебере {changing} з них в інших програм."
+
+msgid "Cancel"
+msgstr "Скасувати"
+
+msgid "Set Defaults"
+msgstr "Встановити типові"
+
+msgid "Reset all changes?"
+msgstr "Скинути всі зміни?"
+
+msgid "One file type goes back to the application the system chose."
+msgid_plural "{count} file types go back to the application the system chose."
+msgstr[0] "{count} тип файлу повернеться до програми, яку обрала система."
+msgstr[1] "{count} типи файлів повернуться до програми, яку обрала система."
+msgstr[2] "{count} типів файлів повернуться до програми, яку обрала система."
+
+msgid "Reset All"
+msgstr "Скинути все"
+
+msgid "Reset one file type"
+msgid_plural "Reset {count} file types"
+msgstr[0] "Скинуто {count} тип файлу"
+msgstr[1] "Скинуто {count} типи файлів"
+msgstr[2] "Скинуто {count} типів файлів"
+
+msgid "Not set"
+msgstr "Не встановлено"
+
+msgid "Default {category}"
+msgstr "Типова програма: {category}"
+
+msgid "The selected application will handle every supported type in this category."
+msgstr "Вибрана програма оброблятиме всі підтримувані типи цієї категорії."
+
+msgid "No installed application declares support for these file types."
+msgstr "Жодна встановлена програма не оголошує підтримки цих типів файлів."
+
+msgid "{app} is now the default for {category}"
+msgstr "{app} тепер типова програма для: {category}"
+
+msgid "{failed} {category} types could not be set: {error}"
+msgstr "Не вдалося встановити типів у категорії «{category}»: {failed}. {error}"
+
+msgid "Reset to System Default"
+msgstr "Скинути до системного типового"
+
+msgid "No installed application declares support for this type."
+msgstr "Жодна встановлена програма не оголошує підтримки цього типу."
+
+msgid "{app} now opens {mime}"
+msgstr "{app} тепер відкриває {mime}"
+
+msgid "Could not set the default: {error}"
+msgstr "Не вдалося встановити типову програму: {error}"
+
+msgid "Reset {mime} to the system default"
+msgstr "{mime} скинуто до системного типового"
+
+msgid "Applications and Documents"
+msgstr "Програми та документи"
+
+msgid "Fonts"
+msgstr "Шрифти"
+
+msgid "Folders and Devices"
+msgstr "Теки та пристрої"
+
+msgid "Messages"
+msgstr "Повідомлення"
+
+msgid "3D Models"
+msgstr "3D-моделі"
+
+msgid "Multipart"
+msgstr "Складені"
+
+msgid "Text"
+msgstr "Текст"
+
+msgid "Links and Protocols"
+msgstr "Посилання та протоколи"
+
+msgid "Other"
+msgstr "Інше"
+
+msgid "Default Apps"
+msgstr "Типові програми"
+
+msgid "All File Types"
+msgstr "Усі типи файлів"
+
+msgid "Modified"
+msgstr "Змінені"
+
+msgid "Use for These"
+msgstr "Використати для цих"
+
+msgid "Use {app} for the one {group} file type"
+msgid_plural "Use {app} for all {count} {group} file types"
+msgstr[0] "Використати {app} для {count} типу файлів групи «{group}»"
+msgstr[1] "Використати {app} для всіх {count} типів файлів групи «{group}»"
+msgstr[2] "Використати {app} для всіх {count} типів файлів групи «{group}»"
+
+msgid "Reset to system default"
+msgstr "Скинути до системного типового"
+
+msgid "No matches"
+msgstr "Немає збігів"
+
+msgid "Choose the applications used for common file types and links."
+msgstr "Виберіть програми для поширених типів файлів і посилань."
+
+msgid "Search file types and descriptions"
+msgstr "Пошук за типами файлів і описами"
+
+msgid "Search"
+msgstr "Пошук"
+
+msgid "_About Mimebind"
+msgstr "_Про Mimebind"
+
+msgid "Main Menu"
+msgstr "Головне меню"
+
+msgid "Use for All"
+msgstr "Використати для всіх"
+
+msgid "Applications"
+msgstr "Програми"
+
+msgid "Media Types"
+msgstr "Типи медіа"
+
+msgid "List the sidebar by"
+msgstr "Показувати в бічній панелі"
+
+msgid "Groups"
+msgstr "Групи"
+
+msgid "Nothing changed yet"
+msgstr "Поки нічого не змінено"
+
+msgid "File types you assign to an application appear here, saved in {path}."
+msgstr "Типи файлів, які ви призначите програмі, з’являться тут; зберігаються у {path}."
+
+msgid "No file type matches this search."
+msgstr "Жоден тип файлів не відповідає цьому запиту."
+
+msgid "Choose which application opens which file type."
+msgstr "Виберіть, яка програма відкриває який тип файлів."
+
+msgid "Changes are saved in {path}."
+msgstr "Зміни зберігаються у {path}."
+
+msgid "translator-credits"
+msgstr "sachesi"

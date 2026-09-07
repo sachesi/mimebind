@@ -1,0 +1,221 @@
+# Russian translation for mimebind.
+# Copyright (C) 2026 sachesi
+# This file is distributed under the same license as the mimebind package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mimebind 0.2.0\n"
+"Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
+"POT-Creation-Date: 2026-09-07 19:00+0300\n"
+"PO-Revision-Date: 2026-09-07 19:00+0300\n"
+"Last-Translator: sachesi <xsachesi@proton.me>\n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+msgid "{app} already opened every type it supports"
+msgstr "{app} уже открывает все типы, которые поддерживает"
+
+msgid "{app} now opens one more file type"
+msgid_plural "{app} now opens {count} more file types"
+msgstr[0] "{app} теперь открывает ещё {count} тип файлов"
+msgstr[1] "{app} теперь открывает ещё {count} типа файлов"
+msgstr[2] "{app} теперь открывает ещё {count} типов файлов"
+
+msgid "{app} now opens {count} more file types, {failed} could not be set: {error}"
+msgstr "{app} теперь открывает ещё {count} типов файлов; {failed} не удалось назначить: {error}"
+
+msgid "Web Browser"
+msgstr "Веб-браузер"
+
+msgid "Mail"
+msgstr "Почта"
+
+msgid "Calendar"
+msgstr "Календарь"
+
+msgid "Images"
+msgstr "Изображения"
+
+msgid "Audio"
+msgstr "Аудио"
+
+msgid "Video"
+msgstr "Видео"
+
+msgid "Use {app} for the {group} group?"
+msgstr "Использовать {app} для группы «{group}»?"
+
+msgid "Use {app} for all supported types?"
+msgstr "Использовать {app} для всех поддерживаемых типов?"
+
+msgid "{app} already opens the one file type it supports here."
+msgid_plural "{app} already opens all {total} file types it supports here."
+msgstr[0] "{app} уже открывает {total} тип файлов, который здесь поддерживает."
+msgstr[1] "{app} уже открывает все {total} типа файлов, которые здесь поддерживает."
+msgstr[2] "{app} уже открывает все {total} типов файлов, которые здесь поддерживает."
+
+msgid "{app} supports {total} file types here and would take one from another application."
+msgid_plural "{app} supports {total} file types here and would take {changing} from another application."
+msgstr[0] "{app} поддерживает здесь {total} типов файлов и заберёт {changing} из них у другого приложения."
+msgstr[1] "{app} поддерживает здесь {total} типов файлов и заберёт {changing} из них у других приложений."
+msgstr[2] "{app} поддерживает здесь {total} типов файлов и заберёт {changing} из них у других приложений."
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Set Defaults"
+msgstr "Назначить"
+
+msgid "Reset all changes?"
+msgstr "Сбросить все изменения?"
+
+msgid "One file type goes back to the application the system chose."
+msgid_plural "{count} file types go back to the application the system chose."
+msgstr[0] "{count} тип файлов вернётся к приложению, выбранному системой."
+msgstr[1] "{count} типа файлов вернутся к приложению, выбранному системой."
+msgstr[2] "{count} типов файлов вернутся к приложению, выбранному системой."
+
+msgid "Reset All"
+msgstr "Сбросить всё"
+
+msgid "Reset one file type"
+msgid_plural "Reset {count} file types"
+msgstr[0] "Сброшен {count} тип файлов"
+msgstr[1] "Сброшено {count} типа файлов"
+msgstr[2] "Сброшено {count} типов файлов"
+
+msgid "Not set"
+msgstr "Не задано"
+
+msgid "Default {category}"
+msgstr "{category} по умолчанию"
+
+msgid "The selected application will handle every supported type in this category."
+msgstr "Выбранное приложение будет обрабатывать все поддерживаемые типы этой категории."
+
+msgid "No installed application declares support for these file types."
+msgstr "Ни одно установленное приложение не заявляет поддержку этих типов файлов."
+
+msgid "{app} is now the default for {category}"
+msgstr "{app} теперь приложение по умолчанию: {category}"
+
+msgid "{failed} {category} types could not be set: {error}"
+msgstr "Не удалось назначить типов в категории «{category}»: {failed}. {error}"
+
+msgid "Reset to System Default"
+msgstr "Сбросить к системному значению"
+
+msgid "No installed application declares support for this type."
+msgstr "Ни одно установленное приложение не заявляет поддержку этого типа."
+
+msgid "{app} now opens {mime}"
+msgstr "{app} теперь открывает {mime}"
+
+msgid "Could not set the default: {error}"
+msgstr "Не удалось назначить приложение по умолчанию: {error}"
+
+msgid "Reset {mime} to the system default"
+msgstr "{mime} сброшен к системному значению"
+
+msgid "Applications and Documents"
+msgstr "Приложения и документы"
+
+msgid "Fonts"
+msgstr "Шрифты"
+
+msgid "Folders and Devices"
+msgstr "Папки и устройства"
+
+msgid "Messages"
+msgstr "Сообщения"
+
+msgid "3D Models"
+msgstr "3D-модели"
+
+msgid "Multipart"
+msgstr "Составные"
+
+msgid "Text"
+msgstr "Текст"
+
+msgid "Links and Protocols"
+msgstr "Ссылки и протоколы"
+
+msgid "Other"
+msgstr "Прочее"
+
+msgid "Default Apps"
+msgstr "Приложения по умолчанию"
+
+msgid "All File Types"
+msgstr "Все типы файлов"
+
+msgid "Modified"
+msgstr "Изменённые"
+
+msgid "Use for These"
+msgstr "Использовать для этих"
+
+msgid "Use {app} for the one {group} file type"
+msgid_plural "Use {app} for all {count} {group} file types"
+msgstr[0] "Использовать {app} для {count} типа файлов группы «{group}»"
+msgstr[1] "Использовать {app} для всех {count} типов файлов группы «{group}»"
+msgstr[2] "Использовать {app} для всех {count} типов файлов группы «{group}»"
+
+msgid "Reset to system default"
+msgstr "Сбросить к системному значению"
+
+msgid "No matches"
+msgstr "Совпадений нет"
+
+msgid "Choose the applications used for common file types and links."
+msgstr "Выберите приложения для распространённых типов файлов и ссылок."
+
+msgid "Search file types and descriptions"
+msgstr "Поиск по типам файлов и описаниям"
+
+msgid "Search"
+msgstr "Поиск"
+
+msgid "_About Mimebind"
+msgstr "_О программе Mimebind"
+
+msgid "Main Menu"
+msgstr "Главное меню"
+
+msgid "Use for All"
+msgstr "Использовать для всех"
+
+msgid "Applications"
+msgstr "Приложения"
+
+msgid "Media Types"
+msgstr "Типы медиа"
+
+msgid "List the sidebar by"
+msgstr "Показывать в боковой панели"
+
+msgid "Groups"
+msgstr "Группы"
+
+msgid "Nothing changed yet"
+msgstr "Пока ничего не изменено"
+
+msgid "File types you assign to an application appear here, saved in {path}."
+msgstr "Типы файлов, назначенные вами приложению, появятся здесь; сохраняются в {path}."
+
+msgid "No file type matches this search."
+msgstr "Ни один тип файлов не соответствует запросу."
+
+msgid "Choose which application opens which file type."
+msgstr "Выберите, какое приложение открывает какой тип файлов."
+
+msgid "Changes are saved in {path}."
+msgstr "Изменения сохраняются в {path}."
+
+msgid "translator-credits"
+msgstr "sachesi"

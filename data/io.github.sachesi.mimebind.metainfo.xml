@@ -5,7 +5,11 @@
   <project_license>GPL-3.0-or-later</project_license>
   <name>Mimebind</name>
   <summary>Choose which application opens which file type</summary>
+  <summary xml:lang="uk">Виберіть, яка програма відкриває який тип файлів</summary>
+  <summary xml:lang="ru">Выберите, какое приложение открывает какой тип файлов</summary>
   <description>
+    <p xml:lang="uk">Mimebind показує всі типи файлів, які вміє відкривати встановлена програма, і дозволяє вибрати програму для кожного з них. Він змінює стандартні файли асоціацій XDG, тому вибір діє на будь-якому стільничному середовищі, що дотримується специфікації freedesktop.org, а не лише в GNOME.</p>
+    <p xml:lang="ru">Mimebind показывает все типы файлов, которые умеет открывать установленное приложение, и позволяет выбрать приложение для каждого из них. Он изменяет стандартные файлы ассоциаций XDG, поэтому выбор действует в любой рабочей среде, следующей спецификации freedesktop.org, а не только в GNOME.</p>
     <p>Mimebind lists every file type that an installed application knows how to open and lets you pick the application each one should use. It edits the standard XDG association files, so the choice applies on any desktop that follows the freedesktop.org specification, not only GNOME.</p>
     <ul>
       <li>Choose default apps for the web, mail, calendars, images, audio and video</li>
@@ -48,6 +52,11 @@
     <display_length compare="ge">360</display_length>
   </requires>
   <releases>
+    <release version="0.2.0" date="2026-09-07">
+      <description>
+        <p>Ukrainian and Russian translations.</p>
+      </description>
+    </release>
     <release version="0.1.0" date="2026-09-07">
       <description>
         <p>First release.</p>
