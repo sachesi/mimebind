@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.sachesi.mimebind</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Mimebind</name>
+  <summary>Choose which application opens which file type</summary>
+  <description>
+    <p>Mimebind lists every file type that an installed application knows how to open and lets you pick the application each one should use. It edits the standard XDG association files, so the choice applies on any desktop that follows the freedesktop.org specification, not only GNOME.</p>
+    <ul>
+      <li>Choose default apps for the web, mail, calendars, images, audio and video</li>
+      <li>Browse by installed application or by media type</li>
+      <li>Applications are credited with the subtypes the MIME database derives from the types they declare</li>
+      <li>Make one application the default for every file type it supports, or for one group of them, in one step</li>
+      <li>Search file types by name or by MIME type</li>
+      <li>See the current default application next to each type</li>
+      <li>Pick a new default from the applications that declare support for the type</li>
+      <li>Review everything you changed and reset any of it, or all of it</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">io.github.sachesi.mimebind.desktop</launchable>
+  <url type="homepage">https://github.com/sachesi/mimebind</url>
+  <url type="bugtracker">https://github.com/sachesi/mimebind/issues</url>
+  <developer id="io.github.sachesi">
+    <name>sachesi</name>
+  </developer>
+  <content_rating type="oars-1.1"/>
+  <branding>
+    <color type="primary" scheme_preference="light">#99c1f1</color>
+    <color type="primary" scheme_preference="dark">#1a5fb4</color>
+  </branding>
+  <categories>
+    <category>Settings</category>
+    <category>DesktopSettings</category>
+  </categories>
+  <keywords>
+    <keyword>mime</keyword>
+    <keyword>default</keyword>
+    <keyword>association</keyword>
+    <keyword>open with</keyword>
+  </keywords>
+  <recommends>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>touch</control>
+  </recommends>
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
+  <releases>
+    <release version="0.1.0" date="2026-09-07">
+      <description>
+        <p>First release.</p>
+      </description>
+    </release>
+  </releases>
+</component>
