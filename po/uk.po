@@ -1,22 +1,21 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Ukrainian translation for mimebind.
+# Copyright (C) 2026 sachesi
 # This file is distributed under the same license as the mimebind package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
 "POT-Creation-Date: 2026-09-07 19:01+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2026-09-07 19:01+0300\n"
+"Last-Translator: sachesi <xsachesi@pm.me>\n"
+"Language-Team: Ukrainian\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
 #: data/io.github.sachesi.mimebind.desktop:2
 #: data/io.github.sachesi.mimebind.metainfo.xml:6
@@ -25,16 +24,16 @@ msgstr ""
 
 #: data/io.github.sachesi.mimebind.desktop:3
 msgid "Default Applications"
-msgstr ""
+msgstr "Типові програми"
 
 #: data/io.github.sachesi.mimebind.desktop:4
 #: data/io.github.sachesi.mimebind.metainfo.xml:7
 msgid "Choose which application opens which file type"
-msgstr ""
+msgstr "Виберіть, яка програма відкриває який тип файлів"
 
 #: data/io.github.sachesi.mimebind.desktop:11
 msgid "mime;default;association;open with;file type;handler;"
-msgstr ""
+msgstr "mime;типова;типові;асоціація;відкрити за допомогою;тип файлу;обробник;"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:9
 msgid ""
@@ -43,44 +42,53 @@ msgid ""
 "standard XDG association files, so the choice applies on any desktop that "
 "follows the freedesktop.org specification, not only GNOME."
 msgstr ""
+"Mimebind показує всі типи файлів, які вміє відкривати встановлена програма, "
+"і дозволяє вибрати програму для кожного з них. Він змінює стандартні файли "
+"асоціацій XDG, тому вибір діє на будь-якому стільничному середовищі, що "
+"дотримується специфікації freedesktop.org, а не лише в GNOME."
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:11
 msgid ""
 "Choose default apps for the web, mail, calendars, images, audio and video"
 msgstr ""
+"Вибір типових програм для вебу, пошти, календарів, зображень, аудіо та відео"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:12
 msgid "Browse by installed application or by media type"
-msgstr ""
+msgstr "Перегляд за встановленою програмою або за типом медіа"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:13
 msgid ""
 "Applications are credited with the subtypes the MIME database derives from "
 "the types they declare"
 msgstr ""
+"Програмам зараховуються підтипи, які база даних MIME виводить з оголошених "
+"ними типів"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:14
 msgid ""
 "Make one application the default for every file type it supports, or for one "
 "group of them, in one step"
 msgstr ""
+"Одна програма стає типовою для всіх підтримуваних нею типів файлів або для "
+"однієї їх групи за один крок"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:15
 msgid "Search file types by name or by MIME type"
-msgstr ""
+msgstr "Пошук типів файлів за назвою або за типом MIME"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:16
 msgid "See the current default application next to each type"
-msgstr ""
+msgstr "Поточна типова програма поруч із кожним типом"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:17
 msgid ""
 "Pick a new default from the applications that declare support for the type"
-msgstr ""
+msgstr "Вибір нової типової програми серед тих, що оголошують підтримку типу"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:18
 msgid "Review everything you changed and reset any of it, or all of it"
-msgstr ""
+msgstr "Перегляд усіх ваших змін і скидання будь-якої з них або всіх одразу"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:25
 msgid "sachesi"
@@ -92,35 +100,36 @@ msgstr ""
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:38
 msgid "default"
-msgstr ""
+msgstr "типова"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:39
 msgid "association"
-msgstr ""
+msgstr "асоціація"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:40
 msgid "open with"
-msgstr ""
+msgstr "відкрити за допомогою"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:53
 msgid "Ukrainian and Russian translations."
-msgstr ""
+msgstr "Переклади українською та російською."
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:58
 msgid "First release."
-msgstr ""
+msgstr "Перший випуск."
 
 #: src/catalog.rs:163
 #, no-c-format
 msgid "{app} already opened every type it supports"
-msgstr ""
+msgstr "{app} вже відкриває всі типи, які підтримує"
 
 #: src/catalog.rs:166
 #, no-c-format
 msgid "{app} now opens one more file type"
 msgid_plural "{app} now opens {count} more file types"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{app} тепер відкриває ще {count} тип файлу"
+msgstr[1] "{app} тепер відкриває ще {count} типи файлів"
+msgstr[2] "{app} тепер відкриває ще {count} типів файлів"
 
 #: src/catalog.rs:173
 #, no-c-format
@@ -128,51 +137,59 @@ msgid "{app} now opens one more file type, {failed} could not be set: {error}"
 msgid_plural ""
 "{app} now opens {count} more file types, {failed} could not be set: {error}"
 msgstr[0] ""
+"{app} тепер відкриває ще {count} тип файлу; {failed} не вдалося встановити: "
+"{error}"
 msgstr[1] ""
+"{app} тепер відкриває ще {count} типи файлів; {failed} не вдалося "
+"встановити: {error}"
+msgstr[2] ""
+"{app} тепер відкриває ще {count} типів файлів; {failed} не вдалося "
+"встановити: {error}"
 
 #: src/category.rs:39
 msgid "Web Browser"
-msgstr ""
+msgstr "Веб-браузер"
 
 #: src/category.rs:45
 msgid "Mail"
-msgstr ""
+msgstr "Пошта"
 
 #: src/category.rs:51
 msgid "Calendar"
-msgstr ""
+msgstr "Календар"
 
 #: src/category.rs:57 src/entry.rs:61
 #, no-c-format
 msgid "Images"
-msgstr ""
+msgstr "Зображення"
 
 #: src/category.rs:63 src/entry.rs:59
 #, no-c-format
 msgid "Audio"
-msgstr ""
+msgstr "Аудіо"
 
 #: src/category.rs:69 src/entry.rs:67
 #, no-c-format
 msgid "Video"
-msgstr ""
+msgstr "Відео"
 
 #: src/dialogs.rs:25
 #, no-c-format
 msgid "Use {app} for the {group} group?"
-msgstr ""
+msgstr "Використати {app} для групи «{group}»?"
 
 #: src/dialogs.rs:28
 #, no-c-format
 msgid "Use {app} for all supported types?"
-msgstr ""
+msgstr "Використати {app} для всіх підтримуваних типів?"
 
 #: src/dialogs.rs:32
 #, no-c-format
 msgid "{app} already opens the one file type it supports here."
 msgid_plural "{app} already opens all {total} file types it supports here."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{app} вже відкриває {total} тип файлу, який тут підтримує."
+msgstr[1] "{app} вже відкриває всі {total} типи файлів, які тут підтримує."
+msgstr[2] "{app} вже відкриває всі {total} типів файлів, які тут підтримує."
 
 #: src/dialogs.rs:39
 #, no-c-format
@@ -183,261 +200,277 @@ msgid_plural ""
 "{app} supports {total} file types here and would take {changing} from "
 "another application."
 msgstr[0] ""
+"{app} підтримує тут {total} типів файлів і перебере {changing} з них в іншої "
+"програми."
 msgstr[1] ""
+"{app} підтримує тут {total} типів файлів і перебере {changing} з них в інших "
+"програм."
+msgstr[2] ""
+"{app} підтримує тут {total} типів файлів і перебере {changing} з них в інших "
+"програм."
 
 #: src/dialogs.rs:51 src/dialogs.rs:90 src/dialogs.rs:131 src/dialogs.rs:225
 #, no-c-format
 msgid "Cancel"
-msgstr ""
+msgstr "Скасувати"
 
 #: src/dialogs.rs:52
 #, no-c-format
 msgid "Set Defaults"
-msgstr ""
+msgstr "Встановити типові"
 
 #: src/dialogs.rs:80
 #, no-c-format
 msgid "Reset all changes?"
-msgstr ""
+msgstr "Скинути всі зміни?"
 
 #: src/dialogs.rs:83
 #, no-c-format
 msgid "One file type goes back to the application the system chose."
 msgid_plural "{count} file types go back to the application the system chose."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{count} тип файлу повернеться до програми, яку обрала система."
+msgstr[1] "{count} типи файлів повернуться до програми, яку обрала система."
+msgstr[2] "{count} типів файлів повернуться до програми, яку обрала система."
 
 #: src/dialogs.rs:91 ui/window.ui:91
 #, no-c-format
 msgid "Reset All"
-msgstr ""
+msgstr "Скинути все"
 
 #: src/dialogs.rs:110
 #, no-c-format
 msgid "Reset one file type"
 msgid_plural "Reset {count} file types"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Скинуто {count} тип файлу"
+msgstr[1] "Скинуто {count} типи файлів"
+msgstr[2] "Скинуто {count} типів файлів"
 
 #: src/dialogs.rs:126
 #, no-c-format
 msgid "Default {category}"
-msgstr ""
+msgstr "Типова програма: {category}"
 
 #: src/dialogs.rs:128
 #, no-c-format
 msgid ""
 "The selected application will handle every supported type in this category."
-msgstr ""
+msgstr "Вибрана програма оброблятиме всі підтримувані типи цієї категорії."
 
 #: src/dialogs.rs:153
 #, no-c-format
 msgid "No installed application declares support for these file types."
-msgstr ""
+msgstr "Жодна встановлена програма не оголошує підтримки цих типів файлів."
 
 #: src/dialogs.rs:155 src/dialogs.rs:240
 #, no-c-format
 msgid "Close"
-msgstr ""
+msgstr "Закрити"
 
 #: src/dialogs.rs:190
 #, no-c-format
 msgid "{app} is now the default for {category}"
-msgstr ""
+msgstr "{app} тепер типова програма для: {category}"
 
 #: src/dialogs.rs:194
 #, no-c-format
 msgid "One {category} type could not be set: {error}"
 msgid_plural "{failed} {category} types could not be set: {error}"
 msgstr[0] ""
+"Не вдалося встановити {failed} тип у категорії «{category}»: {error}"
 msgstr[1] ""
+"Не вдалося встановити {failed} типи у категорії «{category}»: {error}"
+msgstr[2] ""
+"Не вдалося встановити {failed} типів у категорії «{category}»: {error}"
 
 #: src/dialogs.rs:228 ui/mime_row.ui:58 ui/mime_row.ui:61
 #, no-c-format
 msgid "Reset to System Default"
-msgstr ""
+msgstr "Скинути до системного типового"
 
 #: src/dialogs.rs:238
 #, no-c-format
 msgid "No installed application declares support for this type."
-msgstr ""
+msgstr "Жодна встановлена програма не оголошує підтримки цього типу."
 
 #: src/dialogs.rs:278
 #, no-c-format
 msgid "{app} now opens {mime}"
-msgstr ""
+msgstr "{app} тепер відкриває {mime}"
 
 #: src/dialogs.rs:283
 #, no-c-format
 msgid "Could not set the default: {error}"
-msgstr ""
+msgstr "Не вдалося встановити типову програму: {error}"
 
 #: src/entry.rs:58
 #, no-c-format
 msgid "Applications and Documents"
-msgstr ""
+msgstr "Програми та документи"
 
 #: src/entry.rs:60
 #, no-c-format
 msgid "Fonts"
-msgstr ""
+msgstr "Шрифти"
 
 #: src/entry.rs:62
 #, no-c-format
 msgid "Folders and Devices"
-msgstr ""
+msgstr "Теки та пристрої"
 
 #: src/entry.rs:63
 #, no-c-format
 msgid "Messages"
-msgstr ""
+msgstr "Повідомлення"
 
 #: src/entry.rs:64
 #, no-c-format
 msgid "3D Models"
-msgstr ""
+msgstr "3D-моделі"
 
 #: src/entry.rs:65
 #, no-c-format
 msgid "Multipart"
-msgstr ""
+msgstr "Складені"
 
 #: src/entry.rs:66
 #, no-c-format
 msgid "Text"
-msgstr ""
+msgstr "Текст"
 
 #: src/entry.rs:68
 #, no-c-format
 msgid "Links and Protocols"
-msgstr ""
+msgstr "Посилання та протоколи"
 
 #: src/entry.rs:73
 #, no-c-format
 msgid "Other"
-msgstr ""
+msgstr "Інше"
 
 #: src/main.rs:54
 #, no-c-format
 msgid "Choose which application opens which file type."
-msgstr ""
+msgstr "Виберіть, яка програма відкриває який тип файлів."
 
 #: src/main.rs:56
 #, no-c-format
 msgid "Changes are saved in {path}."
-msgstr ""
+msgstr "Зміни зберігаються у {path}."
 
 #: src/main.rs:59
 #, no-c-format
 msgid "translator-credits"
-msgstr ""
+msgstr "sachesi"
 
 #: src/mime_row.rs:85 src/window.rs:330
 #, no-c-format
 msgid "Not set"
-msgstr ""
+msgstr "Не встановлено"
 
 #. Translators: what a screen reader says for a row of the list, e.g.
 #. "PNG image, image/png, opens with Image Viewer".
 #: src/mime_row.rs:100
 #, no-c-format
 msgid "{description}, {mime}, opens with {app}"
-msgstr ""
+msgstr "{description}, {mime}, відкривається в {app}"
 
 #. Translators: what a screen reader says for a row of a type nothing opens.
 #: src/mime_row.rs:102
 #, no-c-format
 msgid "{description}, {mime}, no default application"
-msgstr ""
+msgstr "{description}, {mime}, типової програми немає"
 
 #: src/rows.rs:27 src/window.rs:379
 #, no-c-format
 msgid "Default Apps"
-msgstr ""
+msgstr "Типові програми"
 
 #: src/rows.rs:33 src/window.rs:380 ui/window.ui:73
 #, no-c-format
 msgid "All File Types"
-msgstr ""
+msgstr "Усі типи файлів"
 
 #: src/rows.rs:39 src/window.rs:381
 #, no-c-format
 msgid "Modified"
-msgstr ""
+msgstr "Змінені"
 
 #: src/rows.rs:152
 #, no-c-format
 msgid "Use for These"
-msgstr ""
+msgstr "Використати для цих"
 
 #: src/rows.rs:159
 #, no-c-format
 msgid "Use {app} for the one {group} file type"
 msgid_plural "Use {app} for all {count} {group} file types"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Використати {app} для {count} типу файлів групи «{group}»"
+msgstr[1] "Використати {app} для всіх {count} типів файлів групи «{group}»"
+msgstr[2] "Використати {app} для всіх {count} типів файлів групи «{group}»"
 
 #: src/window.rs:449
 #, no-c-format
 msgid "Nothing changed yet"
-msgstr ""
+msgstr "Поки нічого не змінено"
 
 #: src/window.rs:451
 #, no-c-format
 msgid "File types you assign to an application appear here, saved in {path}."
 msgstr ""
+"Типи файлів, які ви призначите програмі, з’являться тут; зберігаються у "
+"{path}."
 
 #: src/window.rs:456 ui/window.ui:251
 #, no-c-format
 msgid "No matches"
-msgstr ""
+msgstr "Немає збігів"
 
 #: src/window.rs:457
 #, no-c-format
 msgid "No file type matches this search."
-msgstr ""
+msgstr "Жоден тип файлів не відповідає цьому запиту."
 
 #: src/window.rs:497
 #, no-c-format
 msgid "Reset {mime} to the system default"
-msgstr ""
+msgstr "{mime} скинуто до системного типового"
 
 #: ui/window.ui:30
 msgid "Groups"
-msgstr ""
+msgstr "Групи"
 
 #: ui/window.ui:38
 msgid "Group By"
-msgstr ""
+msgstr "Групувати за"
 
 #: ui/window.ui:43
 msgid "Applications"
-msgstr ""
+msgstr "Програми"
 
 #: ui/window.ui:44
 msgid "Media Types"
-msgstr ""
+msgstr "Типи медіа"
 
 #: ui/window.ui:81
 msgid "Use for All"
-msgstr ""
+msgstr "Використати для всіх"
 
 #: ui/window.ui:102 ui/window.ui:106
 msgid "Main Menu"
-msgstr ""
+msgstr "Головне меню"
 
 #: ui/window.ui:113 ui/window.ui:116
 msgid "Search"
-msgstr ""
+msgstr "Пошук"
 
 #: ui/window.ui:128
 msgid "Search file types and descriptions"
-msgstr ""
+msgstr "Пошук за типами файлів і описами"
 
 #: ui/window.ui:156
 msgid "Choose the applications used for common file types and links."
-msgstr ""
+msgstr "Виберіть програми для поширених типів файлів і посилань."
 
 #: ui/window.ui:270
 msgid "_About Mimebind"
-msgstr ""
+msgstr "_Про Mimebind"
