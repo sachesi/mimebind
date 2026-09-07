@@ -1,0 +1,235 @@
+using Gtk 4.0;
+using Gio 2.0;
+using Adw 1;
+
+template $MimebindWindow: Adw.ApplicationWindow {
+  title: "Mimebind";
+  default-width: 900;
+  default-height: 660;
+  width-request: 360;
+  height-request: 294;
+
+  Adw.Breakpoint {
+    condition ("max-width: 620sp")
+
+    setters {
+      split_view.collapsed: true;
+      template.narrow: true;
+    }
+  }
+
+  content: Adw.ToastOverlay toasts {
+    child: Adw.NavigationSplitView split_view {
+      min-sidebar-width: 230;
+      max-sidebar-width: 310;
+
+      sidebar: Adw.NavigationPage {
+        title: _("Groups");
+        tag: "sidebar";
+
+        child: Adw.ToolbarView {
+          [top]
+          Adw.HeaderBar {
+            title-widget: DropDown sidebar_mode {
+              tooltip-text: _("Group By");
+              notify::selected => $on_sidebar_mode_changed() swapped;
+
+              model: StringList {
+                strings [
+                  _("Applications"),
+                  _("Media Types"),
+                ]
+              };
+            };
+          }
+
+          content: ScrolledWindow {
+            hscrollbar-policy: never;
+            vexpand: true;
+
+            child: ListBox groups {
+              row-selected => $on_group_selected() swapped;
+              row-activated => $on_group_activated() swapped;
+
+              styles [
+                "navigation-sidebar",
+              ]
+            };
+          };
+        };
+      };
+
+      content: Adw.NavigationPage content_page {
+        title: _("All File Types");
+        tag: "content";
+
+        child: Adw.ToolbarView {
+          [top]
+          Adw.HeaderBar {
+            [start]
+            Button use_all_button {
+              label: _("Use for All");
+              action-name: "win.assign-all";
+              visible: false;
+
+              styles [
+                "suggested-action",
+              ]
+            }
+
+            [start]
+            Button reset_all_button {
+              label: _("Reset All");
+              action-name: "win.reset-all";
+              visible: false;
+
+              styles [
+                "destructive-action",
+              ]
+            }
+
+            [end]
+            MenuButton {
+              icon-name: "open-menu-symbolic";
+              tooltip-text: _("Main Menu");
+              primary: true;
+              menu-model: primary_menu;
+
+              accessibility {
+                label: _("Main Menu");
+              }
+            }
+
+            [end]
+            ToggleButton search_button {
+              icon-name: "system-search-symbolic";
+              tooltip-text: _("Search");
+              active: bind search_bar.search-mode-enabled bidirectional;
+
+              accessibility {
+                label: _("Search");
+              }
+            }
+          }
+
+          [top]
+          SearchBar search_bar {
+            show-close-button: false;
+            key-capture-widget: template;
+
+            child: SearchEntry search_entry {
+              placeholder-text: _("Search file types and descriptions");
+              hexpand: true;
+              search-changed => $on_search_changed() swapped;
+            };
+          }
+
+          content: Stack stack {
+            StackPage {
+              name: "defaults";
+
+              child: ScrolledWindow {
+                hscrollbar-policy: never;
+
+                child: Adw.Clamp {
+                  maximum-size: 600;
+
+                  child: Box {
+                    orientation: vertical;
+                    spacing: 12;
+                    margin-top: 24;
+                    margin-bottom: 24;
+                    margin-start: 12;
+                    margin-end: 12;
+
+                    Label {
+                      label: _("Choose the applications used for common file types and links.");
+                      wrap: true;
+                      xalign: 0;
+
+                      styles [
+                        "dim-label",
+                      ]
+                    }
+
+                    ListBox defaults_list {
+                      selection-mode: none;
+
+                      styles [
+                        "boxed-list",
+                      ]
+                    }
+                  };
+                };
+              };
+            }
+
+            StackPage {
+              name: "list";
+
+              child: ScrolledWindow scroller {
+                hscrollbar-policy: never;
+                vexpand: true;
+
+                child: ListView list_view {
+                  single-click-activate: true;
+                  activate => $on_list_activate() swapped;
+
+                  model: NoSelection {
+                    model: SortListModel {
+                      section-sorter: StringSorter {
+                        expression: expr item as <$MimebindMimeEntry>.type-group;
+                      };
+
+                      sorter: StringSorter {
+                        expression: expr item as <$MimebindMimeEntry>.mime;
+                      };
+
+                      model: FilterListModel filter_model {
+                        items-changed => $on_filtered_changed() swapped;
+
+                        filter: EveryFilter filter {
+                          StringFilter search_filter {
+                            expression: expr item as <$MimebindMimeEntry>.search-key;
+                            match-mode: substring;
+                            ignore-case: true;
+                          }
+                        };
+
+                        model: Gio.ListStore store {
+                          item-type: typeof<$MimebindMimeEntry>;
+                        };
+                      };
+                    };
+                  };
+
+                  styles [
+                    "navigation-sidebar",
+                  ]
+                };
+              };
+            }
+
+            StackPage {
+              name: "empty";
+
+              child: Adw.StatusPage empty_page {
+                icon-name: "system-search-symbolic";
+                title: _("No matches");
+              };
+            }
+          };
+        };
+      };
+    };
+  };
+}
+
+menu primary_menu {
+  section {
+    item {
+      label: _("_About Mimebind");
+      action: "app.about";
+    }
+  }
+}

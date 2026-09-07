@@ -1,0 +1,439 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the mimebind package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: mimebind 0.1.0\n"
+"Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
+"POT-Creation-Date: 2026-09-07 18:40+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: data/io.github.sachesi.mimebind.desktop:2
+#: data/io.github.sachesi.mimebind.metainfo.xml:6
+msgid "Mimebind"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.desktop:3
+msgid "Default Applications"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.desktop:4
+#: data/io.github.sachesi.mimebind.metainfo.xml:7
+msgid "Choose which application opens which file type"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.desktop:11
+msgid "mime;default;association;open with;file type;handler;"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:9
+msgid ""
+"Mimebind lists every file type that an installed application knows how to "
+"open and lets you pick the application each one should use. It edits the "
+"standard XDG association files, so the choice applies on any desktop that "
+"follows the freedesktop.org specification, not only GNOME."
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:11
+msgid ""
+"Choose default apps for the web, mail, calendars, images, audio and video"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:12
+msgid "Browse by installed application or by media type"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:13
+msgid ""
+"Applications are credited with the subtypes the MIME database derives from "
+"the types they declare"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:14
+msgid ""
+"Make one application the default for every file type it supports, or for one "
+"group of them, in one step"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:15
+msgid "Search file types by name or by MIME type"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:16
+msgid "See the current default application next to each type"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:17
+msgid ""
+"Pick a new default from the applications that declare support for the type"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:18
+msgid "Review everything you changed and reset any of it, or all of it"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:25
+msgid "sachesi"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:37
+msgid "mime"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:38
+msgid "default"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:39
+msgid "association"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:40
+msgid "open with"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:53
+msgid "First release."
+msgstr ""
+
+#: src/catalog.rs:163
+#, no-c-format
+msgid "{app} already opened every type it supports"
+msgstr ""
+
+#: src/catalog.rs:166
+#, no-c-format
+msgid "{app} now opens one more file type"
+msgid_plural "{app} now opens {count} more file types"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/catalog.rs:173
+#, no-c-format
+msgid "{app} now opens one more file type, {failed} could not be set: {error}"
+msgid_plural ""
+"{app} now opens {count} more file types, {failed} could not be set: {error}"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/category.rs:39
+msgid "Web Browser"
+msgstr ""
+
+#: src/category.rs:45
+msgid "Mail"
+msgstr ""
+
+#: src/category.rs:51
+msgid "Calendar"
+msgstr ""
+
+#: src/category.rs:57 src/entry.rs:61
+#, no-c-format
+msgid "Images"
+msgstr ""
+
+#: src/category.rs:63 src/entry.rs:59
+#, no-c-format
+msgid "Audio"
+msgstr ""
+
+#: src/category.rs:69 src/entry.rs:67
+#, no-c-format
+msgid "Video"
+msgstr ""
+
+#: src/dialogs.rs:25
+#, no-c-format
+msgid "Use {app} for the {group} group?"
+msgstr ""
+
+#: src/dialogs.rs:28
+#, no-c-format
+msgid "Use {app} for all supported types?"
+msgstr ""
+
+#: src/dialogs.rs:32
+#, no-c-format
+msgid "{app} already opens the one file type it supports here."
+msgid_plural "{app} already opens all {total} file types it supports here."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/dialogs.rs:39
+#, no-c-format
+msgid ""
+"{app} supports {total} file types here and would take one from another "
+"application."
+msgid_plural ""
+"{app} supports {total} file types here and would take {changing} from "
+"another application."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/dialogs.rs:51 src/dialogs.rs:90 src/dialogs.rs:131 src/dialogs.rs:225
+#, no-c-format
+msgid "Cancel"
+msgstr ""
+
+#: src/dialogs.rs:52
+#, no-c-format
+msgid "Set Defaults"
+msgstr ""
+
+#: src/dialogs.rs:80
+#, no-c-format
+msgid "Reset all changes?"
+msgstr ""
+
+#: src/dialogs.rs:83
+#, no-c-format
+msgid "One file type goes back to the application the system chose."
+msgid_plural "{count} file types go back to the application the system chose."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/dialogs.rs:91 ui/window.ui:91
+#, no-c-format
+msgid "Reset All"
+msgstr ""
+
+#: src/dialogs.rs:110
+#, no-c-format
+msgid "Reset one file type"
+msgid_plural "Reset {count} file types"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/dialogs.rs:126
+#, no-c-format
+msgid "Default {category}"
+msgstr ""
+
+#: src/dialogs.rs:128
+#, no-c-format
+msgid ""
+"The selected application will handle every supported type in this category."
+msgstr ""
+
+#: src/dialogs.rs:153
+#, no-c-format
+msgid "No installed application declares support for these file types."
+msgstr ""
+
+#: src/dialogs.rs:155 src/dialogs.rs:240
+#, no-c-format
+msgid "Close"
+msgstr ""
+
+#: src/dialogs.rs:190
+#, no-c-format
+msgid "{app} is now the default for {category}"
+msgstr ""
+
+#: src/dialogs.rs:194
+#, no-c-format
+msgid "One {category} type could not be set: {error}"
+msgid_plural "{failed} {category} types could not be set: {error}"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/dialogs.rs:228 ui/mime_row.ui:58 ui/mime_row.ui:61
+#, no-c-format
+msgid "Reset to System Default"
+msgstr ""
+
+#: src/dialogs.rs:238
+#, no-c-format
+msgid "No installed application declares support for this type."
+msgstr ""
+
+#: src/dialogs.rs:278
+#, no-c-format
+msgid "{app} now opens {mime}"
+msgstr ""
+
+#: src/dialogs.rs:283
+#, no-c-format
+msgid "Could not set the default: {error}"
+msgstr ""
+
+#: src/entry.rs:58
+#, no-c-format
+msgid "Applications and Documents"
+msgstr ""
+
+#: src/entry.rs:60
+#, no-c-format
+msgid "Fonts"
+msgstr ""
+
+#: src/entry.rs:62
+#, no-c-format
+msgid "Folders and Devices"
+msgstr ""
+
+#: src/entry.rs:63
+#, no-c-format
+msgid "Messages"
+msgstr ""
+
+#: src/entry.rs:64
+#, no-c-format
+msgid "3D Models"
+msgstr ""
+
+#: src/entry.rs:65
+#, no-c-format
+msgid "Multipart"
+msgstr ""
+
+#: src/entry.rs:66
+#, no-c-format
+msgid "Text"
+msgstr ""
+
+#: src/entry.rs:68
+#, no-c-format
+msgid "Links and Protocols"
+msgstr ""
+
+#: src/entry.rs:73
+#, no-c-format
+msgid "Other"
+msgstr ""
+
+#: src/main.rs:54
+#, no-c-format
+msgid "Choose which application opens which file type."
+msgstr ""
+
+#: src/main.rs:56
+#, no-c-format
+msgid "Changes are saved in {path}."
+msgstr ""
+
+#: src/main.rs:59
+#, no-c-format
+msgid "translator-credits"
+msgstr ""
+
+#: src/mime_row.rs:85 src/window.rs:330
+#, no-c-format
+msgid "Not set"
+msgstr ""
+
+#. Translators: what a screen reader says for a row of the list, e.g.
+#. "PNG image, image/png, opens with Image Viewer".
+#: src/mime_row.rs:100
+#, no-c-format
+msgid "{description}, {mime}, opens with {app}"
+msgstr ""
+
+#. Translators: what a screen reader says for a row of a type nothing opens.
+#: src/mime_row.rs:102
+#, no-c-format
+msgid "{description}, {mime}, no default application"
+msgstr ""
+
+#: src/rows.rs:27 src/window.rs:379
+#, no-c-format
+msgid "Default Apps"
+msgstr ""
+
+#: src/rows.rs:33 src/window.rs:380 ui/window.ui:73
+#, no-c-format
+msgid "All File Types"
+msgstr ""
+
+#: src/rows.rs:39 src/window.rs:381
+#, no-c-format
+msgid "Modified"
+msgstr ""
+
+#: src/rows.rs:152
+#, no-c-format
+msgid "Use for These"
+msgstr ""
+
+#: src/rows.rs:159
+#, no-c-format
+msgid "Use {app} for the one {group} file type"
+msgid_plural "Use {app} for all {count} {group} file types"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/window.rs:449
+#, no-c-format
+msgid "Nothing changed yet"
+msgstr ""
+
+#: src/window.rs:451
+#, no-c-format
+msgid "File types you assign to an application appear here, saved in {path}."
+msgstr ""
+
+#: src/window.rs:456 ui/window.ui:251
+#, no-c-format
+msgid "No matches"
+msgstr ""
+
+#: src/window.rs:457
+#, no-c-format
+msgid "No file type matches this search."
+msgstr ""
+
+#: src/window.rs:497
+#, no-c-format
+msgid "Reset {mime} to the system default"
+msgstr ""
+
+#: ui/window.ui:30
+msgid "Groups"
+msgstr ""
+
+#: ui/window.ui:38
+msgid "Group By"
+msgstr ""
+
+#: ui/window.ui:43
+msgid "Applications"
+msgstr ""
+
+#: ui/window.ui:44
+msgid "Media Types"
+msgstr ""
+
+#: ui/window.ui:81
+msgid "Use for All"
+msgstr ""
+
+#: ui/window.ui:102 ui/window.ui:106
+msgid "Main Menu"
+msgstr ""
+
+#: ui/window.ui:113 ui/window.ui:116
+msgid "Search"
+msgstr ""
+
+#: ui/window.ui:128
+msgid "Search file types and descriptions"
+msgstr ""
+
+#: ui/window.ui:156
+msgid "Choose the applications used for common file types and links."
+msgstr ""
+
+#: ui/window.ui:270
+msgid "_About Mimebind"
+msgstr ""

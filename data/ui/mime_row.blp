@@ -1,0 +1,67 @@
+using Gtk 4.0;
+
+template $MimebindMimeRow: Box {
+  spacing: 12;
+
+  Image type_icon {
+    pixel-size: 32;
+  }
+
+  Box {
+    orientation: vertical;
+    valign: center;
+    hexpand: true;
+
+    Label description_label {
+      xalign: 0;
+      ellipsize: end;
+    }
+
+    Label mime_label {
+      xalign: 0;
+      ellipsize: end;
+
+      styles [
+        "dim-label",
+        "caption",
+      ]
+    }
+  }
+
+  // Always present, so a type with no handler does not shift the column.
+  Image app_icon {
+    pixel-size: 16;
+  }
+
+  // No room for a second column of text on a narrow window; the icon carries it.
+  Label app_label {
+    xalign: 0;
+    ellipsize: end;
+    max-width-chars: 20;
+    visible: bind template.narrow inverted;
+
+    styles [
+      "dim-label",
+    ]
+  }
+
+  // Keeps its place on every row so the column above it stays straight; on an
+  // unchanged type it is invisible and inert.
+  Button reset_button {
+    icon-name: "edit-undo-symbolic";
+    tooltip-text: _("Reset to System Default");
+    valign: center;
+
+    accessibility {
+      label: _("Reset to System Default");
+    }
+
+    styles [
+      "flat",
+    ]
+  }
+
+  Image {
+    icon-name: "go-next-symbolic";
+  }
+}

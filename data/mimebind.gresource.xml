@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/io/github/sachesi/mimebind">
+    <file preprocess="xml-stripblanks">ui/window.ui</file>
+    <file preprocess="xml-stripblanks">ui/mime_row.ui</file>
+    <file preprocess="xml-stripblanks" alias="icons/scalable/apps/io.github.sachesi.mimebind.svg">icons/hicolor/scalable/apps/io.github.sachesi.mimebind.svg</file>
+    <file preprocess="xml-stripblanks" alias="icons/symbolic/apps/io.github.sachesi.mimebind-symbolic.svg">icons/hicolor/symbolic/apps/io.github.sachesi.mimebind-symbolic.svg</file>
+  </gresource>
+</gresources>
