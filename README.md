@@ -23,6 +23,9 @@ Build needs Rust 1.92, `blueprint-compiler`, `just`, gettext and the development
 for GTK 4.12 and libadwaita 1.5 or newer. `just run` starts the debug build without
 installing it. `just uninstall` removes what `install` put in place, with the same prefix.
 
+Arch Linux: the AUR package `mimebind`, built from
+[packaging/aur/PKGBUILD](packaging/aur/PKGBUILD), which each release tag updates.
+
 The interface is available in English, Russian and Ukrainian.
 
 - [Contributing](CONTRIBUTING.md), including where things are in the code, and
