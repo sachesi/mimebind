@@ -4,6 +4,7 @@
 %global app_id io.github.sachesi.mimebind
 
 Name:           mimebind
+# The release workflow and Copr set Version to the tag they build.
 Version:        0.2.0
 Release:        3%{?dist}
 Summary:        Choose which application opens which file type
@@ -11,6 +12,8 @@ Summary:        Choose which application opens which file type
 License:        GPL-3.0-or-later
 URL:            https://github.com/sachesi/mimebind
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+# The crates the build needs, from the release, so that it runs without a network.
+Source1:        %{url}/releases/download/v%{version}/%{name}-%{version}-vendor.tar.xz
 
 BuildRequires:  cargo
 BuildRequires:  rust >= 1.92
@@ -42,7 +45,7 @@ supports or for a single media group of them, and every association set this
 way is listed in one place and resettable.
 
 %prep
-%autosetup -n %{name}-%{version}
+%autosetup -n %{name}-%{version} -b 1
 
 %build
 export CARGO_HOME="$PWD/.cargo-home"
@@ -51,7 +54,7 @@ export MIMEBIND_LOCALEDIR="%{_datadir}/locale"
 %if 0%{?_cargo_target_dir:1}
 export CARGO_TARGET_DIR="%{_cargo_target_dir}"
 %endif
-cargo build --release
+cargo build --release --offline --locked
 
 %install
 %if 0%{?_cargo_target_dir:1}
