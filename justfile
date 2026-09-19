@@ -99,6 +99,8 @@ uninstall:
     rm -f {{datadir}}/icons/hicolor/scalable/apps/{{app_id}}.svg {{datadir}}/icons/hicolor/symbolic/apps/{{app_id}}-symbolic.svg
     for lang in $(cat po/LINGUAS); do rm -f {{datadir}}/locale/$lang/LC_MESSAGES/mimebind.mo; done
     update-desktop-database -q {{datadir}}/applications || true
+    # A cache that still lists the removed icons hides the same icons installed elsewhere.
+    gtk4-update-icon-cache -qtf {{datadir}}/icons/hicolor || gtk-update-icon-cache -qtf {{datadir}}/icons/hicolor || true
 
 # Remove build artefacts.
 clean:
