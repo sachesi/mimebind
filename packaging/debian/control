@@ -1,0 +1,39 @@
+Source: mimebind
+Section: utils
+Priority: optional
+Maintainer: sachesi <xsachesi@pm.me>
+Build-Depends: debhelper-compat (= 13),
+               cargo,
+               rustc (>= 1.92),
+               pkg-config,
+               just,
+               blueprint-compiler,
+               gettext,
+               libglib2.0-dev,
+               libgtk-4-dev (>= 4.12),
+               libadwaita-1-dev (>= 1.5)
+Standards-Version: 4.7.2
+Homepage: https://github.com/sachesi/mimebind
+Rules-Requires-Root: no
+
+Package: mimebind
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         libgtk-4-1 (>= 4.12),
+         libadwaita-1-0 (>= 1.5),
+         hicolor-icon-theme,
+         shared-mime-info
+Description: Choose which application opens which file type
+ Mimebind lists every MIME type an installed application can open, shows which
+ application currently handles it, and lets that choice be changed or reset.
+ Associations are read and written through GIO, which stores them in
+ ~/.config/mimeapps.list as defined by the freedesktop.org MIME applications
+ specification, so the result applies on GNOME, KDE Plasma, Xfce, sway and
+ anything else that follows the spec.
+ .
+ Applications are credited with the subtypes the MIME database derives from what
+ they declare, so an editor claiming text/plain is listed for text/rust and
+ text/x-c++src too. One application can be made the default for every type it
+ supports or for a single media group of them, and every association set this
+ way is listed in one place and resettable.
