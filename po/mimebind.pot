@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 21:49+0300\n"
+"POT-Creation-Date: 2026-09-26 22:11+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,26 +84,41 @@ msgid "Review everything you changed and reset any of it, or all of it"
 msgstr ""
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:25
-msgid "sachesi"
+msgid "Choose the default web browser, mail client, calendar and media players"
 msgstr ""
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:37
-msgid "mime"
+#: data/io.github.sachesi.mimebind.metainfo.xml:29
+msgid ""
+"See every file type an application can open and make it the default for all "
+"of them"
 msgstr ""
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:38
-msgid "default"
+#: data/io.github.sachesi.mimebind.metainfo.xml:33
+msgid ""
+"Pick the application that opens a file type, or go back to the system default"
 msgstr ""
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:39
-msgid "association"
+msgid "sachesi"
 msgstr ""
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:40
-msgid "open with"
+#: data/io.github.sachesi.mimebind.metainfo.xml:51
+msgid "mime"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:52
+msgid "default"
 msgstr ""
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:53
+msgid "association"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:54
+msgid "open with"
+msgstr ""
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:67
 msgid ""
 "Setting a default no longer freezes the window, and the list stays where it "
 "was scrolled. After a change the window reports what the applications now "
@@ -113,11 +128,11 @@ msgid ""
 "the search."
 msgstr ""
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:58
+#: data/io.github.sachesi.mimebind.metainfo.xml:72
 msgid "Ukrainian and Russian translations."
 msgstr ""
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:63
+#: data/io.github.sachesi.mimebind.metainfo.xml:77
 msgid "First release."
 msgstr ""
 
