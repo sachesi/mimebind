@@ -6,52 +6,60 @@ use gettextrs::{gettext, ngettext};
 use gtk::{gio, glib};
 use std::collections::BTreeMap;
 
-/// Rebuild the group list: defaults, all types, modified, then either every
-/// application that can open something or every media group.
-pub(crate) fn fill_sidebar(
-    groups: &gtk::ListBox,
+/// One row of the sidebar: what it selects and what it shows.
+pub(crate) struct SidebarItem {
+    pub(crate) selection: Selection,
+    title: String,
+    icon: Option<gio::Icon>,
+    fallback: &'static str,
+    pub(crate) count: Option<u32>,
+}
+
+/// The group list: defaults, all types, modified, then either every application
+/// that can open something or every media group.
+pub(crate) fn sidebar_items(
     store: &gio::ListStore,
     catalog: &[AppEntry],
     by_app: bool,
-) -> Vec<Selection> {
-    groups.remove_all();
-
+) -> Vec<SidebarItem> {
     let entries: Vec<MimeEntry> = (0..store.n_items())
         .filter_map(|position| store.item(position).and_downcast::<MimeEntry>())
         .collect();
     let modified = entries.iter().filter(|entry| entry.modified()).count() as u32;
 
-    groups.append(&sidebar_row(
-        &gettext("Default Apps"),
-        None,
-        "object-select-symbolic",
-        None,
-    ));
-    groups.append(&sidebar_row(
-        &gettext("All File Types"),
-        None,
-        "view-list-symbolic",
-        Some(entries.len() as u32),
-    ));
-    groups.append(&sidebar_row(
-        &gettext("Modified"),
-        None,
-        "document-edit-symbolic",
-        Some(modified),
-    ));
-    let mut selections = vec![Selection::Defaults, Selection::All, Selection::Modified];
+    let mut items = vec![
+        SidebarItem {
+            selection: Selection::Defaults,
+            title: gettext("Default Apps"),
+            icon: None,
+            fallback: "object-select-symbolic",
+            count: None,
+        },
+        SidebarItem {
+            selection: Selection::All,
+            title: gettext("All File Types"),
+            icon: None,
+            fallback: "view-list-symbolic",
+            count: Some(entries.len() as u32),
+        },
+        SidebarItem {
+            selection: Selection::Modified,
+            title: gettext("Modified"),
+            icon: None,
+            fallback: "document-edit-symbolic",
+            count: Some(modified),
+        },
+    ];
 
     if by_app {
-        for app in catalog {
-            groups.append(&sidebar_row(
-                &app.name,
-                app.info.icon(),
-                "application-x-executable-symbolic",
-                Some(app.types.len() as u32),
-            ));
-            selections.push(Selection::App(app.id.clone()));
-        }
-        return selections;
+        items.extend(catalog.iter().map(|app| SidebarItem {
+            selection: Selection::App(app.id.clone()),
+            title: app.name.clone(),
+            icon: app.info.icon(),
+            fallback: "application-x-executable-symbolic",
+            count: Some(app.types.len() as u32),
+        }));
+        return items;
     }
 
     let mut counts: BTreeMap<String, (u32, Option<gio::Icon>)> = BTreeMap::new();
@@ -63,51 +71,45 @@ pub(crate) fn fill_sidebar(
                 .map(|name| gio::ThemedIcon::new(&name).upcast());
         }
     }
-    for (name, (count, icon)) in counts {
-        groups.append(&sidebar_row(
-            &name,
-            icon,
-            "text-x-generic-symbolic",
-            Some(count),
-        ));
-        selections.push(Selection::Media(name));
-    }
-    selections
+    items.extend(counts.into_iter().map(|(name, (count, icon))| SidebarItem {
+        selection: Selection::Media(name.clone()),
+        title: name,
+        icon,
+        fallback: "text-x-generic-symbolic",
+        count: Some(count),
+    }));
+    items
 }
 
-pub(crate) fn sidebar_row(
-    title: &str,
-    icon: Option<gio::Icon>,
-    fallback: &str,
-    count: Option<u32>,
-) -> adw::ActionRow {
+/// The row for `item`, and the label that shows its count.
+pub(crate) fn sidebar_row(item: &SidebarItem) -> (adw::ActionRow, Option<gtk::Label>) {
     let row = adw::ActionRow::builder()
-        .title(glib::markup_escape_text(title))
+        .title(glib::markup_escape_text(&item.title))
         .build();
 
     let image = gtk::Image::new();
-    match icon {
+    match &item.icon {
         // Application icons carry meaning at a glance, so give them the same
         // size the file type icons get in the list.
         Some(icon) => {
             image.set_pixel_size(32);
-            image.set_from_gicon(&icon);
+            image.set_from_gicon(icon);
         }
-        None => image.set_icon_name(Some(fallback)),
+        None => image.set_icon_name(Some(item.fallback)),
     }
     row.add_prefix(&image);
 
     // Every number in this column counts file types, so the categories row,
     // which would count something else, carries none.
-    if let Some(count) = count {
-        row.add_suffix(
-            &gtk::Label::builder()
-                .label(count.to_string())
-                .css_classes(["dim-label", "numeric"])
-                .build(),
-        );
-    }
-    row
+    let count = item.count.map(|count| {
+        let label = gtk::Label::builder()
+            .label(count.to_string())
+            .css_classes(["dim-label", "numeric"])
+            .build();
+        row.add_suffix(&label);
+        label
+    });
+    (row, count)
 }
 
 /// Section header: the media group, how many types it holds, and, when an
