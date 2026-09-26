@@ -62,6 +62,8 @@ mod imp {
         #[template_child]
         pub search_bar: TemplateChild<gtk::SearchBar>,
         #[template_child]
+        pub search_entry: TemplateChild<gtk::SearchEntry>,
+        #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
         #[template_child]
         pub defaults_list: TemplateChild<gtk::ListBox>,
@@ -119,6 +121,11 @@ mod imp {
                     }
                 },
             );
+            klass.install_action("win.search", None, |win, _, _| {
+                let imp = win.imp();
+                imp.search_bar.set_search_mode(true);
+                imp.search_entry.grab_focus();
+            });
             klass.install_action("win.reset-all", None, |win, _, _| {
                 dialogs::confirm_reset_all(win);
             });
@@ -503,6 +510,7 @@ impl MimebindWindow {
         imp.use_all_button
             .set_visible(matches!(chosen, Selection::App(_)));
         imp.search_button.set_visible(chosen != Selection::Defaults);
+        self.action_set_enabled("win.search", chosen != Selection::Defaults);
         if chosen == Selection::Defaults {
             imp.search_bar.set_search_mode(false);
             // Otherwise typing anywhere still pops a search bar over a page that has
