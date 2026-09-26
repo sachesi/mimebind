@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 20:53+0300\n"
+"POT-Creation-Date: 2026-09-26 20:54+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -110,19 +110,31 @@ msgstr ""
 msgid "First release."
 msgstr ""
 
-#: src/catalog.rs:170
+#. Translators: {path} is a file such as ~/.config/gnome-mimeapps.list that
+#. chooses another application and is read before the one this app writes.
+#: src/catalog.rs:192
+#, no-c-format
+msgid "{path} takes precedence"
+msgstr ""
+
+#: src/catalog.rs:193
+#, no-c-format
+msgid "another setting takes precedence"
+msgstr ""
+
+#: src/catalog.rs:212
 #, no-c-format
 msgid "{app} already opened every type it supports"
 msgstr ""
 
-#: src/catalog.rs:173
+#: src/catalog.rs:215
 #, no-c-format
 msgid "{app} now opens one more file type"
 msgid_plural "{app} now opens {count} more file types"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/catalog.rs:180
+#: src/catalog.rs:222
 #, no-c-format
 msgid "{app} now opens one more file type, {failed} could not be set: {error}"
 msgid_plural ""
@@ -131,7 +143,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. Translators: {app} is a desktop file name, such as org.gnome.TextEditor.desktop.
-#: src/catalog.rs:202
+#: src/catalog.rs:244
 #, no-c-format
 msgid "{app} is not installed"
 msgstr ""

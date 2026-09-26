@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 20:53+0300\n"
+"POT-Creation-Date: 2026-09-26 20:54+0300\n"
 "PO-Revision-Date: 2026-09-07 19:01+0300\n"
 "Last-Translator: sachesi <xsachesi@pm.me>\n"
 "Language-Team: Ukrainian\n"
@@ -118,12 +118,24 @@ msgstr "Переклади українською та російською."
 msgid "First release."
 msgstr "Перший випуск."
 
-#: src/catalog.rs:170
+#. Translators: {path} is a file such as ~/.config/gnome-mimeapps.list that
+#. chooses another application and is read before the one this app writes.
+#: src/catalog.rs:192
+#, no-c-format
+msgid "{path} takes precedence"
+msgstr "{path} має пріоритет"
+
+#: src/catalog.rs:193
+#, no-c-format
+msgid "another setting takes precedence"
+msgstr "пріоритет має інше налаштування"
+
+#: src/catalog.rs:212
 #, no-c-format
 msgid "{app} already opened every type it supports"
 msgstr "{app} вже відкриває всі типи, які підтримує"
 
-#: src/catalog.rs:173
+#: src/catalog.rs:215
 #, no-c-format
 msgid "{app} now opens one more file type"
 msgid_plural "{app} now opens {count} more file types"
@@ -131,7 +143,7 @@ msgstr[0] "{app} тепер відкриває ще {count} тип файлу"
 msgstr[1] "{app} тепер відкриває ще {count} типи файлів"
 msgstr[2] "{app} тепер відкриває ще {count} типів файлів"
 
-#: src/catalog.rs:180
+#: src/catalog.rs:222
 #, no-c-format
 msgid "{app} now opens one more file type, {failed} could not be set: {error}"
 msgid_plural ""
@@ -147,7 +159,7 @@ msgstr[2] ""
 "встановити: {error}"
 
 #. Translators: {app} is a desktop file name, such as org.gnome.TextEditor.desktop.
-#: src/catalog.rs:202
+#: src/catalog.rs:244
 #, no-c-format
 msgid "{app} is not installed"
 msgstr "{app} не встановлено"

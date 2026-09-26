@@ -1,6 +1,6 @@
 use crate::catalog::{
-    AppEntry, declared_types, expand_supported_types, installed_apps, installed_mime_types,
-    subtypes_of, user_overrides,
+    AppEntry, declared_types, expand_supported_types, home_relative, installed_apps,
+    installed_mime_types, subtypes_of, user_overrides,
 };
 use crate::category::{DEFAULT_CATEGORIES, DefaultCategory, category_default};
 use crate::dialogs;
@@ -667,9 +667,5 @@ impl MimebindWindow {
 
 /// The file GIO writes every association to, with the home directory shortened.
 pub(crate) fn associations_path() -> String {
-    let path = glib::user_config_dir().join("mimeapps.list");
-    match path.strip_prefix(glib::home_dir()) {
-        Ok(relative) => format!("~/{}", relative.display()),
-        Err(_) => path.display().to_string(),
-    }
+    home_relative(&glib::user_config_dir().join("mimeapps.list"))
 }
