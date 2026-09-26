@@ -19,6 +19,20 @@
     </ul>
   </description>
   <launchable type="desktop-id">io.github.sachesi.mimebind.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/sachesi/mimebind/v0.3.0/data/screenshots/default-applications.png</image>
+      <caption>Choose the default web browser, mail client, calendar and media players</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/sachesi/mimebind/v0.3.0/data/screenshots/application-file-types.png</image>
+      <caption>See every file type an application can open and make it the default for all of them</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/sachesi/mimebind/v0.3.0/data/screenshots/choose-application.png</image>
+      <caption>Pick the application that opens a file type, or go back to the system default</caption>
+    </screenshot>
+  </screenshots>
   <url type="homepage">https://github.com/sachesi/mimebind</url>
   <url type="bugtracker">https://github.com/sachesi/mimebind/issues</url>
   <developer id="io.github.sachesi">

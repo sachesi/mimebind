@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 21:49+0300\n"
+"POT-Creation-Date: 2026-09-26 22:11+0300\n"
 "PO-Revision-Date: 2026-09-07 19:01+0300\n"
 "Last-Translator: sachesi <xsachesi@pm.me>\n"
 "Language-Team: Ukrainian\n"
@@ -92,26 +92,45 @@ msgid "Review everything you changed and reset any of it, or all of it"
 msgstr "Перегляд усіх ваших змін і скидання будь-якої з них або всіх одразу"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:25
+msgid "Choose the default web browser, mail client, calendar and media players"
+msgstr "Виберіть типовий браузер, поштовий клієнт, календар і медіапрогравачі"
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:29
+msgid ""
+"See every file type an application can open and make it the default for all "
+"of them"
+msgstr ""
+"Перегляньте всі типи файлів, які відкриває програма, і зробіть її типовою "
+"для всіх одразу"
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:33
+msgid ""
+"Pick the application that opens a file type, or go back to the system default"
+msgstr ""
+"Виберіть програму, що відкриває тип файлу, або поверніться до системного "
+"вибору"
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:39
 msgid "sachesi"
 msgstr ""
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:37
+#: data/io.github.sachesi.mimebind.metainfo.xml:51
 msgid "mime"
 msgstr ""
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:38
+#: data/io.github.sachesi.mimebind.metainfo.xml:52
 msgid "default"
 msgstr "типова"
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:39
+#: data/io.github.sachesi.mimebind.metainfo.xml:53
 msgid "association"
 msgstr "асоціація"
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:40
+#: data/io.github.sachesi.mimebind.metainfo.xml:54
 msgid "open with"
 msgstr "відкрити за допомогою"
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:53
+#: data/io.github.sachesi.mimebind.metainfo.xml:67
 msgid ""
 "Setting a default no longer freezes the window, and the list stays where it "
 "was scrolled. After a change the window reports what the applications now "
@@ -127,11 +146,11 @@ msgstr ""
 "360 пікселів, програми зчитування з екрана дізнаються, яка програма зараз "
 "типова, а Ctrl+F відкриває пошук."
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:58
+#: data/io.github.sachesi.mimebind.metainfo.xml:72
 msgid "Ukrainian and Russian translations."
 msgstr "Переклади українською та російською."
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:63
+#: data/io.github.sachesi.mimebind.metainfo.xml:77
 msgid "First release."
 msgstr "Перший випуск."
 

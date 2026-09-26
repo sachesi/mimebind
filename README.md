@@ -5,6 +5,8 @@ It is written in Rust with GTK 4 and libadwaita, and writes associations through
 `~/.config/mimeapps.list`, so the choice holds on any desktop that follows the
 freedesktop.org MIME applications specification, not only GNOME.
 
+![The Default Applications page](data/screenshots/default-applications.png)
+
 A Default Applications page covers the web browser, mail, calendar, images, audio and video. The
 full list can be browsed by application or by media type and searched by description or
 MIME type; each row shows the application that opens the type now. An application can take
