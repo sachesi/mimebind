@@ -124,6 +124,34 @@ template $MimebindWindow: Adw.ApplicationWindow {
             };
           }
 
+          [bottom]
+          ActionBar action_bar {
+            revealed: false;
+
+            [center]
+            Box {
+              spacing: 6;
+
+              Button use_all_bottom_button {
+                label: _("Use for All");
+                action-name: "win.assign-all";
+
+                styles [
+                  "suggested-action",
+                ]
+              }
+
+              Button reset_all_bottom_button {
+                label: _("Reset All");
+                action-name: "win.reset-all";
+
+                styles [
+                  "destructive-action",
+                ]
+              }
+            }
+          }
+
           content: Stack stack {
             StackPage {
               name: "defaults";

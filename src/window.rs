@@ -64,6 +64,12 @@ mod imp {
         #[template_child]
         pub search_entry: TemplateChild<gtk::SearchEntry>,
         #[template_child]
+        pub action_bar: TemplateChild<gtk::ActionBar>,
+        #[template_child]
+        pub use_all_bottom_button: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub reset_all_bottom_button: TemplateChild<gtk::Button>,
+        #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
         #[template_child]
         pub defaults_list: TemplateChild<gtk::ListBox>,
@@ -199,6 +205,7 @@ mod imp {
                         .as_ref(),
                 );
             });
+            obj.connect_narrow_notify(|window| window.update_view());
             obj.build_default_rows();
             obj.select(Selection::Defaults);
             obj.load_catalog();
@@ -520,8 +527,6 @@ impl MimebindWindow {
                 .find(|app| app.id == *id)
                 .map_or_else(|| id.clone(), |app| app.name.clone()),
         });
-        imp.use_all_button
-            .set_visible(matches!(chosen, Selection::App(_)));
         imp.search_button.set_visible(chosen != Selection::Defaults);
         self.action_set_enabled("win.search", chosen != Selection::Defaults);
         if chosen == Selection::Defaults {
@@ -570,8 +575,17 @@ impl MimebindWindow {
         let count = imp.filter_model.n_items();
         // A search can hide every change without there being none.
         let changed = !self.overrides().is_empty();
-        imp.reset_all_button
-            .set_visible(current == Selection::Modified && changed);
+        let use_all = matches!(current, Selection::App(_));
+        let reset_all = current == Selection::Modified && changed;
+        // A narrow header bar has no room for text buttons, so they move to the
+        // bottom of the page.
+        let narrow = self.narrow();
+        imp.use_all_button.set_visible(use_all && !narrow);
+        imp.reset_all_button.set_visible(reset_all && !narrow);
+        imp.use_all_bottom_button.set_visible(use_all);
+        imp.reset_all_bottom_button.set_visible(reset_all);
+        imp.action_bar
+            .set_revealed(narrow && (use_all || reset_all));
 
         if current == Selection::Defaults {
             imp.stack.set_visible_child_name("defaults");

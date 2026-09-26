@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 21:31+0300\n"
+"POT-Creation-Date: 2026-09-26 21:36+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgstr ""
 msgid "Mimebind"
 msgstr ""
 
-#: data/io.github.sachesi.mimebind.desktop:3 src/rows.rs:33 src/window.rs:513
+#: data/io.github.sachesi.mimebind.desktop:3 src/rows.rs:33 src/window.rs:520
 #, no-c-format
 msgid "Default Applications"
 msgstr ""
@@ -239,7 +239,7 @@ msgid_plural "{count} file types go back to the application the system chose."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/dialogs.rs:109 ui/window.ui:91
+#: src/dialogs.rs:109 ui/window.ui:91 ui/window.ui:152
 #, no-c-format
 msgid "Reset All"
 msgstr ""
@@ -360,7 +360,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/mime_row.rs:114 src/window.rs:464
+#: src/mime_row.rs:114 src/window.rs:471
 #, no-c-format
 msgid "Not set"
 msgstr ""
@@ -378,56 +378,56 @@ msgstr ""
 msgid "{description}, {mime}, no default application"
 msgstr ""
 
-#: src/rows.rs:40 src/window.rs:514 ui/window.ui:73
+#: src/rows.rs:40 src/window.rs:521 ui/window.ui:73
 #, no-c-format
 msgid "All File Types"
 msgstr ""
 
-#: src/rows.rs:47 src/window.rs:515
+#: src/rows.rs:47 src/window.rs:522
 #, no-c-format
 msgid "Modified"
 msgstr ""
 
-#: src/rows.rs:139
+#: src/rows.rs:141
 #, no-c-format
 msgid "Use for These"
 msgstr ""
 
 #. Translators: a section of the list: a group of file types, such as
 #. "Images", and how many there are.
-#: src/rows.rs:166
+#: src/rows.rs:168
 #, no-c-format
 msgid "{group} ({count})"
 msgstr ""
 
-#: src/rows.rs:184
+#: src/rows.rs:186
 #, no-c-format
 msgid "Use {app} for the one {group} file type"
 msgid_plural "Use {app} for all {count} {group} file types"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/window.rs:587
+#: src/window.rs:601
 #, no-c-format
 msgid "Nothing changed yet"
 msgstr ""
 
-#: src/window.rs:589
+#: src/window.rs:603
 #, no-c-format
 msgid "File types you assign to an application appear here, saved in {path}."
 msgstr ""
 
-#: src/window.rs:594 ui/window.ui:251
+#: src/window.rs:608 ui/window.ui:279
 #, no-c-format
 msgid "No matches"
 msgstr ""
 
-#: src/window.rs:595
+#: src/window.rs:609
 #, no-c-format
 msgid "No file type matches this search."
 msgstr ""
 
-#: src/window.rs:670
+#: src/window.rs:684
 #, no-c-format
 msgid "Reset {mime} to the system default"
 msgstr ""
@@ -448,7 +448,7 @@ msgstr ""
 msgid "Media Types"
 msgstr ""
 
-#: ui/window.ui:81
+#: ui/window.ui:81 ui/window.ui:143
 msgid "Use for All"
 msgstr ""
 
@@ -464,14 +464,14 @@ msgstr ""
 msgid "Search file types and descriptions"
 msgstr ""
 
-#: ui/window.ui:156
+#: ui/window.ui:184
 msgid "Choose the applications used for common file types and links."
 msgstr ""
 
-#: ui/window.ui:267
+#: ui/window.ui:295
 msgid "Loading file types"
 msgstr ""
 
-#: ui/window.ui:287
+#: ui/window.ui:315
 msgid "_About Mimebind"
 msgstr ""
