@@ -131,6 +131,8 @@ pub(crate) fn header_factory(window: &MimebindWindow) -> gtk::SignalListItemFact
             &gtk::Label::builder()
                 .xalign(0.0)
                 .hexpand(true)
+                .wrap(true)
+                .wrap_mode(gtk::pango::WrapMode::WordChar)
                 .css_classes(["heading"])
                 .build(),
         );
