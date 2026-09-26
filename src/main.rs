@@ -41,6 +41,7 @@ fn setup_actions(app: &adw::Application) {
     app.add_action_entries([quit, about]);
     app.set_accels_for_action("app.quit", &["<Control>q"]);
     app.set_accels_for_action("window.close", &["<Control>w"]);
+    app.set_accels_for_action("win.search", &["<Control>f"]);
 }
 
 fn show_about(app: &adw::Application) {
