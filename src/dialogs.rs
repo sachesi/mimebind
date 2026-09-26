@@ -48,6 +48,11 @@ pub(crate) fn confirm_assign(window: &MimebindWindow, position: usize, group: Op
         .heading(heading)
         .body(body)
         .build();
+    if changing == 0 {
+        dialog.add_response("close", &gettext("Close"));
+        dialog.present(Some(window));
+        return;
+    }
     dialog.add_response("cancel", &gettext("Cancel"));
     dialog.add_response("apply", &gettext("Set Defaults"));
     dialog.set_response_appearance("apply", adw::ResponseAppearance::Suggested);

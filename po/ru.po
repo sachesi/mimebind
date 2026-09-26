@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 20:01+0300\n"
+"POT-Creation-Date: 2026-09-26 20:53+0300\n"
 "PO-Revision-Date: 2026-09-07 19:01+0300\n"
 "Last-Translator: sachesi <xsachesi@pm.me>\n"
 "Language-Team: Russian\n"
@@ -219,22 +219,27 @@ msgstr[2] ""
 "{app} поддерживает здесь {total} типов файлов и заберёт {changing} из них у "
 "других приложений."
 
-#: src/dialogs.rs:51 src/dialogs.rs:96 src/dialogs.rs:147 src/dialogs.rs:247
+#: src/dialogs.rs:52 src/dialogs.rs:176 src/dialogs.rs:267
+#, no-c-format
+msgid "Close"
+msgstr "Закрыть"
+
+#: src/dialogs.rs:56 src/dialogs.rs:101 src/dialogs.rs:152 src/dialogs.rs:252
 #, no-c-format
 msgid "Cancel"
 msgstr "Отмена"
 
-#: src/dialogs.rs:52
+#: src/dialogs.rs:57
 #, no-c-format
 msgid "Set Defaults"
 msgstr "Назначить"
 
-#: src/dialogs.rs:86
+#: src/dialogs.rs:91
 #, no-c-format
 msgid "Reset all changes?"
 msgstr "Сбросить все изменения?"
 
-#: src/dialogs.rs:89
+#: src/dialogs.rs:94
 #, no-c-format
 msgid "One file type goes back to the application the system chose."
 msgid_plural "{count} file types go back to the application the system chose."
@@ -242,12 +247,12 @@ msgstr[0] "{count} тип файлов вернётся к приложению,
 msgstr[1] "{count} типа файлов вернутся к приложению, выбранному системой."
 msgstr[2] "{count} типов файлов вернутся к приложению, выбранному системой."
 
-#: src/dialogs.rs:97 ui/window.ui:91
+#: src/dialogs.rs:102 ui/window.ui:91
 #, no-c-format
 msgid "Reset All"
 msgstr "Сбросить всё"
 
-#: src/dialogs.rs:124
+#: src/dialogs.rs:129
 #, no-c-format
 msgid "Reset one file type"
 msgid_plural "Reset {count} file types"
@@ -255,12 +260,12 @@ msgstr[0] "Сброшен {count} тип файлов"
 msgstr[1] "Сброшено {count} типа файлов"
 msgstr[2] "Сброшено {count} типов файлов"
 
-#: src/dialogs.rs:142
+#: src/dialogs.rs:147
 #, no-c-format
 msgid "Default {category}"
 msgstr "{category} по умолчанию"
 
-#: src/dialogs.rs:144
+#: src/dialogs.rs:149
 #, no-c-format
 msgid ""
 "The selected application will handle every supported type in this category."
@@ -268,23 +273,18 @@ msgstr ""
 "Выбранное приложение будет обрабатывать все поддерживаемые типы этой "
 "категории."
 
-#: src/dialogs.rs:169
+#: src/dialogs.rs:174
 #, no-c-format
 msgid "No installed application declares support for these file types."
 msgstr ""
 "Ни одно установленное приложение не заявляет поддержку этих типов файлов."
 
-#: src/dialogs.rs:171 src/dialogs.rs:262
-#, no-c-format
-msgid "Close"
-msgstr "Закрыть"
-
-#: src/dialogs.rs:211
+#: src/dialogs.rs:216
 #, no-c-format
 msgid "{app} is now the default for {category}"
 msgstr "{app} теперь приложение по умолчанию: {category}"
 
-#: src/dialogs.rs:215
+#: src/dialogs.rs:220
 #, no-c-format
 msgid "One {category} type could not be set: {error}"
 msgid_plural "{failed} {category} types could not be set: {error}"
@@ -295,22 +295,22 @@ msgstr[1] ""
 msgstr[2] ""
 "Не удалось установить {failed} типов в категории «{category}»: {error}"
 
-#: src/dialogs.rs:250 ui/mime_row.ui:58 ui/mime_row.ui:61
+#: src/dialogs.rs:255 ui/mime_row.ui:58 ui/mime_row.ui:61
 #, no-c-format
 msgid "Reset to System Default"
 msgstr "Сбросить к системному значению"
 
-#: src/dialogs.rs:260
+#: src/dialogs.rs:265
 #, no-c-format
 msgid "No installed application declares support for this type."
 msgstr "Ни одно установленное приложение не заявляет поддержку этого типа."
 
-#: src/dialogs.rs:309
+#: src/dialogs.rs:314
 #, no-c-format
 msgid "{app} now opens {mime}"
 msgstr "{app} теперь открывает {mime}"
 
-#: src/dialogs.rs:312
+#: src/dialogs.rs:317
 #, no-c-format
 msgid "Could not set the default: {error}"
 msgstr "Не удалось назначить приложение по умолчанию: {error}"
