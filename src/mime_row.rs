@@ -3,7 +3,7 @@ use adw::subclass::prelude::*;
 use gettextrs::gettext;
 use gtk::prelude::*;
 use gtk::{gio, glib};
-use std::cell::Cell;
+use std::cell::{Cell, RefCell};
 
 mod imp {
     use super::*;
@@ -30,6 +30,8 @@ mod imp {
         /// Hides the application name, for windows too narrow for two columns.
         #[property(get, set)]
         pub narrow: Cell<bool>,
+        /// The entry shown, and the handler that follows its default.
+        pub bound: RefCell<Option<(MimeEntry, glib::SignalHandlerId)>>,
     }
 
     #[glib::object_subclass]
@@ -64,25 +66,17 @@ impl MimeRow {
         glib::Object::new()
     }
 
-    /// Show `entry`. Rows are recycled, so everything a previous entry set is set again.
+    /// Show `entry` until `unbind`. Rows are recycled, so everything a previous
+    /// entry set is set again.
     pub(crate) fn bind(&self, entry: &MimeEntry) {
+        self.unbind();
         let imp = self.imp();
         let mime = entry.mime();
-        let description = entry.description();
 
         imp.type_icon
             .set_from_gicon(&gio::functions::content_type_get_icon(&mime));
-        imp.description_label.set_label(&description);
+        imp.description_label.set_label(&entry.description());
         imp.mime_label.set_label(&mime);
-
-        let default_app = gio::AppInfo::default_for_type(&mime, false);
-        match default_app.as_ref().and_then(|app| app.icon()) {
-            Some(icon) => imp.app_icon.set_from_gicon(&icon),
-            None => imp.app_icon.clear(),
-        }
-        let name = default_app.map(|app| app.display_name().to_string());
-        imp.app_label
-            .set_label(name.as_deref().unwrap_or(&gettext("Not set")));
 
         let modified = entry.modified();
         let reset = &imp.reset_button;
@@ -94,6 +88,33 @@ impl MimeRow {
         reset.set_can_focus(modified);
         reset.update_state(&[gtk::accessible::State::Hidden(!modified)]);
 
+        self.show_default(entry);
+        let handler = entry.connect_default_changed(glib::clone!(
+            #[weak(rename_to = row)]
+            self,
+            move |entry| row.show_default(entry)
+        ));
+        imp.bound.replace(Some((entry.clone(), handler)));
+    }
+
+    pub(crate) fn unbind(&self) {
+        if let Some((entry, handler)) = self.imp().bound.take() {
+            entry.disconnect(handler);
+        }
+    }
+
+    fn show_default(&self, entry: &MimeEntry) {
+        let imp = self.imp();
+        let mime = entry.mime();
+        let default_app = gio::AppInfo::default_for_type(&mime, false);
+        match default_app.as_ref().and_then(|app| app.icon()) {
+            Some(icon) => imp.app_icon.set_from_gicon(&icon),
+            None => imp.app_icon.clear(),
+        }
+        let name = default_app.map(|app| app.display_name().to_string());
+        imp.app_label
+            .set_label(name.as_deref().unwrap_or(&gettext("Not set")));
+
         let label = match &name {
             // Translators: what a screen reader says for a row of the list, e.g.
             // "PNG image, image/png, opens with Image Viewer".
@@ -103,7 +124,7 @@ impl MimeRow {
         };
         self.update_property(&[gtk::accessible::Property::Label(
             &label
-                .replace("{description}", &description)
+                .replace("{description}", &entry.description())
                 .replace("{mime}", &mime),
         )]);
     }
