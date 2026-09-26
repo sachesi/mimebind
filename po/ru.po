@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 21:10+0300\n"
+"POT-Creation-Date: 2026-09-26 21:12+0300\n"
 "PO-Revision-Date: 2026-09-07 19:01+0300\n"
 "Last-Translator: sachesi <xsachesi@pm.me>\n"
 "Language-Team: Russian\n"
@@ -407,7 +407,7 @@ msgstr "Изменения сохраняются в {path}."
 msgid "translator-credits"
 msgstr "sachesi"
 
-#: src/mime_row.rs:116 src/window.rs:461
+#: src/mime_row.rs:116 src/window.rs:462
 #, no-c-format
 msgid "Not set"
 msgstr "Не задано"
@@ -425,27 +425,27 @@ msgstr "{description}, {mime}, открывается в {app}"
 msgid "{description}, {mime}, no default application"
 msgstr "{description}, {mime}, нет приложения по умолчанию"
 
-#: src/rows.rs:33 src/window.rs:510
+#: src/rows.rs:33 src/window.rs:511
 #, no-c-format
 msgid "Default Apps"
 msgstr "Приложения по умолчанию"
 
-#: src/rows.rs:40 src/window.rs:511 ui/window.ui:73
+#: src/rows.rs:40 src/window.rs:512 ui/window.ui:73
 #, no-c-format
 msgid "All File Types"
 msgstr "Все типы файлов"
 
-#: src/rows.rs:47 src/window.rs:512
+#: src/rows.rs:47 src/window.rs:513
 #, no-c-format
 msgid "Modified"
 msgstr "Изменённые"
 
-#: src/rows.rs:138
+#: src/rows.rs:139
 #, no-c-format
 msgid "Use for These"
 msgstr "Использовать для этих"
 
-#: src/rows.rs:177
+#: src/rows.rs:178
 #, no-c-format
 msgid "Use {app} for the one {group} file type"
 msgid_plural "Use {app} for all {count} {group} file types"
@@ -453,29 +453,29 @@ msgstr[0] "Использовать {app} для {count} типа файлов �
 msgstr[1] "Использовать {app} для всех {count} типов файлов группы «{group}»"
 msgstr[2] "Использовать {app} для всех {count} типов файлов группы «{group}»"
 
-#: src/window.rs:587
+#: src/window.rs:585
 #, no-c-format
 msgid "Nothing changed yet"
 msgstr "Пока ничего не изменено"
 
-#: src/window.rs:589
+#: src/window.rs:587
 #, no-c-format
 msgid "File types you assign to an application appear here, saved in {path}."
 msgstr ""
 "Типы файлов, назначенные вами приложению, появятся здесь; сохраняются в "
 "{path}."
 
-#: src/window.rs:594 ui/window.ui:251
+#: src/window.rs:592 ui/window.ui:251
 #, no-c-format
 msgid "No matches"
 msgstr "Совпадений нет"
 
-#: src/window.rs:595
+#: src/window.rs:593
 #, no-c-format
 msgid "No file type matches this search."
 msgstr "Ни один тип файлов не соответствует запросу."
 
-#: src/window.rs:663
+#: src/window.rs:668
 #, no-c-format
 msgid "Reset {mime} to the system default"
 msgstr "{mime} сброшен к системному значению"

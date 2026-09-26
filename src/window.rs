@@ -238,8 +238,9 @@ mod imp {
 
         #[template_callback]
         fn on_group_activated(&self, _row: &gtk::ListBoxRow, _groups: &gtk::ListBox) {
-            // Selecting the row that is already selected emits nothing, so going
-            // back into it on a narrow window happens here.
+            // Only this opens the content on a narrow window: the selection also
+            // moves with the arrow keys and when the sidebar is rebuilt, and picking
+            // the row already selected changes no selection at all.
             if self.split_view.is_collapsed() {
                 self.split_view.set_show_content(true);
             }
@@ -536,9 +537,6 @@ impl MimebindWindow {
         }
         self.update_view();
         self.scroll_to_top();
-        if imp.split_view.is_collapsed() {
-            imp.split_view.set_show_content(true);
-        }
     }
 
     fn update_view(&self) {
@@ -629,9 +627,16 @@ impl MimebindWindow {
                 (item.selection, count)
             })
             .collect();
+        // An application or media group the new rows lack falls back to the list
+        // that still holds everything it showed.
         let position = sidebar
             .iter()
             .position(|(candidate, _)| *candidate == keep)
+            .or_else(|| {
+                sidebar
+                    .iter()
+                    .position(|(candidate, _)| *candidate == Selection::All)
+            })
             .unwrap_or(0);
         imp.sidebar.replace(sidebar);
         imp.groups
