@@ -6,7 +6,7 @@ use crate::category::{DEFAULT_CATEGORIES, DefaultCategory, category_default};
 use crate::dialogs;
 use crate::entry::MimeEntry;
 use crate::mime_row::MimeRow;
-use crate::rows::{fill_sidebar, header_factory};
+use crate::rows::{header_factory, sidebar_items, sidebar_row};
 use adw::prelude::*;
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
@@ -88,8 +88,8 @@ mod imp {
         /// Types with an entry in the user's own mimeapps.list.
         pub(super) overrides: RefCell<HashSet<String>>,
         pub(super) selection: RefCell<Selection>,
-        /// What each sidebar row selects, by row index.
-        pub(super) sidebar: RefCell<Vec<Selection>>,
+        /// What each sidebar row selects, by row index, and the label with its count.
+        pub(super) sidebar: RefCell<Vec<(Selection, Option<gtk::Label>)>>,
         pub(super) group_filter: OnceCell<gtk::CustomFilter>,
         pub(super) headers: OnceCell<gtk::SignalListItemFactory>,
         /// Whether section headers are on, and for which application.
@@ -209,9 +209,13 @@ mod imp {
             let Some(row) = row else {
                 return;
             };
-            let chosen = self.sidebar.borrow().get(row.index() as usize).cloned();
-            // The sidebar is rebuilt whenever a default changes, and selects its row
-            // again; that must not reset the list the user is working in.
+            let chosen = self
+                .sidebar
+                .borrow()
+                .get(row.index() as usize)
+                .map(|(selection, _)| selection.clone());
+            // A rebuilt sidebar selects its row again; that must not reset the list
+            // the user is working in.
             if let Some(chosen) = chosen
                 && chosen != *self.selection.borrow()
             {
@@ -398,7 +402,7 @@ impl MimebindWindow {
         });
     }
 
-    /// Refill the whole store in one splice, so the sidebar rebuilds once.
+    /// Refill the whole store in one splice, so the sidebar updates once.
     pub(crate) fn reload(&self) {
         let imp = self.imp();
         // Types the user assigned belong in the list even when nothing installed
@@ -575,14 +579,41 @@ impl MimebindWindow {
 
     fn rebuild_sidebar(&self) {
         let imp = self.imp();
-        let keep = self.selection();
         let by_app = imp.sidebar_mode.selected() == 0;
-        let selections = fill_sidebar(&imp.groups, &imp.store, self.catalog(), by_app);
-        let position = selections
+        let items = sidebar_items(&imp.store, self.catalog(), by_app);
+
+        // Most changes only move a count. Rebuilding the rows would also throw away
+        // how far the sidebar is scrolled and which row has the keyboard focus.
+        let unchanged = imp
+            .sidebar
+            .borrow()
             .iter()
-            .position(|candidate| *candidate == keep)
+            .map(|(selection, _)| selection)
+            .eq(items.iter().map(|item| &item.selection));
+        if unchanged {
+            for ((_, label), item) in imp.sidebar.borrow().iter().zip(&items) {
+                if let (Some(label), Some(count)) = (label, item.count) {
+                    label.set_label(&count.to_string());
+                }
+            }
+            return;
+        }
+
+        let keep = self.selection();
+        imp.groups.remove_all();
+        let sidebar: Vec<(Selection, Option<gtk::Label>)> = items
+            .into_iter()
+            .map(|item| {
+                let (row, count) = sidebar_row(&item);
+                imp.groups.append(&row);
+                (item.selection, count)
+            })
+            .collect();
+        let position = sidebar
+            .iter()
+            .position(|(candidate, _)| *candidate == keep)
             .unwrap_or(0);
-        imp.sidebar.replace(selections);
+        imp.sidebar.replace(sidebar);
         imp.groups
             .select_row(imp.groups.row_at_index(position as i32).as_ref());
     }
