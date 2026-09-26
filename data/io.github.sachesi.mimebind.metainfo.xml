@@ -48,6 +48,11 @@
     <display_length compare="ge">360</display_length>
   </requires>
   <releases>
+    <release version="0.3.0" date="2026-09-26">
+      <description>
+        <p>Setting a default no longer freezes the window, and the list stays where it was scrolled. After a change the window reports what the applications now open, including when a desktop-specific file such as gnome-mimeapps.list overrides the choice. The window fits a screen 360 pixels wide, screen readers are told which application is the current default, and Ctrl+F opens the search.</p>
+      </description>
+    </release>
     <release version="0.2.0" date="2026-09-07">
       <description>
         <p>Ukrainian and Russian translations.</p>
