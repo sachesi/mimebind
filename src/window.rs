@@ -182,6 +182,12 @@ mod imp {
                     row.bind(&entry);
                 }
             });
+            factory.connect_unbind(|_, item| {
+                let item = item.downcast_ref::<gtk::ListItem>().expect("a list item");
+                if let Some(row) = item.child().and_downcast::<MimeRow>() {
+                    row.unbind();
+                }
+            });
             self.list_view.set_factory(Some(&factory));
             self.headers.set(header_factory(&obj)).ok();
 
@@ -426,20 +432,24 @@ impl MimebindWindow {
         imp.store.splice(0, imp.store.n_items(), &entries);
     }
 
-    /// Rebuild the row of `mime` so it shows the new default. A fresh object is
-    /// required: `items_changed` over an identical item lets GtkListView keep the
-    /// old widget.
+    /// Show the new default of `mime` in its row and in the rows of its subtypes,
+    /// which follow it unless they have a default of their own.
     pub(crate) fn refresh(&self, mime: &str) {
         let store = &self.imp().store;
-        let position = (0..store.n_items()).find(|position| {
-            store
-                .item(*position)
-                .and_downcast::<MimeEntry>()
-                .is_some_and(|entry| entry.mime() == mime)
-        });
-        if let Some(position) = position {
-            let fresh = MimeEntry::new(mime, &self.overrides());
-            store.splice(position, 1, &[fresh]);
+        for position in 0..store.n_items() {
+            let Some(entry) = store.item(position).and_downcast::<MimeEntry>() else {
+                continue;
+            };
+            if entry.mime() == mime {
+                // Its "modified" flag moves too, which the filter and the counts only
+                // see through a new item: `items_changed` over an identical one lets
+                // GtkListView keep the old widget.
+                store.splice(position, 1, &[MimeEntry::new(mime, &self.overrides())]);
+            } else if gio::functions::content_type_is_a(&entry.mime(), mime) {
+                // One splice per subtype would re-sort the list and recount the
+                // sidebar hundreds of times for text/plain.
+                entry.default_changed();
+            }
         }
     }
 

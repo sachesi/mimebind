@@ -3,6 +3,7 @@ use gtk::prelude::*;
 use gtk::{gio, glib};
 use std::cell::RefCell;
 use std::collections::HashSet;
+use std::sync::OnceLock;
 
 mod imp {
     use super::*;
@@ -31,7 +32,12 @@ mod imp {
     }
 
     #[glib::derived_properties]
-    impl ObjectImpl for MimeEntry {}
+    impl ObjectImpl for MimeEntry {
+        fn signals() -> &'static [glib::subclass::Signal] {
+            static SIGNALS: OnceLock<Vec<glib::subclass::Signal>> = OnceLock::new();
+            SIGNALS.get_or_init(|| vec![glib::subclass::Signal::builder("default-changed").build()])
+        }
+    }
 }
 
 glib::wrapper! {
@@ -48,6 +54,23 @@ impl MimeEntry {
             .property("type-group", media_group(mime))
             .property("modified", overrides.contains(mime))
             .build()
+    }
+
+    /// Tell the row showing this type to read its default again, for a change
+    /// that reaches it without touching the entry, such as one to a supertype.
+    pub(crate) fn default_changed(&self) {
+        self.emit_by_name::<()>("default-changed", &[]);
+    }
+
+    pub(crate) fn connect_default_changed(
+        &self,
+        callback: impl Fn(&Self) + 'static,
+    ) -> glib::SignalHandlerId {
+        self.connect_closure(
+            "default-changed",
+            false,
+            glib::closure_local!(move |entry: &Self| callback(entry)),
+        )
     }
 }
 

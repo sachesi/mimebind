@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 20:54+0300\n"
+"POT-Creation-Date: 2026-09-26 21:01+0300\n"
 "PO-Revision-Date: 2026-09-07 19:01+0300\n"
 "Last-Translator: sachesi <xsachesi@pm.me>\n"
 "Language-Team: Russian\n"
@@ -178,17 +178,17 @@ msgstr "Почта"
 msgid "Calendar"
 msgstr "Календарь"
 
-#: src/category.rs:57 src/entry.rs:61
+#: src/category.rs:57 src/entry.rs:84
 #, no-c-format
 msgid "Images"
 msgstr "Изображения"
 
-#: src/category.rs:63 src/entry.rs:59
+#: src/category.rs:63 src/entry.rs:82
 #, no-c-format
 msgid "Audio"
 msgstr "Аудио"
 
-#: src/category.rs:69 src/entry.rs:67
+#: src/category.rs:69 src/entry.rs:90
 #, no-c-format
 msgid "Video"
 msgstr "Видео"
@@ -327,47 +327,47 @@ msgstr "{app} теперь открывает {mime}"
 msgid "Could not set the default: {error}"
 msgstr "Не удалось назначить приложение по умолчанию: {error}"
 
-#: src/entry.rs:58
+#: src/entry.rs:81
 #, no-c-format
 msgid "Applications and Documents"
 msgstr "Приложения и документы"
 
-#: src/entry.rs:60
+#: src/entry.rs:83
 #, no-c-format
 msgid "Fonts"
 msgstr "Шрифты"
 
-#: src/entry.rs:62
+#: src/entry.rs:85
 #, no-c-format
 msgid "Folders and Devices"
 msgstr "Папки и устройства"
 
-#: src/entry.rs:63
+#: src/entry.rs:86
 #, no-c-format
 msgid "Messages"
 msgstr "Сообщения"
 
-#: src/entry.rs:64
+#: src/entry.rs:87
 #, no-c-format
 msgid "3D Models"
 msgstr "3D-модели"
 
-#: src/entry.rs:65
+#: src/entry.rs:88
 #, no-c-format
 msgid "Multipart"
 msgstr "Составные"
 
-#: src/entry.rs:66
+#: src/entry.rs:89
 #, no-c-format
 msgid "Text"
 msgstr "Текст"
 
-#: src/entry.rs:68
+#: src/entry.rs:91
 #, no-c-format
 msgid "Links and Protocols"
 msgstr "Ссылки и протоколы"
 
-#: src/entry.rs:73
+#: src/entry.rs:96
 #, no-c-format
 msgid "Other"
 msgstr "Прочее"
@@ -387,35 +387,35 @@ msgstr "Изменения сохраняются в {path}."
 msgid "translator-credits"
 msgstr "sachesi"
 
-#: src/mime_row.rs:85 src/window.rs:451
+#: src/mime_row.rs:116 src/window.rs:461
 #, no-c-format
 msgid "Not set"
 msgstr "Не задано"
 
 #. Translators: what a screen reader says for a row of the list, e.g.
 #. "PNG image, image/png, opens with Image Viewer".
-#: src/mime_row.rs:100
+#: src/mime_row.rs:121
 #, no-c-format
 msgid "{description}, {mime}, opens with {app}"
 msgstr "{description}, {mime}, открывается в {app}"
 
 #. Translators: what a screen reader says for a row of a type nothing opens.
-#: src/mime_row.rs:102
+#: src/mime_row.rs:123
 #, no-c-format
 msgid "{description}, {mime}, no default application"
 msgstr "{description}, {mime}, нет приложения по умолчанию"
 
-#: src/rows.rs:33 src/window.rs:500
+#: src/rows.rs:33 src/window.rs:510
 #, no-c-format
 msgid "Default Apps"
 msgstr "Приложения по умолчанию"
 
-#: src/rows.rs:40 src/window.rs:501 ui/window.ui:73
+#: src/rows.rs:40 src/window.rs:511 ui/window.ui:73
 #, no-c-format
 msgid "All File Types"
 msgstr "Все типы файлов"
 
-#: src/rows.rs:47 src/window.rs:502
+#: src/rows.rs:47 src/window.rs:512
 #, no-c-format
 msgid "Modified"
 msgstr "Изменённые"
@@ -433,29 +433,29 @@ msgstr[0] "Использовать {app} для {count} типа файлов �
 msgstr[1] "Использовать {app} для всех {count} типов файлов группы «{group}»"
 msgstr[2] "Использовать {app} для всех {count} типов файлов группы «{group}»"
 
-#: src/window.rs:575
+#: src/window.rs:585
 #, no-c-format
 msgid "Nothing changed yet"
 msgstr "Пока ничего не изменено"
 
-#: src/window.rs:577
+#: src/window.rs:587
 #, no-c-format
 msgid "File types you assign to an application appear here, saved in {path}."
 msgstr ""
 "Типы файлов, назначенные вами приложению, появятся здесь; сохраняются в "
 "{path}."
 
-#: src/window.rs:582 ui/window.ui:251
+#: src/window.rs:592 ui/window.ui:251
 #, no-c-format
 msgid "No matches"
 msgstr "Совпадений нет"
 
-#: src/window.rs:583
+#: src/window.rs:593
 #, no-c-format
 msgid "No file type matches this search."
 msgstr "Ни один тип файлов не соответствует запросу."
 
-#: src/window.rs:651
+#: src/window.rs:661
 #, no-c-format
 msgid "Reset {mime} to the system default"
 msgstr "{mime} сброшен к системному значению"
