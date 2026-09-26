@@ -30,7 +30,7 @@ mod imp {
         /// Hides the application name, for windows too narrow for two columns.
         #[property(get, set)]
         pub narrow: Cell<bool>,
-        /// The entry shown, and the handler that follows its default.
+        /// The entry shown, and the handler that follows its changes.
         pub bound: RefCell<Option<(MimeEntry, glib::SignalHandlerId)>>,
     }
 
@@ -66,10 +66,26 @@ impl MimeRow {
         glib::Object::new()
     }
 
-    /// Show `entry` until `unbind`. Rows are recycled, so everything a previous
-    /// entry set is set again.
+    /// Show `entry`, and follow its changes until `unbind`.
     pub(crate) fn bind(&self, entry: &MimeEntry) {
         self.unbind();
+        self.show(entry);
+        let handler = entry.connect_changed(glib::clone!(
+            #[weak(rename_to = row)]
+            self,
+            move |entry| row.show(entry)
+        ));
+        self.imp().bound.replace(Some((entry.clone(), handler)));
+    }
+
+    pub(crate) fn unbind(&self) {
+        if let Some((entry, handler)) = self.imp().bound.take() {
+            entry.disconnect(handler);
+        }
+    }
+
+    /// Rows are recycled, so everything a previous entry set is set again.
+    fn show(&self, entry: &MimeEntry) {
         let imp = self.imp();
         let mime = entry.mime();
 
@@ -88,24 +104,6 @@ impl MimeRow {
         reset.set_can_focus(modified);
         reset.update_state(&[gtk::accessible::State::Hidden(!modified)]);
 
-        self.show_default(entry);
-        let handler = entry.connect_default_changed(glib::clone!(
-            #[weak(rename_to = row)]
-            self,
-            move |entry| row.show_default(entry)
-        ));
-        imp.bound.replace(Some((entry.clone(), handler)));
-    }
-
-    pub(crate) fn unbind(&self) {
-        if let Some((entry, handler)) = self.imp().bound.take() {
-            entry.disconnect(handler);
-        }
-    }
-
-    fn show_default(&self, entry: &MimeEntry) {
-        let imp = self.imp();
-        let mime = entry.mime();
         let default_app = gio::AppInfo::default_for_type(&mime, false);
         match default_app.as_ref().and_then(|app| app.icon()) {
             Some(icon) => imp.app_icon.set_from_gicon(&icon),

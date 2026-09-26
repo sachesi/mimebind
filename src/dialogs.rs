@@ -315,7 +315,7 @@ pub(crate) fn open_chooser(window: &MimebindWindow, entry: &MimeEntry) {
                             move || set_default(&id, &mime)
                         ),
                         move |window, result| {
-                            window.refresh(&mime);
+                            window.reload();
                             window.toast(&match result {
                                 Ok(()) => gettext("{app} now opens {mime}")
                                     .replace("{app}", &name)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 21:13+0300\n"
+"POT-Creation-Date: 2026-09-26 21:29+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgstr ""
 msgid "Mimebind"
 msgstr ""
 
-#: data/io.github.sachesi.mimebind.desktop:3 src/rows.rs:33 src/window.rs:511
+#: data/io.github.sachesi.mimebind.desktop:3 src/rows.rs:33 src/window.rs:513
 #, no-c-format
 msgid "Default Applications"
 msgstr ""
@@ -161,17 +161,17 @@ msgstr ""
 msgid "Calendar"
 msgstr ""
 
-#: src/category.rs:57 src/entry.rs:84
+#: src/category.rs:57 src/entry.rs:86
 #, no-c-format
 msgid "Images"
 msgstr ""
 
-#: src/category.rs:63 src/entry.rs:82
+#: src/category.rs:63 src/entry.rs:84
 #, no-c-format
 msgid "Audio"
 msgstr ""
 
-#: src/category.rs:69 src/entry.rs:90
+#: src/category.rs:69 src/entry.rs:92
 #, no-c-format
 msgid "Video"
 msgstr ""
@@ -300,47 +300,47 @@ msgstr ""
 msgid "Current default"
 msgstr ""
 
-#: src/entry.rs:81
+#: src/entry.rs:83
 #, no-c-format
 msgid "Applications and Documents"
 msgstr ""
 
-#: src/entry.rs:83
+#: src/entry.rs:85
 #, no-c-format
 msgid "Fonts"
 msgstr ""
 
-#: src/entry.rs:85
+#: src/entry.rs:87
 #, no-c-format
 msgid "Folders and Devices"
 msgstr ""
 
-#: src/entry.rs:86
+#: src/entry.rs:88
 #, no-c-format
 msgid "Messages"
 msgstr ""
 
-#: src/entry.rs:87
+#: src/entry.rs:89
 #, no-c-format
 msgid "3D Models"
 msgstr ""
 
-#: src/entry.rs:88
+#: src/entry.rs:90
 #, no-c-format
 msgid "Multipart"
 msgstr ""
 
-#: src/entry.rs:89
+#: src/entry.rs:91
 #, no-c-format
 msgid "Text"
 msgstr ""
 
-#: src/entry.rs:91
+#: src/entry.rs:93
 #, no-c-format
 msgid "Links and Protocols"
 msgstr ""
 
-#: src/entry.rs:96
+#: src/entry.rs:98
 #, no-c-format
 msgid "Other"
 msgstr ""
@@ -360,30 +360,30 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/mime_row.rs:116 src/window.rs:462
+#: src/mime_row.rs:114 src/window.rs:464
 #, no-c-format
 msgid "Not set"
 msgstr ""
 
 #. Translators: what a screen reader says for a row of the list, e.g.
 #. "PNG image, image/png, opens with Image Viewer".
-#: src/mime_row.rs:121
+#: src/mime_row.rs:119
 #, no-c-format
 msgid "{description}, {mime}, opens with {app}"
 msgstr ""
 
 #. Translators: what a screen reader says for a row of a type nothing opens.
-#: src/mime_row.rs:123
+#: src/mime_row.rs:121
 #, no-c-format
 msgid "{description}, {mime}, no default application"
 msgstr ""
 
-#: src/rows.rs:40 src/window.rs:512 ui/window.ui:73
+#: src/rows.rs:40 src/window.rs:514 ui/window.ui:73
 #, no-c-format
 msgid "All File Types"
 msgstr ""
 
-#: src/rows.rs:47 src/window.rs:513
+#: src/rows.rs:47 src/window.rs:515
 #, no-c-format
 msgid "Modified"
 msgstr ""
@@ -407,27 +407,27 @@ msgid_plural "Use {app} for all {count} {group} file types"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/window.rs:585
+#: src/window.rs:587
 #, no-c-format
 msgid "Nothing changed yet"
 msgstr ""
 
-#: src/window.rs:587
+#: src/window.rs:589
 #, no-c-format
 msgid "File types you assign to an application appear here, saved in {path}."
 msgstr ""
 
-#: src/window.rs:592 ui/window.ui:251
+#: src/window.rs:594 ui/window.ui:251
 #, no-c-format
 msgid "No matches"
 msgstr ""
 
-#: src/window.rs:593
+#: src/window.rs:595
 #, no-c-format
 msgid "No file type matches this search."
 msgstr ""
 
-#: src/window.rs:668
+#: src/window.rs:670
 #, no-c-format
 msgid "Reset {mime} to the system default"
 msgstr ""

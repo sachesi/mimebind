@@ -416,13 +416,36 @@ impl MimebindWindow {
         });
     }
 
-    /// Refill the whole store in one splice, so the sidebar updates once.
+    /// Bring the list up to date with the associations on disk. While the same
+    /// types are listed, the entries change in place, so the list keeps where it
+    /// was scrolled and which row has the focus; replacing them would also re-sort
+    /// the list and recount the sidebar once per entry.
     pub(crate) fn reload(&self) {
         let imp = self.imp();
         // Types the user assigned belong in the list even when nothing installed
         // declares them any more, or "Modified" would hide part of what they changed.
         let mut types = installed_mime_types(self.catalog());
         types.extend(self.overrides().iter().cloned());
+        let entries: Vec<MimeEntry> = (0..imp.store.n_items())
+            .filter_map(|position| imp.store.item(position).and_downcast())
+            .collect();
+
+        if entries
+            .iter()
+            .map(MimeEntry::mime)
+            .eq(types.iter().cloned())
+        {
+            for entry in &entries {
+                entry.update(&self.overrides());
+            }
+            if let Some(filter) = imp.group_filter.get() {
+                filter.changed(gtk::FilterChange::Different);
+            }
+            self.rebuild_sidebar();
+            self.update_view();
+            return;
+        }
+
         let entries: Vec<MimeEntry> = {
             let overrides = self.overrides();
             types
@@ -431,27 +454,6 @@ impl MimebindWindow {
                 .collect()
         };
         imp.store.splice(0, imp.store.n_items(), &entries);
-    }
-
-    /// Show the new default of `mime` in its row and in the rows of its subtypes,
-    /// which follow it unless they have a default of their own.
-    pub(crate) fn refresh(&self, mime: &str) {
-        let store = &self.imp().store;
-        for position in 0..store.n_items() {
-            let Some(entry) = store.item(position).and_downcast::<MimeEntry>() else {
-                continue;
-            };
-            if entry.mime() == mime {
-                // Its "modified" flag moves too, which the filter and the counts only
-                // see through a new item: `items_changed` over an identical one lets
-                // GtkListView keep the old widget.
-                store.splice(position, 1, &[MimeEntry::new(mime, &self.overrides())]);
-            } else if gio::functions::content_type_is_a(&entry.mime(), mime) {
-                // One splice per subtype would re-sort the list and recount the
-                // sidebar hundreds of times for text/plain.
-                entry.default_changed();
-            }
-        }
     }
 
     pub(crate) fn refresh_default_rows(&self) {
@@ -663,7 +665,7 @@ impl MimebindWindow {
                 move || gio::AppInfo::reset_type_associations(&mime)
             ),
             move |window, ()| {
-                window.refresh(&mime);
+                window.reload();
                 window
                     .toast(&gettext("Reset {mime} to the system default").replace("{mime}", &mime));
             },
