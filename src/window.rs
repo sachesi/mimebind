@@ -1,4 +1,7 @@
-use crate::catalog::{AppEntry, build_catalog, installed_mime_types, user_overrides};
+use crate::catalog::{
+    AppEntry, declared_types, expand_supported_types, installed_apps, installed_mime_types,
+    subtypes_of, user_overrides,
+};
 use crate::category::{DEFAULT_CATEGORIES, DefaultCategory, category_default};
 use crate::dialogs;
 use crate::entry::MimeEntry;
@@ -131,8 +134,6 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            self.catalog.set(build_catalog()).ok();
-
             let group_filter = gtk::CustomFilter::new(glib::clone!(
                 #[weak]
                 obj,
@@ -176,25 +177,8 @@ mod imp {
                 );
             });
             obj.build_default_rows();
-
-            obj.reload();
-            // Changing a default flips its "modified" flag and moves the counts.
-            self.store.connect_items_changed(glib::clone!(
-                #[weak]
-                obj,
-                move |_, _, _, _| obj.rebuild_sidebar()
-            ));
-            obj.rebuild_sidebar();
             obj.select(Selection::Defaults);
-
-            let groups = self.groups.get();
-            glib::idle_add_local_once(glib::clone!(
-                #[weak]
-                groups,
-                move || {
-                    groups.grab_focus();
-                }
-            ));
+            obj.load_catalog();
         }
     }
 
@@ -298,6 +282,74 @@ impl MimebindWindow {
                 .use_markup(false)
                 .build(),
         );
+    }
+
+    /// Run a batch of association writes on a worker thread, then `done` on this
+    /// one. GIO rewrites mimeapps.list, and syncs it to disk, once per type: a few
+    /// milliseconds each, which an application with hundreds of types turns into a
+    /// visible freeze. Two writers at once would lose each other's changes, so the
+    /// window takes no input until the batch is through, and the application stays
+    /// up to finish it even when the window closes.
+    pub(crate) fn write_in_background<T: Send + 'static>(
+        &self,
+        write: impl FnOnce() -> T + Send + 'static,
+        done: impl FnOnce(&Self, T) + 'static,
+    ) {
+        let hold = self.application().map(|app| app.hold());
+        self.imp().split_view.set_sensitive(false);
+        let window = self.downgrade();
+        glib::spawn_future_local(async move {
+            let outcome = gio::spawn_blocking(write)
+                .await
+                .unwrap_or_else(|panic| std::panic::resume_unwind(panic));
+            if let Some(window) = window.upgrade() {
+                window.imp().split_view.set_sensitive(true);
+                done(&window, outcome);
+            }
+            // Naming the guard is what moves it into the future.
+            drop(hold);
+        });
+    }
+
+    /// Work out which types every application can open. Reading the applications
+    /// is quick and yields `gio::AppInfo`, which stays on this thread; walking the
+    /// MIME database for their subtypes takes a good part of a second, so it runs
+    /// on a worker while the window shows that it is loading.
+    fn load_catalog(&self) {
+        let mut apps = installed_apps();
+        let declared = declared_types(&apps);
+        let window = self.downgrade();
+        glib::spawn_future_local(async move {
+            let subtypes = gio::spawn_blocking(move || {
+                let subtypes = subtypes_of(&declared);
+                // GIO reads each description from the MIME database once and keeps
+                // it, so the entries built on the main thread do not wait on disk.
+                for mime in declared.iter().chain(subtypes.values().flatten()) {
+                    gio::functions::content_type_get_description(mime);
+                }
+                subtypes
+            })
+            .await
+            .unwrap_or_else(|panic| std::panic::resume_unwind(panic));
+            let Some(window) = window.upgrade() else {
+                return;
+            };
+            expand_supported_types(&mut apps, &subtypes);
+            let imp = window.imp();
+            imp.catalog.set(apps).ok();
+
+            window.reload();
+            // Changing a default flips its "modified" flag and moves the counts.
+            imp.store.connect_items_changed(glib::clone!(
+                #[weak]
+                window,
+                move |_, _, _, _| window.rebuild_sidebar()
+            ));
+            window.rebuild_sidebar();
+            window.refresh_default_rows();
+            window.update_view();
+            imp.groups.grab_focus();
+        });
     }
 
     /// Refill the whole store in one splice, so the sidebar rebuilds once.
@@ -418,6 +470,10 @@ impl MimebindWindow {
 
     fn update_view(&self) {
         let imp = self.imp();
+        if imp.catalog.get().is_none() {
+            imp.stack.set_visible_child_name("loading");
+            return;
+        }
         let current = self.selection();
 
         // Headers read the selection when they are bound, and a section whose members

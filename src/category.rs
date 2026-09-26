@@ -73,10 +73,11 @@ pub(crate) const DEFAULT_CATEGORIES: [DefaultCategory; 6] = [
     },
 ];
 
-pub(crate) fn default_types(app: &AppEntry, kind: DefaultKind) -> Vec<&String> {
+pub(crate) fn default_types(app: &AppEntry, kind: DefaultKind) -> Vec<String> {
     app.types
         .iter()
         .filter(|mime| is_default_type(mime, kind))
+        .cloned()
         .collect()
 }
 
