@@ -290,7 +290,14 @@ impl MimebindWindow {
     }
 
     pub(crate) fn toast(&self, message: &str) {
-        self.imp().toasts.add_toast(adw::Toast::new(message));
+        // Application names and GIO errors are plain text, and a stray "&" in one
+        // would make a markup title fail to parse.
+        self.imp().toasts.add_toast(
+            adw::Toast::builder()
+                .title(message)
+                .use_markup(false)
+                .build(),
+        );
     }
 
     /// Refill the whole store in one splice, so the sidebar rebuilds once.
@@ -328,7 +335,7 @@ impl MimebindWindow {
             let current = category_default(self.catalog(), &overrides, *category)
                 .map(|app| app.display_name().to_string())
                 .unwrap_or_else(|| gettext("Not set"));
-            row.set_subtitle(&current);
+            row.set_subtitle(&glib::markup_escape_text(&current));
         }
     }
 
@@ -447,10 +454,10 @@ impl MimebindWindow {
         if current == Selection::Modified {
             empty.set_icon_name(Some("document-edit-symbolic"));
             empty.set_title(&gettext("Nothing changed yet"));
-            empty.set_description(Some(
+            empty.set_description(Some(&glib::markup_escape_text(
                 &gettext("File types you assign to an application appear here, saved in {path}.")
                     .replace("{path}", &associations_path()),
-            ));
+            )));
         } else {
             empty.set_icon_name(Some("system-search-symbolic"));
             empty.set_title(&gettext("No matches"));
