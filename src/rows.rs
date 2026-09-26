@@ -14,9 +14,7 @@ pub(crate) fn fill_sidebar(
     catalog: &[AppEntry],
     by_app: bool,
 ) -> Vec<Selection> {
-    while let Some(row) = groups.first_child() {
-        groups.remove(&row);
-    }
+    groups.remove_all();
 
     let entries: Vec<MimeEntry> = (0..store.n_items())
         .filter_map(|position| store.item(position).and_downcast::<MimeEntry>())
