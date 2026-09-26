@@ -426,29 +426,29 @@ msgstr[0] "Використати {app} для {count} типу файлів г�
 msgstr[1] "Використати {app} для всіх {count} типів файлів групи «{group}»"
 msgstr[2] "Використати {app} для всіх {count} типів файлів групи «{group}»"
 
-#: src/window.rs:585
+#: src/window.rs:587
 #, no-c-format
 msgid "Nothing changed yet"
 msgstr "Поки нічого не змінено"
 
-#: src/window.rs:587
+#: src/window.rs:589
 #, no-c-format
 msgid "File types you assign to an application appear here, saved in {path}."
 msgstr ""
 "Типи файлів, які ви призначите програмі, з’являться тут; зберігаються у "
 "{path}."
 
-#: src/window.rs:592 ui/window.ui:251
+#: src/window.rs:594 ui/window.ui:251
 #, no-c-format
 msgid "No matches"
 msgstr "Немає збігів"
 
-#: src/window.rs:593
+#: src/window.rs:595
 #, no-c-format
 msgid "No file type matches this search."
 msgstr "Жоден тип файлів не відповідає цьому запиту."
 
-#: src/window.rs:661
+#: src/window.rs:663
 #, no-c-format
 msgid "Reset {mime} to the system default"
 msgstr "{mime} скинуто до системного типового"
