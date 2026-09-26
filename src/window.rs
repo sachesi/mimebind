@@ -508,7 +508,7 @@ impl MimebindWindow {
     fn select(&self, chosen: Selection) {
         let imp = self.imp();
         imp.content_page.set_title(&match &chosen {
-            Selection::Defaults => gettext("Default Apps"),
+            Selection::Defaults => gettext("Default Applications"),
             Selection::All => gettext("All File Types"),
             Selection::Modified => gettext("Modified"),
             Selection::Media(group) => group.clone(),

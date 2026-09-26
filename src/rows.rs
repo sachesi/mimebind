@@ -30,7 +30,7 @@ pub(crate) fn sidebar_items(
     let mut items = vec![
         SidebarItem {
             selection: Selection::Defaults,
-            title: gettext("Default Apps"),
+            title: gettext("Default Applications"),
             icon: None,
             fallback: "object-select-symbolic",
             count: None,
@@ -160,7 +160,13 @@ pub(crate) fn header_factory(window: &MimebindWindow) -> gtk::SignalListItemFact
                 return;
             };
             let group = entry.type_group();
-            label.set_label(&format!("{group} ({})", header.n_items()));
+            label.set_label(
+                // Translators: a section of the list: a group of file types, such as
+                // "Images", and how many there are.
+                &gettext("{group} ({count})")
+                    .replace("{group}", &group)
+                    .replace("{count}", &header.n_items().to_string()),
+            );
 
             let app = match window.selection() {
                 Selection::App(id) => window.catalog().iter().find(|app| app.id == id),
