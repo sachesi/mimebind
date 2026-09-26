@@ -209,7 +209,7 @@ impl Assignment {
     pub(crate) fn report(&self, app: &str) -> String {
         match (self.gained, &self.error) {
             (0, None) => {
-                gettext("{app} already opened every type it supports").replace("{app}", app)
+                gettext("{app} already opens every file type it supports").replace("{app}", app)
             }
             (set, None) => ngettext(
                 "{app} now opens one more file type",

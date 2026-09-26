@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 21:12+0300\n"
+"POT-Creation-Date: 2026-09-26 21:13+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,8 @@ msgstr ""
 msgid "Mimebind"
 msgstr ""
 
-#: data/io.github.sachesi.mimebind.desktop:3
+#: data/io.github.sachesi.mimebind.desktop:3 src/rows.rs:33 src/window.rs:511
+#, no-c-format
 msgid "Default Applications"
 msgstr ""
 
@@ -124,7 +125,7 @@ msgstr ""
 
 #: src/catalog.rs:212
 #, no-c-format
-msgid "{app} already opened every type it supports"
+msgid "{app} already opens every file type it supports"
 msgstr ""
 
 #: src/catalog.rs:215
@@ -182,7 +183,7 @@ msgstr ""
 
 #: src/dialogs.rs:28
 #, no-c-format
-msgid "Use {app} for all supported types?"
+msgid "Use {app} for all supported file types?"
 msgstr ""
 
 #: src/dialogs.rs:32
@@ -211,12 +212,12 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/dialogs.rs:59 src/dialogs.rs:183 src/dialogs.rs:274
+#: src/dialogs.rs:59 src/dialogs.rs:183 src/dialogs.rs:273
 #, no-c-format
 msgid "Close"
 msgstr ""
 
-#: src/dialogs.rs:63 src/dialogs.rs:108 src/dialogs.rs:159 src/dialogs.rs:259
+#: src/dialogs.rs:63 src/dialogs.rs:108 src/dialogs.rs:159 src/dialogs.rs:258
 #, no-c-format
 msgid "Cancel"
 msgstr ""
@@ -250,15 +251,11 @@ msgid_plural "Reset {count} file types"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/dialogs.rs:154
-#, no-c-format
-msgid "Default {category}"
-msgstr ""
-
 #: src/dialogs.rs:156
 #, no-c-format
 msgid ""
-"The selected application will handle every supported type in this category."
+"The selected application will handle every supported file type in this "
+"category."
 msgstr ""
 
 #: src/dialogs.rs:181
@@ -273,32 +270,32 @@ msgstr ""
 
 #: src/dialogs.rs:227
 #, no-c-format
-msgid "One {category} type could not be set: {error}"
-msgid_plural "{failed} {category} types could not be set: {error}"
+msgid "One file type could not be set: {error}"
+msgid_plural "{failed} file types could not be set: {error}"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/dialogs.rs:262 ui/mime_row.ui:58 ui/mime_row.ui:61
+#: src/dialogs.rs:261 ui/mime_row.ui:58 ui/mime_row.ui:61
 #, no-c-format
 msgid "Reset to System Default"
 msgstr ""
 
-#: src/dialogs.rs:272
+#: src/dialogs.rs:271
 #, no-c-format
-msgid "No installed application declares support for this type."
+msgid "No installed application declares support for this file type."
 msgstr ""
 
-#: src/dialogs.rs:321
+#: src/dialogs.rs:320
 #, no-c-format
 msgid "{app} now opens {mime}"
 msgstr ""
 
-#: src/dialogs.rs:325
+#: src/dialogs.rs:324
 #, no-c-format
 msgid "Could not make {app} the default for {mime}: {error}"
 msgstr ""
 
-#: src/dialogs.rs:374
+#: src/dialogs.rs:373
 #, no-c-format
 msgid "Current default"
 msgstr ""
@@ -381,11 +378,6 @@ msgstr ""
 msgid "{description}, {mime}, no default application"
 msgstr ""
 
-#: src/rows.rs:33 src/window.rs:511
-#, no-c-format
-msgid "Default Apps"
-msgstr ""
-
 #: src/rows.rs:40 src/window.rs:512 ui/window.ui:73
 #, no-c-format
 msgid "All File Types"
@@ -401,7 +393,14 @@ msgstr ""
 msgid "Use for These"
 msgstr ""
 
-#: src/rows.rs:178
+#. Translators: a section of the list: a group of file types, such as
+#. "Images", and how many there are.
+#: src/rows.rs:166
+#, no-c-format
+msgid "{group} ({count})"
+msgstr ""
+
+#: src/rows.rs:184
 #, no-c-format
 msgid "Use {app} for the one {group} file type"
 msgid_plural "Use {app} for all {count} {group} file types"

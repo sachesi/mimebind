@@ -25,7 +25,7 @@ pub(crate) fn confirm_assign(window: &MimebindWindow, position: usize, group: Op
         Some(group) => gettext("Use {app} for the {group} group?")
             .replace("{app}", &app.name)
             .replace("{group}", group),
-        None => gettext("Use {app} for all supported types?").replace("{app}", &app.name),
+        None => gettext("Use {app} for all supported file types?").replace("{app}", &app.name),
     };
     let body = match changing {
         0 => ngettext(
@@ -151,9 +151,9 @@ pub(crate) fn confirm_reset_all(window: &MimebindWindow) {
 pub(crate) fn open_default_chooser(window: &MimebindWindow, category: DefaultCategory) {
     let catalog = window.catalog();
     let dialog = adw::AlertDialog::builder()
-        .heading(gettext("Default {category}").replace("{category}", &gettext(category.title)))
+        .heading(gettext(category.title))
         .body(gettext(
-            "The selected application will handle every supported type in this category.",
+            "The selected application will handle every supported file type in this category.",
         ))
         .build();
     dialog.add_response("cancel", &gettext("Cancel"));
@@ -224,12 +224,11 @@ pub(crate) fn open_default_chooser(window: &MimebindWindow, category: DefaultCat
                                 .replace("{app}", &name)
                                 .replace("{category}", &gettext(category.title)),
                             Some(error) => ngettext(
-                                "One {category} type could not be set: {error}",
-                                "{failed} {category} types could not be set: {error}",
+                                "One file type could not be set: {error}",
+                                "{failed} file types could not be set: {error}",
                                 outcome.failed as u32,
                             )
                             .replace("{failed}", &outcome.failed.to_string())
-                            .replace("{category}", &gettext(category.title))
                             .replace("{error}", &error.to_string()),
                         };
                         window.toast(&message);
@@ -269,7 +268,7 @@ pub(crate) fn open_chooser(window: &MimebindWindow, entry: &MimeEntry) {
     if candidates.is_empty() {
         dialog.set_body(&format!(
             "{mime}\n\n{}",
-            gettext("No installed application declares support for this type.")
+            gettext("No installed application declares support for this file type.")
         ));
         dialog.set_response_label("close", &gettext("Close"));
     } else {

@@ -5,8 +5,8 @@ It is written in Rust with GTK 4 and libadwaita, and writes associations through
 `~/.config/mimeapps.list`, so the choice holds on any desktop that follows the
 freedesktop.org MIME applications specification, not only GNOME.
 
-A Default Apps page covers the web browser, mail, calendar, images, audio and video. The
-full list can be browsed by application or by media group and searched by description or
+A Default Applications page covers the web browser, mail, calendar, images, audio and video. The
+full list can be browsed by application or by media type and searched by description or
 MIME type; each row shows the application that opens the type now. An application can take
 every type it supports, or one media group of them, in one step. An application is credited
 with the subtypes the MIME database derives from what it declares, so an editor that claims
