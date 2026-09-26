@@ -35,9 +35,16 @@ pub(crate) fn confirm_assign(window: &MimebindWindow, position: usize, group: Op
         )
         .replace("{app}", &app.name)
         .replace("{total}", &total.to_string()),
+        _ if changing == total => ngettext(
+            "{app} would become the default for the one file type it supports here.",
+            "{app} would become the default for all {total} file types it supports here.",
+            total as u32,
+        )
+        .replace("{app}", &app.name)
+        .replace("{total}", &total.to_string()),
         _ => ngettext(
-            "{app} supports {total} file types here and would take one from another application.",
-            "{app} supports {total} file types here and would take {changing} from another application.",
+            "{app} would become the default for one more of the {total} file types it supports here.",
+            "{app} would become the default for {changing} more of the {total} file types it supports here.",
             changing as u32,
         )
         .replace("{app}", &app.name)
@@ -314,8 +321,12 @@ pub(crate) fn open_chooser(window: &MimebindWindow, entry: &MimeEntry) {
                                 Ok(()) => gettext("{app} now opens {mime}")
                                     .replace("{app}", &name)
                                     .replace("{mime}", &mime),
-                                Err(error) => gettext("Could not set the default: {error}")
-                                    .replace("{error}", &error.to_string()),
+                                Err(error) => {
+                                    gettext("Could not make {app} the default for {mime}: {error}")
+                                        .replace("{app}", &name)
+                                        .replace("{mime}", &mime)
+                                        .replace("{error}", &error.to_string())
+                                }
                             });
                         },
                     );
