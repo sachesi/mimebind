@@ -50,12 +50,12 @@ fn show_about(app: &adw::Application) {
         .version(env!("CARGO_PKG_VERSION"))
         .developer_name("sachesi")
         .license_type(gtk::License::Gpl30)
-        .comments(
-            gettext("Choose which application opens which file type.")
+        .comments(glib::markup_escape_text(
+            &(gettext("Choose which application opens which file type.")
                 + "\n\n"
                 + &gettext("Changes are saved in {path}.")
-                    .replace("{path}", &window::associations_path()),
-        )
+                    .replace("{path}", &window::associations_path())),
+        ))
         .translator_credits(gettext("translator-credits"))
         .website("https://github.com/sachesi/mimebind")
         .issue_url("https://github.com/sachesi/mimebind/issues")
