@@ -116,6 +116,32 @@ pub(crate) fn sidebar_row(item: &SidebarItem) -> (adw::ActionRow, Option<gtk::La
 /// application is selected, a button that assigns just this group to it.
 pub(crate) fn header_factory(window: &MimebindWindow) -> gtk::SignalListItemFactory {
     let factory = gtk::SignalListItemFactory::new();
+    factory.connect_setup(|_, header| {
+        let header = header
+            .downcast_ref::<gtk::ListHeader>()
+            .expect("a list header");
+        let row = gtk::Box::builder()
+            .margin_top(6)
+            .margin_bottom(6)
+            .margin_start(12)
+            .margin_end(12)
+            .build();
+        row.append(
+            &gtk::Label::builder()
+                .xalign(0.0)
+                .hexpand(true)
+                .css_classes(["heading"])
+                .build(),
+        );
+        row.append(
+            &gtk::Button::builder()
+                .label(gettext("Use for These"))
+                .valign(gtk::Align::Center)
+                .css_classes(["flat"])
+                .build(),
+        );
+        header.set_child(Some(&row));
+    });
     factory.connect_bind(glib::clone!(
         #[weak]
         window,
@@ -126,49 +152,37 @@ pub(crate) fn header_factory(window: &MimebindWindow) -> gtk::SignalListItemFact
             let Some(entry) = header.item().and_downcast::<MimeEntry>() else {
                 return;
             };
+            let row = header.child().expect("a header row from setup");
+            let label = row.first_child().and_downcast::<gtk::Label>();
+            let button = row.last_child().and_downcast::<gtk::Button>();
+            let (Some(label), Some(button)) = (label, button) else {
+                return;
+            };
             let group = entry.type_group();
+            label.set_label(&format!("{group} ({})", header.n_items()));
 
-            let row = gtk::Box::builder()
-                .margin_top(6)
-                .margin_bottom(6)
-                .margin_start(12)
-                .margin_end(12)
-                .build();
-            row.append(
-                &gtk::Label::builder()
-                    .label(format!("{group} ({})", header.n_items()))
-                    .xalign(0.0)
-                    .hexpand(true)
-                    .css_classes(["heading"])
-                    .build(),
-            );
-
-            if let Selection::App(id) = window.selection()
-                && let Some(app) = window.catalog().iter().find(|app| app.id == id)
-            {
+            let app = match window.selection() {
+                Selection::App(id) => window.catalog().iter().find(|app| app.id == id),
+                _ => None,
+            };
+            button.set_visible(app.is_some());
+            if let Some(app) = app {
                 // The window owns the action, so the button does not need to capture
-                // anything that is built after this factory.
-                let button = gtk::Button::builder()
-                    .label(gettext("Use for These"))
-                    .valign(gtk::Align::Center)
-                    .css_classes(["flat"])
-                    .action_name("win.assign-group")
-                    .action_target(&group.to_variant())
-                    .tooltip_text(
-                        ngettext(
-                            "Use {app} for the one {group} file type",
-                            "Use {app} for all {count} {group} file types",
-                            header.n_items(),
-                        )
-                        .replace("{app}", &app.name)
-                        .replace("{count}", &header.n_items().to_string())
-                        .replace("{group}", &group),
+                // anything that is built after this factory. The target goes first:
+                // an action name without one is a type mismatch GTK warns about.
+                button.set_action_target_value(Some(&group.to_variant()));
+                button.set_action_name(Some("win.assign-group"));
+                button.set_tooltip_text(Some(
+                    &ngettext(
+                        "Use {app} for the one {group} file type",
+                        "Use {app} for all {count} {group} file types",
+                        header.n_items(),
                     )
-                    .build();
-                row.append(&button);
+                    .replace("{app}", &app.name)
+                    .replace("{count}", &header.n_items().to_string())
+                    .replace("{group}", &group),
+                ));
             }
-
-            header.set_child(Some(&row));
         }
     ));
     factory
