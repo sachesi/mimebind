@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 21:03+0300\n"
+"POT-Creation-Date: 2026-09-26 21:10+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -298,6 +298,11 @@ msgstr ""
 msgid "Could not make {app} the default for {mime}: {error}"
 msgstr ""
 
+#: src/dialogs.rs:374
+#, no-c-format
+msgid "Current default"
+msgstr ""
+
 #: src/entry.rs:81
 #, no-c-format
 msgid "Applications and Documents"
@@ -464,6 +469,10 @@ msgstr ""
 msgid "Choose the applications used for common file types and links."
 msgstr ""
 
-#: ui/window.ui:284
+#: ui/window.ui:267
+msgid "Loading file types"
+msgstr ""
+
+#: ui/window.ui:287
 msgid "_About Mimebind"
 msgstr ""

@@ -202,7 +202,7 @@ pub(crate) fn open_default_chooser(window: &MimebindWindow, category: DefaultCat
             row.add_prefix(&image);
         }
         if current.as_deref() == Some(app.id.as_str()) {
-            row.add_suffix(&gtk::Image::from_icon_name("object-select-symbolic"));
+            mark_current(&row);
         }
         row.connect_activated(glib::clone!(
             #[weak]
@@ -295,7 +295,7 @@ pub(crate) fn open_chooser(window: &MimebindWindow, entry: &MimeEntry) {
                 row.add_prefix(&image);
             }
             if current.as_ref().map(|c| c.id()) == Some(app.id()) {
-                row.add_suffix(&gtk::Image::from_icon_name("object-select-symbolic"));
+                mark_current(&row);
             }
 
             let name = app.display_name().to_string();
@@ -354,4 +354,23 @@ pub(crate) fn open_chooser(window: &MimebindWindow, entry: &MimeEntry) {
     );
 
     dialog.present(Some(window));
+}
+
+/// Check the row of the application that opens the type now. A screen reader
+/// reads the row, not the icon, so the row says it.
+fn mark_current(row: &adw::ActionRow) {
+    row.add_suffix(
+        &gtk::Image::builder()
+            .icon_name("object-select-symbolic")
+            .accessible_role(gtk::AccessibleRole::Presentation)
+            .build(),
+    );
+    let row = row.upcast_ref::<gtk::Widget>();
+    // AdwActionRow is described by its subtitle label. While that relation is set
+    // GTK ignores the description property, and GTK 4.22 derives no description
+    // text from the label either.
+    row.reset_relation(gtk::AccessibleRelation::DescribedBy);
+    row.update_property(&[gtk::accessible::Property::Description(&gettext(
+        "Current default",
+    ))]);
 }

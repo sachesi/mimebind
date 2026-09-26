@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 21:02+0300\n"
+"POT-Creation-Date: 2026-09-26 21:10+0300\n"
 "PO-Revision-Date: 2026-09-07 19:01+0300\n"
 "Last-Translator: sachesi <xsachesi@pm.me>\n"
 "Language-Team: Russian\n"
@@ -342,6 +342,11 @@ msgstr "{app} теперь открывает {mime}"
 msgid "Could not make {app} the default for {mime}: {error}"
 msgstr "Не удалось сделать {app} приложением по умолчанию для {mime}: {error}"
 
+#: src/dialogs.rs:374
+#, no-c-format
+msgid "Current default"
+msgstr "Используется по умолчанию"
+
 #: src/entry.rs:81
 #, no-c-format
 msgid "Applications and Documents"
@@ -511,6 +516,10 @@ msgstr "Поиск по типам файлов и описаниям"
 msgid "Choose the applications used for common file types and links."
 msgstr "Выберите приложения для распространённых типов файлов и ссылок."
 
-#: ui/window.ui:284
+#: ui/window.ui:267
+msgid "Loading file types"
+msgstr "Загрузка типов файлов"
+
+#: ui/window.ui:287
 msgid "_About Mimebind"
 msgstr "_О программе Mimebind"
