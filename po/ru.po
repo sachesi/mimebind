@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 21:36+0300\n"
+"POT-Creation-Date: 2026-09-26 21:49+0300\n"
 "PO-Revision-Date: 2026-09-07 19:01+0300\n"
 "Last-Translator: sachesi <xsachesi@pm.me>\n"
 "Language-Team: Russian\n"
@@ -114,10 +114,26 @@ msgid "open with"
 msgstr "открыть с помощью"
 
 #: data/io.github.sachesi.mimebind.metainfo.xml:53
+msgid ""
+"Setting a default no longer freezes the window, and the list stays where it "
+"was scrolled. After a change the window reports what the applications now "
+"open, including when a desktop-specific file such as gnome-mimeapps.list "
+"overrides the choice. The window fits a screen 360 pixels wide, screen "
+"readers are told which application is the current default, and Ctrl+F opens "
+"the search."
+msgstr ""
+"Назначение приложения по умолчанию больше не блокирует окно, а список "
+"остаётся там, где его прокрутили. После изменений окно сообщает, что именно "
+"теперь открывают приложения, в том числе когда выбор перекрывает файл "
+"отдельного окружения, например gnome-mimeapps.list. Окно помещается на "
+"экране шириной 360 пикселей, программы чтения с экрана узнают, какое "
+"приложение сейчас используется по умолчанию, а Ctrl+F открывает поиск."
+
+#: data/io.github.sachesi.mimebind.metainfo.xml:58
 msgid "Ukrainian and Russian translations."
 msgstr "Переводы на украинский и русский."
 
-#: data/io.github.sachesi.mimebind.metainfo.xml:58
+#: data/io.github.sachesi.mimebind.metainfo.xml:63
 msgid "First release."
 msgstr "Первый выпуск."
 
