@@ -46,19 +46,32 @@ template $MimebindMimeRow: Box {
   }
 
   // Keeps its place on every row so the column above it stays straight; on an
-  // unchanged type it is invisible and inert.
-  Button reset_button {
-    icon-name: "edit-undo-symbolic";
-    tooltip-text: _("Reset to System Default");
-    valign: center;
+  // unchanged type the empty page is shown, and the button is not there even
+  // for a screen reader.
+  Stack reset_slot {
+    StackPage {
+      name: "reset";
 
-    accessibility {
-      label: _("Reset to System Default");
+      child: Button reset_button {
+        icon-name: "edit-undo-symbolic";
+        tooltip-text: _("Reset to System Default");
+        valign: center;
+
+        accessibility {
+          label: _("Reset to System Default");
+        }
+
+        styles [
+          "flat",
+        ]
+      };
     }
 
-    styles [
-      "flat",
-    ]
+    StackPage {
+      name: "unchanged";
+
+      child: Box {};
+    }
   }
 
   Image {

@@ -26,6 +26,8 @@ mod imp {
         #[template_child]
         pub app_label: TemplateChild<gtk::Label>,
         #[template_child]
+        pub reset_slot: TemplateChild<gtk::Stack>,
+        #[template_child]
         pub reset_button: TemplateChild<gtk::Button>,
         /// Hides the application name, for windows too narrow for two columns.
         #[property(get, set)]
@@ -99,10 +101,8 @@ impl MimeRow {
         // The target first: an action name without one is a type mismatch GTK warns about.
         reset.set_action_target_value(Some(&mime.to_variant()));
         reset.set_action_name(Some("win.reset-type"));
-        reset.set_opacity(if modified { 1.0 } else { 0.0 });
-        reset.set_can_target(modified);
-        reset.set_can_focus(modified);
-        reset.update_state(&[gtk::accessible::State::Hidden(!modified)]);
+        imp.reset_slot
+            .set_visible_child_name(if modified { "reset" } else { "unchanged" });
 
         let default_app = gio::AppInfo::default_for_type(&mime, false);
         match default_app.as_ref().and_then(|app| app.icon()) {

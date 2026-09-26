@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 21:29+0300\n"
+"POT-Creation-Date: 2026-09-26 21:31+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -275,7 +275,7 @@ msgid_plural "{failed} file types could not be set: {error}"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/dialogs.rs:261 ui/mime_row.ui:58 ui/mime_row.ui:61
+#: src/dialogs.rs:261 ui/mime_row.ui:63 ui/mime_row.ui:66
 #, no-c-format
 msgid "Reset to System Default"
 msgstr ""
