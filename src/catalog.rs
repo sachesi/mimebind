@@ -3,6 +3,7 @@ use gettextrs::{gettext, ngettext};
 use gtk::prelude::*;
 use gtk::{gio, glib};
 use std::collections::{BTreeMap, BTreeSet, HashSet};
+use std::path::{Path, PathBuf};
 
 /// An installed application together with every content type it declares.
 pub(crate) struct AppEntry {
@@ -129,8 +130,12 @@ pub(crate) fn installed_mime_types(apps: &[AppEntry]) -> BTreeSet<String> {
 /// Types the user has assigned themselves, read from the file GIO writes.
 /// GIO has no API for "is this mine or the system's", so the file is parsed here.
 pub(crate) fn user_overrides() -> HashSet<String> {
-    let path = glib::user_config_dir().join("mimeapps.list");
-    let Ok(text) = std::fs::read_to_string(&path) else {
+    defaults_in(&glib::user_config_dir().join("mimeapps.list"))
+}
+
+/// The types with an entry under [Default Applications] in a mimeapps.list.
+fn defaults_in(path: &Path) -> HashSet<String> {
+    let Ok(text) = std::fs::read_to_string(path) else {
         return HashSet::new();
     };
 
@@ -154,9 +159,46 @@ pub(crate) fn already_default(id: &str, mime: &str) -> bool {
         .is_some_and(|current| current == id)
 }
 
-/// What a bulk assignment did: how many types were set and how many refused.
+/// `path` as the user would type it, with the home directory shortened to `~`.
+pub(crate) fn home_relative(path: &Path) -> String {
+    match path.strip_prefix(glib::home_dir()) {
+        Ok(relative) => format!("~/{}", relative.display()),
+        Err(_) => path.display().to_string(),
+    }
+}
+
+/// The desktop-specific list, such as gnome-mimeapps.list, that names a default
+/// for `mime`. The XDG spec reads one next to mimeapps.list before it, and GIO
+/// only ever writes mimeapps.list, so a default set there cannot be overridden.
+fn overriding_list(mime: &str) -> Option<PathBuf> {
+    let desktops = std::env::var("XDG_CURRENT_DESKTOP").ok()?;
+    desktops
+        .split(':')
+        .map(|desktop| {
+            glib::user_config_dir().join(format!("{}-mimeapps.list", desktop.to_lowercase()))
+        })
+        .find(|path| defaults_in(path).contains(mime))
+}
+
+/// GIO accepts a default it then does not apply when another list takes
+/// precedence, so check that the application with this id really opens `mime`.
+fn verify_default(id: &str, mime: &str) -> Result<(), glib::Error> {
+    if already_default(id, mime) {
+        return Ok(());
+    }
+    let reason = match overriding_list(mime) {
+        // Translators: {path} is a file such as ~/.config/gnome-mimeapps.list that
+        // chooses another application and is read before the one this app writes.
+        Some(path) => gettext("{path} takes precedence").replace("{path}", &home_relative(&path)),
+        None => gettext("another setting takes precedence"),
+    };
+    Err(glib::Error::new(gio::IOErrorEnum::Failed, &reason))
+}
+
+/// What a bulk assignment did: how many types the application opens now that it
+/// did not before, and how many it still does not.
 pub(crate) struct Assignment {
-    pub(crate) set: usize,
+    pub(crate) gained: usize,
     pub(crate) failed: usize,
     /// The first refusal, kept so the report can name a cause rather than a count.
     pub(crate) error: Option<glib::Error>,
@@ -165,7 +207,7 @@ pub(crate) struct Assignment {
 impl Assignment {
     /// What to tell the user after a bulk assignment.
     pub(crate) fn report(&self, app: &str) -> String {
-        match (self.set, &self.error) {
+        match (self.gained, &self.error) {
             (0, None) => {
                 gettext("{app} already opened every type it supports").replace("{app}", app)
             }
@@ -207,14 +249,15 @@ fn find_app(id: &str) -> Result<gio::AppInfo, glib::Error> {
 /// Make the application with this id the default for one type, even when it
 /// already is, so the choice is recorded as the user's own.
 pub(crate) fn set_default(id: &str, mime: &str) -> Result<(), glib::Error> {
-    find_app(id)?.set_as_default_for_type(mime)
+    find_app(id)?.set_as_default_for_type(mime)?;
+    verify_default(id, mime)
 }
 
 /// Make the application with this id the default for the given types, skipping
 /// the ones it already opens.
 pub(crate) fn assign_types(id: &str, mimes: &[String]) -> Assignment {
     let mut outcome = Assignment {
-        set: 0,
+        gained: 0,
         failed: 0,
         error: None,
     };
@@ -226,12 +269,26 @@ pub(crate) fn assign_types(id: &str, mimes: &[String]) -> Assignment {
             return outcome;
         }
     };
-    for mime in mimes {
+    let pending: Vec<&String> = mimes
+        .iter()
+        .filter(|mime| !already_default(id, mime))
+        .collect();
+    let mut refused = HashSet::new();
+    for mime in &pending {
+        // A subtype with no default of its own follows its supertype, which may
+        // have been written already.
         if already_default(id, mime) {
             continue;
         }
-        match info.set_as_default_for_type(mime) {
-            Ok(()) => outcome.set += 1,
+        if let Err(error) = info.set_as_default_for_type(mime) {
+            outcome.failed += 1;
+            outcome.error.get_or_insert(error);
+            refused.insert(*mime);
+        }
+    }
+    for mime in pending.into_iter().filter(|mime| !refused.contains(mime)) {
+        match verify_default(id, mime) {
+            Ok(()) => outcome.gained += 1,
             Err(error) => {
                 outcome.failed += 1;
                 outcome.error.get_or_insert(error);
@@ -254,7 +311,6 @@ pub(crate) fn scoped_types(app: &AppEntry, group: Option<&str>) -> Vec<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::path::PathBuf;
     use std::sync::Once;
 
     /// Point GIO at a scratch configuration, so the tests never write to the
@@ -270,7 +326,10 @@ mod tests {
             std::fs::create_dir(&scratch).unwrap();
             // SAFETY: no other test reads the environment; the ones that reach GIO
             // wait on this `Once` before they call into it.
-            unsafe { std::env::set_var("XDG_CONFIG_HOME", &scratch) };
+            unsafe {
+                std::env::set_var("XDG_CONFIG_HOME", &scratch);
+                std::env::set_var("XDG_CURRENT_DESKTOP", "mimebind-test");
+            }
         });
         // GLib reads the variable once and keeps the answer. Should anything have
         // asked before the line above, stop rather than reset the real associations.
@@ -336,7 +395,7 @@ mod tests {
         test_config_home();
         let mimes = vec!["text/plain".to_string(), "image/png".to_string()];
         let outcome = assign_types("mimebind-no-such-application.desktop", &mimes);
-        assert_eq!((outcome.set, outcome.failed), (0, 2));
+        assert_eq!((outcome.gained, outcome.failed), (0, 2));
         assert!(outcome.error.is_some());
     }
 
@@ -395,13 +454,8 @@ mod tests {
         let every: Vec<String> = widest.types.iter().cloned().collect();
         let outcome = assign_types(&widest.id, &every);
         assert_eq!(outcome.failed, 0, "{:?}", outcome.error);
-        // Fewer writes than planned is correct: assigning a supertype makes its
-        // subtypes resolve to the same application, so they get skipped.
-        assert!(
-            outcome.set > 0 && outcome.set <= changing,
-            "wrote {} of a planned {changing}",
-            outcome.set
-        );
+        // Subtypes that follow a supertype are never written, and still count.
+        assert_eq!(outcome.gained, changing);
         for mime in &widest.types {
             assert_eq!(
                 gio::AppInfo::default_for_type(mime, false).map(|a| a.id()),
@@ -409,6 +463,22 @@ mod tests {
                 "{mime} did not take the bulk default"
             );
         }
+
+        // A desktop-specific list is read before mimeapps.list, so a default it
+        // names wins over the one GIO writes, and neither write may claim success.
+        let shadowed = widest.types.first().unwrap();
+        std::fs::write(
+            scratch.join("mimebind-test-mimeapps.list"),
+            format!("[Default Applications]\n{shadowed}={}\n", thief.id),
+        )
+        .unwrap();
+        let error = set_default(&widest.id, shadowed).unwrap_err();
+        assert!(
+            error.message().contains("mimebind-test-mimeapps.list"),
+            "{error}"
+        );
+        let outcome = assign_types(&widest.id, std::slice::from_ref(shadowed));
+        assert_eq!((outcome.gained, outcome.failed), (0, 1));
 
         for mime in user_overrides() {
             gio::AppInfo::reset_type_associations(&mime);
