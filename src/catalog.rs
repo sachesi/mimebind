@@ -261,10 +261,13 @@ mod tests {
     /// user's own mimeapps.list.
     fn test_config_home() -> PathBuf {
         static INIT: Once = Once::new();
-        let scratch = std::env::temp_dir().join("mimebind-test-config");
+        // One per run, so two checkouts testing at once keep apart; `create_dir`
+        // rather than `create_dir_all`, so a directory someone else left under that
+        // name stops the run instead of receiving its writes.
+        let scratch =
+            std::env::temp_dir().join(format!("mimebind-test-config-{}", std::process::id()));
         INIT.call_once(|| {
-            std::fs::remove_dir_all(&scratch).ok();
-            std::fs::create_dir_all(&scratch).unwrap();
+            std::fs::create_dir(&scratch).unwrap();
             // SAFETY: no other test reads the environment; the ones that reach GIO
             // wait on this `Once` before they call into it.
             unsafe { std::env::set_var("XDG_CONFIG_HOME", &scratch) };
