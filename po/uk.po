@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 21:29+0300\n"
+"POT-Creation-Date: 2026-09-26 21:31+0300\n"
 "PO-Revision-Date: 2026-09-07 19:01+0300\n"
 "Last-Translator: sachesi <xsachesi@pm.me>\n"
 "Language-Team: Ukrainian\n"
@@ -309,7 +309,7 @@ msgstr[0] "Не вдалося встановити {failed} тип файлу: 
 msgstr[1] "Не вдалося встановити {failed} типи файлів: {error}"
 msgstr[2] "Не вдалося встановити {failed} типів файлів: {error}"
 
-#: src/dialogs.rs:261 ui/mime_row.ui:58 ui/mime_row.ui:61
+#: src/dialogs.rs:261 ui/mime_row.ui:63 ui/mime_row.ui:66
 #, no-c-format
 msgid "Reset to System Default"
 msgstr "Скинути до системного типового"
