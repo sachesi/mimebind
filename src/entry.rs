@@ -35,7 +35,7 @@ mod imp {
     impl ObjectImpl for MimeEntry {
         fn signals() -> &'static [glib::subclass::Signal] {
             static SIGNALS: OnceLock<Vec<glib::subclass::Signal>> = OnceLock::new();
-            SIGNALS.get_or_init(|| vec![glib::subclass::Signal::builder("default-changed").build()])
+            SIGNALS.get_or_init(|| vec![glib::subclass::Signal::builder("changed").build()])
         }
     }
 }
@@ -56,18 +56,20 @@ impl MimeEntry {
             .build()
     }
 
-    /// Tell the row showing this type to read its default again, for a change
-    /// that reaches it without touching the entry, such as one to a supertype.
-    pub(crate) fn default_changed(&self) {
-        self.emit_by_name::<()>("default-changed", &[]);
+    /// Read whether the user set this type, and tell the row showing it to read
+    /// the entry and its default again. The default can move without a write to
+    /// this type at all, when its supertype gets one.
+    pub(crate) fn update(&self, overrides: &HashSet<String>) {
+        self.set_modified(overrides.contains(&self.mime()));
+        self.emit_by_name::<()>("changed", &[]);
     }
 
-    pub(crate) fn connect_default_changed(
+    pub(crate) fn connect_changed(
         &self,
         callback: impl Fn(&Self) + 'static,
     ) -> glib::SignalHandlerId {
         self.connect_closure(
-            "default-changed",
+            "changed",
             false,
             glib::closure_local!(move |entry: &Self| callback(entry)),
         )
