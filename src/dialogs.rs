@@ -18,7 +18,7 @@ pub(crate) fn confirm_assign(window: &MimebindWindow, position: usize, group: Op
     }
     let changing = mimes
         .iter()
-        .filter(|mime| !already_default(app, mime))
+        .filter(|mime| !already_default(&app.id, mime))
         .count();
 
     let heading = match &group {
@@ -64,9 +64,15 @@ pub(crate) fn confirm_assign(window: &MimebindWindow, position: usize, group: Op
                     return;
                 }
                 let app = &window.catalog()[position];
-                let outcome = assign_types(app, scoped_types(app, group.as_deref()).into_iter());
-                window.reload();
-                window.toast(&outcome.report(&app.name));
+                let (id, name) = (app.id.clone(), app.name.clone());
+                let mimes = scoped_types(app, group.as_deref());
+                window.write_in_background(
+                    move || assign_types(&id, &mimes),
+                    move |window, outcome| {
+                        window.reload();
+                        window.toast(&outcome.report(&name));
+                    },
+                );
             }
         ),
     );
@@ -101,17 +107,24 @@ pub(crate) fn confirm_reset_all(window: &MimebindWindow) {
                 if response != "reset" {
                     return;
                 }
-                for mime in window.overrides().iter() {
-                    gio::AppInfo::reset_type_associations(mime);
-                }
-                window.reload();
-                window.toast(
-                    &ngettext(
-                        "Reset one file type",
-                        "Reset {count} file types",
-                        count as u32,
-                    )
-                    .replace("{count}", &count.to_string()),
+                let mimes: Vec<String> = window.overrides().iter().cloned().collect();
+                window.write_in_background(
+                    move || {
+                        for mime in &mimes {
+                            gio::AppInfo::reset_type_associations(mime);
+                        }
+                    },
+                    move |window, ()| {
+                        window.reload();
+                        window.toast(
+                            &ngettext(
+                                "Reset one file type",
+                                "Reset {count} file types",
+                                count as u32,
+                            )
+                            .replace("{count}", &count.to_string()),
+                        );
+                    },
                 );
             }
         ),
@@ -183,24 +196,30 @@ pub(crate) fn open_default_chooser(window: &MimebindWindow, category: DefaultCat
             window,
             move |_| {
                 let app = &window.catalog()[position];
-                let outcome = assign_types(app, default_types(app, category.kind).into_iter());
-                window.reload();
-                window.refresh_default_rows();
-                let message = match &outcome.error {
-                    None => gettext("{app} is now the default for {category}")
-                        .replace("{app}", &app.name)
-                        .replace("{category}", &gettext(category.title)),
-                    Some(error) => ngettext(
-                        "One {category} type could not be set: {error}",
-                        "{failed} {category} types could not be set: {error}",
-                        outcome.failed as u32,
-                    )
-                    .replace("{failed}", &outcome.failed.to_string())
-                    .replace("{category}", &gettext(category.title))
-                    .replace("{error}", &error.to_string()),
-                };
-                window.toast(&message);
+                let (id, name) = (app.id.clone(), app.name.clone());
+                let mimes = default_types(app, category.kind);
                 dialog.close();
+                window.write_in_background(
+                    move || assign_types(&id, &mimes),
+                    move |window, outcome| {
+                        window.reload();
+                        window.refresh_default_rows();
+                        let message = match &outcome.error {
+                            None => gettext("{app} is now the default for {category}")
+                                .replace("{app}", &name)
+                                .replace("{category}", &gettext(category.title)),
+                            Some(error) => ngettext(
+                                "One {category} type could not be set: {error}",
+                                "{failed} {category} types could not be set: {error}",
+                                outcome.failed as u32,
+                            )
+                            .replace("{failed}", &outcome.failed.to_string())
+                            .replace("{category}", &gettext(category.title))
+                            .replace("{error}", &error.to_string()),
+                        };
+                        window.toast(&message);
+                    },
+                );
             }
         ));
         list.append(&row);

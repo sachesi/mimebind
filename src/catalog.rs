@@ -49,9 +49,16 @@ pub(crate) fn installed_apps() -> Vec<AppEntry> {
     apps
 }
 
+/// Every content type some application declares.
+pub(crate) fn declared_types(apps: &[AppEntry]) -> BTreeSet<String> {
+    apps.iter()
+        .flat_map(|app| app.declared.iter().cloned())
+        .collect()
+}
+
 /// Every content type the shared MIME database knows about, plus anything an
 /// application declares that the database has not heard of.
-pub(crate) fn known_mime_types(apps: &[AppEntry]) -> BTreeSet<String> {
+pub(crate) fn known_mime_types(declared: &BTreeSet<String>) -> BTreeSet<String> {
     let mut types = BTreeSet::new();
     let mut dirs = glib::system_data_dirs();
     dirs.push(glib::user_data_dir());
@@ -65,23 +72,22 @@ pub(crate) fn known_mime_types(apps: &[AppEntry]) -> BTreeSet<String> {
             );
         }
     }
-    types.extend(apps.iter().flat_map(|app| app.types.iter().cloned()));
+    types.extend(declared.iter().cloned());
     types
 }
 
 /// A desktop file lists the types an application handles directly, but the MIME
 /// database makes many types a subtype of one of them: an editor that claims
 /// `text/plain` also opens `text/rust` and `text/x-c++src`, and GIO resolves that
-/// on its own. Fold those in so an application shows what it can really open.
-pub(crate) fn expand_supported_types(apps: &mut [AppEntry], known: &BTreeSet<String>) {
-    // Roughly 130k content_type_is_a calls, about 0.2s once at startup. If that
-    // ever matters, parse <data dir>/mime/subclasses into a parent map instead.
-    let declared: BTreeSet<String> = apps
-        .iter()
-        .flat_map(|app| app.types.iter().cloned())
-        .collect();
-    let mut subtypes: BTreeMap<String, Vec<String>> = BTreeMap::new();
-    for parent in &declared {
+/// on its own. Maps each declared type to the known types derived from it.
+///
+/// Roughly 130k `content_type_is_a` calls, about 0.2s, so the window runs this on
+/// a worker thread. If that ever matters, parse <data dir>/mime/subclasses into a
+/// parent map instead.
+pub(crate) fn subtypes_of(declared: &BTreeSet<String>) -> BTreeMap<String, Vec<String>> {
+    let known = known_mime_types(declared);
+    let mut subtypes = BTreeMap::new();
+    for parent in declared {
         let children: Vec<String> = known
             .iter()
             .filter(|kind| *kind != parent && gio::functions::content_type_is_a(kind, parent))
@@ -91,7 +97,15 @@ pub(crate) fn expand_supported_types(apps: &mut [AppEntry], known: &BTreeSet<Str
             subtypes.insert(parent.clone(), children);
         }
     }
+    subtypes
+}
 
+/// Credit every application with the subtypes of what it declares, so it shows
+/// what it can really open.
+pub(crate) fn expand_supported_types(
+    apps: &mut [AppEntry],
+    subtypes: &BTreeMap<String, Vec<String>>,
+) {
     for app in apps {
         let inherited: Vec<String> = app
             .types
@@ -102,14 +116,6 @@ pub(crate) fn expand_supported_types(apps: &mut [AppEntry], known: &BTreeSet<Str
             .collect();
         app.types.extend(inherited);
     }
-}
-
-/// Installed applications with their full set of openable types.
-pub(crate) fn build_catalog() -> Vec<AppEntry> {
-    let mut apps = installed_apps();
-    let known = known_mime_types(&apps);
-    expand_supported_types(&mut apps, &known);
-    apps
 }
 
 /// Every content type some installed application can open. Types nothing handles
@@ -140,11 +146,12 @@ pub(crate) fn user_overrides() -> HashSet<String> {
     overrides
 }
 
-/// True when this application already wins the type, so nothing needs writing.
-pub(crate) fn already_default(app: &AppEntry, mime: &str) -> bool {
+/// True when the application with this id already wins the type, so nothing
+/// needs writing.
+pub(crate) fn already_default(id: &str, mime: &str) -> bool {
     gio::AppInfo::default_for_type(mime, false)
         .and_then(|current| current.id())
-        .is_some_and(|current| current == app.id)
+        .is_some_and(|current| current == id)
 }
 
 /// What a bulk assignment did: how many types were set and how many refused.
@@ -182,22 +189,33 @@ impl Assignment {
     }
 }
 
-/// Make one application the default for the given types, skipping the ones it
-/// already opens.
-pub(crate) fn assign_types<'a>(
-    app: &AppEntry,
-    mimes: impl Iterator<Item = &'a String>,
-) -> Assignment {
+/// Make the application with this id the default for the given types, skipping
+/// the ones it already opens. Every write rewrites mimeapps.list, so a large batch
+/// belongs on a worker thread; the id is looked up here because a `gio::AppInfo`
+/// cannot be sent to one.
+pub(crate) fn assign_types(id: &str, mimes: &[String]) -> Assignment {
     let mut outcome = Assignment {
         set: 0,
         failed: 0,
         error: None,
     };
+    let Some(info) = gio::AppInfo::all()
+        .into_iter()
+        .find(|info| info.id().is_some_and(|candidate| candidate == id))
+    else {
+        outcome.failed = mimes.len();
+        outcome.error = Some(glib::Error::new(
+            gio::IOErrorEnum::NotFound,
+            // Translators: {app} is a desktop file name, such as org.gnome.TextEditor.desktop.
+            &gettext("{app} is not installed").replace("{app}", id),
+        ));
+        return outcome;
+    };
     for mime in mimes {
-        if already_default(app, mime) {
+        if already_default(id, mime) {
             continue;
         }
-        match app.info.set_as_default_for_type(mime) {
+        match info.set_as_default_for_type(mime) {
             Ok(()) => outcome.set += 1,
             Err(error) => {
                 outcome.failed += 1;
@@ -210,10 +228,11 @@ pub(crate) fn assign_types<'a>(
 
 /// The types a bulk action covers: everything an application supports, or only
 /// the part of it in one media group.
-pub(crate) fn scoped_types<'a>(app: &'a AppEntry, group: Option<&'a str>) -> Vec<&'a String> {
+pub(crate) fn scoped_types(app: &AppEntry, group: Option<&str>) -> Vec<String> {
     app.types
         .iter()
         .filter(|mime| group.is_none_or(|group| media_group(mime) == group))
+        .cloned()
         .collect()
 }
 
@@ -245,6 +264,15 @@ mod tests {
         scratch
     }
 
+    /// Installed applications with their full set of openable types, as the window
+    /// builds them.
+    fn build_catalog() -> Vec<AppEntry> {
+        let mut apps = installed_apps();
+        let subtypes = subtypes_of(&declared_types(&apps));
+        expand_supported_types(&mut apps, &subtypes);
+        apps
+    }
+
     /// An application that claims a supertype must be credited with the subtypes
     /// the MIME database derives from it, or an editor claiming `text/plain`
     /// looks like it cannot open source files.
@@ -252,9 +280,8 @@ mod tests {
     fn supported_types_follow_the_mime_database() {
         test_config_home();
         let declared = installed_apps();
-        let known = known_mime_types(&declared);
         let mut expanded = installed_apps();
-        expand_supported_types(&mut expanded, &known);
+        expand_supported_types(&mut expanded, &subtypes_of(&declared_types(&declared)));
 
         let Some(position) = declared
             .iter()
@@ -282,6 +309,17 @@ mod tests {
                 declared[position].name
             );
         }
+    }
+
+    /// An application removed while the window is open refuses every type with a
+    /// reason, rather than reporting that it now opens nothing new.
+    #[test]
+    fn assigning_to_a_missing_application_fails_every_type() {
+        test_config_home();
+        let mimes = vec!["text/plain".to_string(), "image/png".to_string()];
+        let outcome = assign_types("mimebind-no-such-application.desktop", &mimes);
+        assert_eq!((outcome.set, outcome.failed), (0, 2));
+        assert!(outcome.error.is_some());
     }
 
     /// The app rests on GIO owning `mimeapps.list`: single and bulk writes must
@@ -329,14 +367,15 @@ mod tests {
             })
             .expect("no type shared by two applications");
         thief.info.set_as_default_for_type(&stolen).unwrap();
-        assert!(!already_default(widest, &stolen));
+        assert!(!already_default(&widest.id, &stolen));
 
         let changing = widest
             .types
             .iter()
-            .filter(|mime| !already_default(widest, mime))
+            .filter(|mime| !already_default(&widest.id, mime))
             .count();
-        let outcome = assign_types(widest, widest.types.iter());
+        let every: Vec<String> = widest.types.iter().cloned().collect();
+        let outcome = assign_types(&widest.id, &every);
         assert_eq!(outcome.failed, 0, "{:?}", outcome.error);
         // Fewer writes than planned is correct: assigning a supertype makes its
         // subtypes resolve to the same application, so they get skipped.
