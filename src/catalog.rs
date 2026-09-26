@@ -189,27 +189,42 @@ impl Assignment {
     }
 }
 
+/// The installed application with this desktop id. Writes run on a worker thread,
+/// and a `gio::AppInfo` cannot be sent to one, so the worker looks it up itself.
+fn find_app(id: &str) -> Result<gio::AppInfo, glib::Error> {
+    gio::AppInfo::all()
+        .into_iter()
+        .find(|info| info.id().is_some_and(|candidate| candidate == id))
+        .ok_or_else(|| {
+            glib::Error::new(
+                gio::IOErrorEnum::NotFound,
+                // Translators: {app} is a desktop file name, such as org.gnome.TextEditor.desktop.
+                &gettext("{app} is not installed").replace("{app}", id),
+            )
+        })
+}
+
+/// Make the application with this id the default for one type, even when it
+/// already is, so the choice is recorded as the user's own.
+pub(crate) fn set_default(id: &str, mime: &str) -> Result<(), glib::Error> {
+    find_app(id)?.set_as_default_for_type(mime)
+}
+
 /// Make the application with this id the default for the given types, skipping
-/// the ones it already opens. Every write rewrites mimeapps.list, so a large batch
-/// belongs on a worker thread; the id is looked up here because a `gio::AppInfo`
-/// cannot be sent to one.
+/// the ones it already opens.
 pub(crate) fn assign_types(id: &str, mimes: &[String]) -> Assignment {
     let mut outcome = Assignment {
         set: 0,
         failed: 0,
         error: None,
     };
-    let Some(info) = gio::AppInfo::all()
-        .into_iter()
-        .find(|info| info.id().is_some_and(|candidate| candidate == id))
-    else {
-        outcome.failed = mimes.len();
-        outcome.error = Some(glib::Error::new(
-            gio::IOErrorEnum::NotFound,
-            // Translators: {app} is a desktop file name, such as org.gnome.TextEditor.desktop.
-            &gettext("{app} is not installed").replace("{app}", id),
-        ));
-        return outcome;
+    let info = match find_app(id) {
+        Ok(info) => info,
+        Err(error) => {
+            outcome.failed = mimes.len();
+            outcome.error = Some(error);
+            return outcome;
+        }
     };
     for mime in mimes {
         if already_default(id, mime) {

@@ -1,4 +1,4 @@
-use crate::catalog::{already_default, assign_types, scoped_types};
+use crate::catalog::{already_default, assign_types, scoped_types, set_default, user_overrides};
 use crate::category::{DefaultCategory, category_default, default_types};
 use crate::entry::MimeEntry;
 use crate::window::MimebindWindow;
@@ -107,22 +107,25 @@ pub(crate) fn confirm_reset_all(window: &MimebindWindow) {
                 if response != "reset" {
                     return;
                 }
-                let mimes: Vec<String> = window.overrides().iter().cloned().collect();
+                // Read on the worker, so a write still queued ahead of this one
+                // is reset as well.
                 window.write_in_background(
-                    move || {
+                    || {
+                        let mimes = user_overrides();
                         for mime in &mimes {
                             gio::AppInfo::reset_type_associations(mime);
                         }
+                        mimes.len()
                     },
-                    move |window, ()| {
+                    |window, reset| {
                         window.reload();
                         window.toast(
                             &ngettext(
                                 "Reset one file type",
                                 "Reset {count} file types",
-                                count as u32,
+                                reset as u32,
                             )
-                            .replace("{count}", &count.to_string()),
+                            .replace("{count}", &reset.to_string()),
                         );
                     },
                 );
@@ -264,6 +267,9 @@ pub(crate) fn open_chooser(window: &MimebindWindow, entry: &MimeEntry) {
             .build();
 
         for app in &candidates {
+            let Some(id) = app.id() else {
+                continue;
+            };
             let row = adw::ActionRow::builder()
                 .title(glib::markup_escape_text(&app.display_name()))
                 .activatable(true)
@@ -280,31 +286,34 @@ pub(crate) fn open_chooser(window: &MimebindWindow, entry: &MimeEntry) {
                 row.add_suffix(&gtk::Image::from_icon_name("object-select-symbolic"));
             }
 
+            let name = app.display_name().to_string();
             row.connect_activated(glib::clone!(
                 #[weak]
                 dialog,
                 #[weak]
                 window,
                 #[strong]
-                app,
-                #[strong]
                 mime,
-                #[strong]
-                entry,
                 move |_| {
-                    match app.set_as_default_for_type(&mime) {
-                        Ok(()) => window.toast(
-                            &gettext("{app} now opens {mime}")
-                                .replace("{app}", &app.display_name())
-                                .replace("{mime}", &mime),
-                        ),
-                        Err(error) => window.toast(
-                            &gettext("Could not set the default: {error}")
-                                .replace("{error}", &error.to_string()),
-                        ),
-                    }
-                    window.refresh(&entry);
                     dialog.close();
+                    let (id, name, mime) = (id.to_string(), name.clone(), mime.clone());
+                    window.write_in_background(
+                        glib::clone!(
+                            #[strong]
+                            mime,
+                            move || set_default(&id, &mime)
+                        ),
+                        move |window, result| {
+                            window.refresh(&mime);
+                            window.toast(&match result {
+                                Ok(()) => gettext("{app} now opens {mime}")
+                                    .replace("{app}", &name)
+                                    .replace("{mime}", &mime),
+                                Err(error) => gettext("Could not set the default: {error}")
+                                    .replace("{error}", &error.to_string()),
+                            });
+                        },
+                    );
                 }
             ));
             list.append(&row);
