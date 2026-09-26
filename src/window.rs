@@ -12,7 +12,9 @@ use adw::subclass::prelude::*;
 use gettextrs::gettext;
 use gtk::{gio, glib};
 use std::cell::{Cell, OnceCell, Ref, RefCell};
-use std::collections::HashSet;
+use std::collections::{HashSet, VecDeque};
+use std::rc::Rc;
+use std::time::Duration;
 
 /// What the sidebar selection narrows the list to.
 #[derive(Clone, Default, PartialEq)]
@@ -25,6 +27,13 @@ pub(crate) enum Selection {
     App(String),
     /// Every type in this media group.
     Media(String),
+}
+
+/// Association writes, run one at a time in the order they were asked for.
+#[derive(Default)]
+struct WriteQueue {
+    busy: Cell<bool>,
+    waiting: RefCell<VecDeque<Box<dyn FnOnce()>>>,
 }
 
 mod imp {
@@ -86,6 +95,7 @@ mod imp {
         /// Whether section headers are on, and for which application.
         pub(super) header_state: RefCell<(bool, Option<String>)>,
         pub(super) default_rows: RefCell<Vec<(adw::ActionRow, DefaultCategory)>>,
+        pub(super) writes: Rc<WriteQueue>,
     }
 
     #[glib::object_subclass]
@@ -284,31 +294,66 @@ impl MimebindWindow {
         );
     }
 
-    /// Run a batch of association writes on a worker thread, then `done` on this
-    /// one. GIO rewrites mimeapps.list, and syncs it to disk, once per type: a few
-    /// milliseconds each, which an application with hundreds of types turns into a
-    /// visible freeze. Two writers at once would lose each other's changes, so the
-    /// window takes no input until the batch is through, and the application stays
-    /// up to finish it even when the window closes.
+    /// Write associations on a worker thread, then run `done` here with what the
+    /// write returned. GIO rewrites mimeapps.list, and syncs it to disk, once per
+    /// type: a few milliseconds each, which an application with hundreds of types
+    /// turns into a visible freeze. Writes run one at a time, in the order they were
+    /// asked for, because two at once would lose one of them, and the application
+    /// stays up to finish them even when the window closes.
     pub(crate) fn write_in_background<T: Send + 'static>(
         &self,
         write: impl FnOnce() -> T + Send + 'static,
         done: impl FnOnce(&Self, T) + 'static,
     ) {
-        let hold = self.application().map(|app| app.hold());
-        self.imp().split_view.set_sensitive(false);
+        let writes = self.imp().writes.clone();
         let window = self.downgrade();
-        glib::spawn_future_local(async move {
-            let outcome = gio::spawn_blocking(write)
-                .await
-                .unwrap_or_else(|panic| std::panic::resume_unwind(panic));
-            if let Some(window) = window.upgrade() {
-                window.imp().split_view.set_sensitive(true);
-                done(&window, outcome);
-            }
-            // Naming the guard is what moves it into the future.
-            drop(hold);
+        let hold = self.application().map(|app| app.hold());
+        let start: Box<dyn FnOnce()> = Box::new(move || {
+            glib::spawn_future_local(async move {
+                // The overrides are read back on the worker too, so this thread
+                // never waits on mimeapps.list.
+                let (outcome, overrides) = gio::spawn_blocking(move || (write(), user_overrides()))
+                    .await
+                    .unwrap_or_else(|panic| std::panic::resume_unwind(panic));
+                let window = window.upgrade();
+                if let Some(window) = &window {
+                    window.imp().overrides.replace(overrides);
+                    done(window, outcome);
+                }
+                let next = writes.waiting.borrow_mut().pop_front();
+                match next {
+                    Some(start) => start(),
+                    None => {
+                        writes.busy.set(false);
+                        if let Some(window) = window {
+                            window.set_cursor(None);
+                        }
+                    }
+                }
+                // Naming the guard is what moves it into the future.
+                drop(hold);
+            });
         });
+
+        let writes = &self.imp().writes;
+        if writes.busy.replace(true) {
+            writes.waiting.borrow_mut().push_back(start);
+            return;
+        }
+        start();
+        // Most writes are over before anyone could notice; a long one says it is busy.
+        glib::timeout_add_local_once(
+            Duration::from_millis(200),
+            glib::clone!(
+                #[weak(rename_to = window)]
+                self,
+                move || {
+                    if window.imp().writes.busy.get() {
+                        window.set_cursor_from_name(Some("progress"));
+                    }
+                }
+            ),
+        );
     }
 
     /// Work out which types every application can open. Reading the applications
@@ -320,14 +365,14 @@ impl MimebindWindow {
         let declared = declared_types(&apps);
         let window = self.downgrade();
         glib::spawn_future_local(async move {
-            let subtypes = gio::spawn_blocking(move || {
+            let (subtypes, overrides) = gio::spawn_blocking(move || {
                 let subtypes = subtypes_of(&declared);
                 // GIO reads each description from the MIME database once and keeps
                 // it, so the entries built on the main thread do not wait on disk.
                 for mime in declared.iter().chain(subtypes.values().flatten()) {
                     gio::functions::content_type_get_description(mime);
                 }
-                subtypes
+                (subtypes, user_overrides())
             })
             .await
             .unwrap_or_else(|panic| std::panic::resume_unwind(panic));
@@ -337,6 +382,7 @@ impl MimebindWindow {
             expand_supported_types(&mut apps, &subtypes);
             let imp = window.imp();
             imp.catalog.set(apps).ok();
+            imp.overrides.replace(overrides);
 
             window.reload();
             // Changing a default flips its "modified" flag and moves the counts.
@@ -355,7 +401,6 @@ impl MimebindWindow {
     /// Refill the whole store in one splice, so the sidebar rebuilds once.
     pub(crate) fn reload(&self) {
         let imp = self.imp();
-        imp.overrides.replace(user_overrides());
         // Types the user assigned belong in the list even when nothing installed
         // declares them any more, or "Modified" would hide part of what they changed.
         let mut types = installed_mime_types(self.catalog());
@@ -370,14 +415,20 @@ impl MimebindWindow {
         imp.store.splice(0, imp.store.n_items(), &entries);
     }
 
-    /// Rebuild one row so it shows the new default. A fresh object is required:
-    /// `items_changed` over an identical item lets GtkListView keep the old widget.
-    pub(crate) fn refresh(&self, entry: &MimeEntry) {
-        let imp = self.imp();
-        imp.overrides.replace(user_overrides());
-        if let Some(position) = imp.store.find(entry) {
-            let fresh = MimeEntry::new(&entry.mime(), &self.overrides());
-            imp.store.splice(position, 1, &[fresh]);
+    /// Rebuild the row of `mime` so it shows the new default. A fresh object is
+    /// required: `items_changed` over an identical item lets GtkListView keep the
+    /// old widget.
+    pub(crate) fn refresh(&self, mime: &str) {
+        let store = &self.imp().store;
+        let position = (0..store.n_items()).find(|position| {
+            store
+                .item(*position)
+                .and_downcast::<MimeEntry>()
+                .is_some_and(|entry| entry.mime() == mime)
+        });
+        if let Some(position) = position {
+            let fresh = MimeEntry::new(mime, &self.overrides());
+            store.splice(position, 1, &[fresh]);
         }
     }
 
@@ -548,16 +599,19 @@ impl MimebindWindow {
     }
 
     pub(crate) fn reset_type(&self, mime: &str) {
-        let imp = self.imp();
-        let Some(entry) = (0..imp.store.n_items())
-            .filter_map(|position| imp.store.item(position).and_downcast::<MimeEntry>())
-            .find(|entry| entry.mime() == mime)
-        else {
-            return;
-        };
-        gio::AppInfo::reset_type_associations(mime);
-        self.refresh(&entry);
-        self.toast(&gettext("Reset {mime} to the system default").replace("{mime}", mime));
+        let mime = mime.to_string();
+        self.write_in_background(
+            glib::clone!(
+                #[strong]
+                mime,
+                move || gio::AppInfo::reset_type_associations(&mime)
+            ),
+            move |window, ()| {
+                window.refresh(&mime);
+                window
+                    .toast(&gettext("Reset {mime} to the system default").replace("{mime}", &mime));
+            },
+        );
     }
 
     /// GtkListView scrolls its first item into view once the list settles, which
