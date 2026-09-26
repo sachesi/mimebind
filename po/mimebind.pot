@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mimebind 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/sachesi/mimebind/issues\n"
-"POT-Creation-Date: 2026-09-26 21:01+0300\n"
+"POT-Creation-Date: 2026-09-26 21:03+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -194,100 +194,108 @@ msgstr[1] ""
 
 #: src/dialogs.rs:39
 #, no-c-format
-msgid ""
-"{app} supports {total} file types here and would take one from another "
-"application."
+msgid "{app} would become the default for the one file type it supports here."
 msgid_plural ""
-"{app} supports {total} file types here and would take {changing} from "
-"another application."
+"{app} would become the default for all {total} file types it supports here."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/dialogs.rs:52 src/dialogs.rs:176 src/dialogs.rs:267
+#: src/dialogs.rs:46
+#, no-c-format
+msgid ""
+"{app} would become the default for one more of the {total} file types it "
+"supports here."
+msgid_plural ""
+"{app} would become the default for {changing} more of the {total} file types "
+"it supports here."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/dialogs.rs:59 src/dialogs.rs:183 src/dialogs.rs:274
 #, no-c-format
 msgid "Close"
 msgstr ""
 
-#: src/dialogs.rs:56 src/dialogs.rs:101 src/dialogs.rs:152 src/dialogs.rs:252
+#: src/dialogs.rs:63 src/dialogs.rs:108 src/dialogs.rs:159 src/dialogs.rs:259
 #, no-c-format
 msgid "Cancel"
 msgstr ""
 
-#: src/dialogs.rs:57
+#: src/dialogs.rs:64
 #, no-c-format
 msgid "Set Defaults"
 msgstr ""
 
-#: src/dialogs.rs:91
+#: src/dialogs.rs:98
 #, no-c-format
 msgid "Reset all changes?"
 msgstr ""
 
-#: src/dialogs.rs:94
+#: src/dialogs.rs:101
 #, no-c-format
 msgid "One file type goes back to the application the system chose."
 msgid_plural "{count} file types go back to the application the system chose."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/dialogs.rs:102 ui/window.ui:91
+#: src/dialogs.rs:109 ui/window.ui:91
 #, no-c-format
 msgid "Reset All"
 msgstr ""
 
-#: src/dialogs.rs:129
+#: src/dialogs.rs:136
 #, no-c-format
 msgid "Reset one file type"
 msgid_plural "Reset {count} file types"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/dialogs.rs:147
+#: src/dialogs.rs:154
 #, no-c-format
 msgid "Default {category}"
 msgstr ""
 
-#: src/dialogs.rs:149
+#: src/dialogs.rs:156
 #, no-c-format
 msgid ""
 "The selected application will handle every supported type in this category."
 msgstr ""
 
-#: src/dialogs.rs:174
+#: src/dialogs.rs:181
 #, no-c-format
 msgid "No installed application declares support for these file types."
 msgstr ""
 
-#: src/dialogs.rs:216
+#: src/dialogs.rs:223
 #, no-c-format
 msgid "{app} is now the default for {category}"
 msgstr ""
 
-#: src/dialogs.rs:220
+#: src/dialogs.rs:227
 #, no-c-format
 msgid "One {category} type could not be set: {error}"
 msgid_plural "{failed} {category} types could not be set: {error}"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/dialogs.rs:255 ui/mime_row.ui:58 ui/mime_row.ui:61
+#: src/dialogs.rs:262 ui/mime_row.ui:58 ui/mime_row.ui:61
 #, no-c-format
 msgid "Reset to System Default"
 msgstr ""
 
-#: src/dialogs.rs:265
+#: src/dialogs.rs:272
 #, no-c-format
 msgid "No installed application declares support for this type."
 msgstr ""
 
-#: src/dialogs.rs:314
+#: src/dialogs.rs:321
 #, no-c-format
 msgid "{app} now opens {mime}"
 msgstr ""
 
-#: src/dialogs.rs:317
+#: src/dialogs.rs:325
 #, no-c-format
-msgid "Could not set the default: {error}"
+msgid "Could not make {app} the default for {mime}: {error}"
 msgstr ""
 
 #: src/entry.rs:81
