@@ -85,6 +85,7 @@ pub(crate) fn sidebar_items(
 pub(crate) fn sidebar_row(item: &SidebarItem) -> (adw::ActionRow, Option<gtk::Label>) {
     let row = adw::ActionRow::builder()
         .title(glib::markup_escape_text(&item.title))
+        .activatable(true)
         .build();
 
     let image = gtk::Image::new();
