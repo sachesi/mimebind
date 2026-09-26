@@ -395,27 +395,27 @@ msgid_plural "Use {app} for all {count} {group} file types"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/window.rs:585
+#: src/window.rs:587
 #, no-c-format
 msgid "Nothing changed yet"
 msgstr ""
 
-#: src/window.rs:587
+#: src/window.rs:589
 #, no-c-format
 msgid "File types you assign to an application appear here, saved in {path}."
 msgstr ""
 
-#: src/window.rs:592 ui/window.ui:251
+#: src/window.rs:594 ui/window.ui:251
 #, no-c-format
 msgid "No matches"
 msgstr ""
 
-#: src/window.rs:593
+#: src/window.rs:595
 #, no-c-format
 msgid "No file type matches this search."
 msgstr ""
 
-#: src/window.rs:661
+#: src/window.rs:663
 #, no-c-format
 msgid "Reset {mime} to the system default"
 msgstr ""

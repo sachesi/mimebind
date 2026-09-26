@@ -568,8 +568,10 @@ impl MimebindWindow {
         }
 
         let count = imp.filter_model.n_items();
+        // A search can hide every change without there being none.
+        let changed = !self.overrides().is_empty();
         imp.reset_all_button
-            .set_visible(current == Selection::Modified && count > 0);
+            .set_visible(current == Selection::Modified && changed);
 
         if current == Selection::Defaults {
             imp.stack.set_visible_child_name("defaults");
@@ -580,7 +582,7 @@ impl MimebindWindow {
             return;
         }
         let empty = &imp.empty_page;
-        if current == Selection::Modified {
+        if current == Selection::Modified && !changed {
             empty.set_icon_name(Some("document-edit-symbolic"));
             empty.set_title(&gettext("Nothing changed yet"));
             empty.set_description(Some(&glib::markup_escape_text(
